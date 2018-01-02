@@ -565,6 +565,8 @@ public class WAVLTree {
 	 * Complexity: O(log(n))
 	 */
 	private WAVLNode successor(WAVLNode currNode) {
+		if(currNode == null)
+			return null;
 		if (currNode.right != ext)// Search for minimum node in right child sub-tree
 			return minSubTree(currNode.right);
 		WAVLNode parent = currNode.parent;
@@ -692,15 +694,13 @@ public class WAVLTree {
 	 */
 	private WAVLNode select(int i, WAVLNode currNode){
 		int posInTree;
-		if (currNode.left == this.ext)
-			posInTree = 1;
-		else
-			posInTree = currNode.left.size + 1;
-		if (posInTree == i)
+		posInTree = currNode.left.size + 1;// get the position in the tree (in an In-order scan)
+		if (posInTree == i)// current position is the i'th element as needed
 			return currNode;
-		if (i < posInTree)
+		if (i < posInTree)// current position is bigger than i, search for i in left sub tree
 			return select(i, currNode.left);
-		return select(i - posInTree, currNode.right);
+		return select(i - posInTree, currNode.right);// current position is smaller than i,
+														//find (i-current position) in right subtree
 	}
 
 	/**
@@ -795,7 +795,6 @@ public class WAVLTree {
 		public int getRank(){
 			return this.rank;
 		}
-		
-	}
 
+	}
 }
