@@ -10,7 +10,7 @@ package WAVLTree;
  * @author Ron David Cogan - ID 205671787 - username rondavidc
  * 
  * throughout the complexity analysis n will represent
- * 	the number of nodes in the current tree, unless otherwise stated
+ * the number of nodes in the current tree, unless otherwise stated
  * 
  */
 
