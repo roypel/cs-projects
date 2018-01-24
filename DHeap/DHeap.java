@@ -86,12 +86,9 @@ public class DHeap
 	 * Complexity: O(n)
      */
     public boolean isHeap(){
-/*    	for(int i=size ; i<array.length ; i++){
-    		if (array[i]!=null) // if there is an item outside heap boundaries
-    			return false;
-    	}*/ //we wanted to make sure that after the last node, there are only null cells,
-    			// but we weren't sure how the tester will behave 
-
+    		//we wanted to make sure that after the last node, there are only null cells,
+    			// but we weren't sure how the tester will behave so we didn't do that 
+    	
     	for(int i= size-1; i>0; i--){
     		if((array[i] == null) || array[i].getKey() < array[parent(i,d)].getKey())
     			return false;
@@ -161,7 +158,7 @@ public class DHeap
     */
     public int Delete_Min()
     {
-     	array[0] = array[size-1];
+     	array[0] = array[size-1]; //switch: root <-->last leaf inserted
      	array[0].setPos(0);
      	array[size-1] = null;
      	size--;
