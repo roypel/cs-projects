@@ -78,18 +78,16 @@ void printUserTurn(int heaps[], int N) {
 	printf(
 			"Your turn: please enter the heap index and the number of removed objects.\n");
 	while (flag) {
+		tokens = 0;
+		tempHeap = 0;
 		fflush(stdin);
-		if (scanf(" %d", &tempHeap)) {
-			fflush(stdin);
-			if (scanf(" %d", &tokens)) {
-				if ((tempHeap > N) || (tempHeap < 1) || (tokens < 1)
-						|| (tokens > heaps[tempHeap - 1]))
-					printf(
-							"Error: Invalid input.\nPlease enter again the heap index and the number of removed objects.\n");
-				else
-					flag = 0;
-			}
-		}
+		scanf(" %d %d", &tempHeap, &tokens);
+		if ((tempHeap > N) || (tempHeap < 1) || (tokens < 1)
+				|| (tokens > heaps[tempHeap - 1]))
+			printf(
+					"Error: Invalid input.\nPlease enter again the heap index and the number of removed objects.\n");
+		else
+			flag = 0;
 	}
 	heaps[tempHeap - 1] -= tokens;
 	printf("You take %d objects from heap %d.\n", tokens, tempHeap);
