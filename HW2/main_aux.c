@@ -56,10 +56,10 @@ int getNumberOfHeaps() {
 
 void printWinner(int turn) {
 	if (turn % 2 == 0) {
-		printf("Computer wins!\n");
+		printf("You win!\n");
 		exit(0);
 	}
-	printf("You win!\n");
+	printf("Computer wins!\n");
 }
 
 void printTurn(int turn, int heaps[], int N) {
