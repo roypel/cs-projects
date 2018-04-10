@@ -3,29 +3,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPBufferset.h"
-/*#define N getNumberOfHeaps() N=Number of heaps, the macro calls the function in the main_aux file*/
+#define MAX_HEAPS 32 /*Maximum number of heaps*/
 
 int main(){
 	int N;
-	int *heaps;
+	int heaps[MAX_HEAPS] = {0};
 	int turn = 1;
-	int i;
 	SP_BUFF_SET();
-	N = getNumberOfHeaps();
-	heaps = calloc(N, sizeof(int));
-	for (i = 0; i < N; i++)
-		heaps[i] = 0;
+	N = getNumberOfHeaps();/*Actual heaps used*/
 	getHeapSizes(heaps, N);
-	while (checkWinner(heaps, N)){
-		printTurn(turn, heaps, N);
-		if (turn % 2){
+	while (checkWinner(heaps, N)){/*Continue with the game until someone wins*/
+		printTurn(turn, heaps, N);/*Printing turn stats*/
+		if (turn % 2){/*On an odd turn, the user plays*/
 			printUserTurn(heaps, N);
 		}
-		else
+		else/*On even turns, computer plays*/
 			nextMove(heaps, N);
 		turn++;
 	}
 	printWinner(turn);
-	free(heaps);
 	return 0;
 }
