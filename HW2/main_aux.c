@@ -67,7 +67,6 @@ void printUserTurn(int heaps[], int N) {
 	while (notValid) {
 		tokens = 0;
 		tempHeap = 0;/*Reset the input values before reading new input*/
-		fflush(stdin);
 		scanf(" %d %d", &tempHeap, &tokens);
 		if ((tempHeap > N) || (tempHeap < 1) || (tokens < 1)
 				|| (tokens > heaps[tempHeap - 1]))/*Check if the move is possible*/
