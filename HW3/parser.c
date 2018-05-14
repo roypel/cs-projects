@@ -61,8 +61,8 @@ int readBoard(int *rows, int *cols) {
 	fullBoard = ((*rows) * (*rows) * (*cols) * (*cols));
 	printf("Please enter the number of cells to fill [0-%d]:\n", fullBoard - 1);/*The biggest number of fillings is whole board minus 1*/
 	while (notValid) {
-		hints = 0;
-		scanf("%d ", &hints);
+		hints = 42;
+		/*scanf("%d ", &hints);*/
 		if ((hints >= fullBoard) || (hints < 0))/*Check if the amount of hints is valid*/
 			printf(
 					"Error: Invalid number of cells to fill (should be between 0 and %d)\n",

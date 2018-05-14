@@ -22,20 +22,20 @@ void copyBoard(int **srcBoard, int **trgtBoard) {
 
 int checkCell(int x, int y, int z) {
 	int i, j;
-	for (i = 0; i < cols * rows; i++) {/*Check row*/
+	for (i = 0; i < cols * rows; i++) {/*Check column*/
 		if (abs(board[i][y]) == z) {
 			return 0;
 		}
 	}
-	for (i = 0; i < cols * rows; i++) {/*Check column*/
+	for (i = 0; i < cols * rows; i++) {/*Check row*/
 		if (abs(board[x][i]) == z) {
 			return 0;
 		}
 	}
 	for (i = floor(x / rows) * rows; i < floor(x / rows) * rows + rows; i++) {
-		for (j = floor(y / cols) * cols; i < floor(y / cols) * cols + cols;
-				i++) {
-			if (!(i == x) && (j == y)) {
+		for (j = floor(y / cols) * cols; j < floor(y / cols) * cols + cols;
+				j++) {
+			if (!((i == x) && (j == y))) {
 				if (abs(board[i][j]) == z) {
 					return 0;
 				}

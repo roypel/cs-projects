@@ -4,7 +4,7 @@
 
 void setBoard(int x, int y, int z);
 int checkCell(int x, int y, int z);
-int hintBoard(int x, int y);
+void hintBoard(int x, int y);
 void exitGame();
 void generateBoard(int hints);
 void validate();

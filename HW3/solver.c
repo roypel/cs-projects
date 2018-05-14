@@ -62,6 +62,11 @@ void builder(int cols, int rows, int **board, int x, int y) {
 				break;
 			board[x][y] = 0;
 		}
+		printf("for row %d column %d, posValues are: ", y,x);
+		for (i = 0; i< rows*cols+1; i++){
+			printf("%d ", posValues[i]);
+		}
+		printf("\n");
 		free(posValues);
 	}
 }
