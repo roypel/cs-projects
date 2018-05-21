@@ -1,9 +1,10 @@
 
 #ifndef MAINAUX_H_
 #define MAINAUX_H_
+#include "gameStructs.h"
 
-void printBoard(int cols, int rows, int **board);
-void checkWin(int countCells, int cols, int rows);
+void printBoard(board *playerBoard);
+void checkWin(gameState *metaBoard);
 int getSeed(char *input);
 
 #endif /* MAINAUX_H_ */

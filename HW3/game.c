@@ -1,42 +1,66 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "parser.h"
 #include "MainAux.h"
 #include "solver.h"
+#include "gameStructs.h"
 
-int countCells;
-int **board;
-int **sol;
-int **tempBoard;
-int rows, cols;
+void freeBoard(board *freeBird) {
+	int i;
+	for (i = 0; i < freeBird->rows * freeBird->cols; i++) {
+		free((freeBird->board)[i]);
+	}
+	free(freeBird->board);
+}
 
-void copyBoard(int **srcBoard, int **trgtBoard) {
+void initalizeBoard(board *newBoard) {
 	int i, j;
-	for (i = 0; i < rows * cols; i++) {
-		for (j = 0; j < rows * cols; j++) {
-			trgtBoard[i][j] = srcBoard[i][j];
+	newBoard->board = calloc(newBoard->rows * newBoard->cols, sizeof(cell *));
+	if (newBoard->board == NULL) {
+		printf("Error: calloc has failed\n");
+		exit(0);
+	}
+	for (i = 0; i < newBoard->rows * newBoard->cols; i++) {
+		newBoard->board[i] = calloc(newBoard->rows * newBoard->cols,
+				sizeof(cell));
+		if (newBoard->board[i] == NULL) {
+			printf("Error: calloc has failed\n");
+			exit(0);
+		}
+		for (j = 0; j < newBoard->rows * newBoard->cols; j++) {
+			newBoard->board[i][j].value = 0;
+			newBoard->board[i][j].fixed = 0;
 		}
 	}
 }
 
-int checkCell(int x, int y, int z) {
+void copyBoard(board *srcBoard, board *trgtBoard) {
 	int i, j;
-	for (i = 0; i < cols * rows; i++) {/*Check column*/
-		if (abs(board[i][y]) == z) {
+	for (i = 0; i < srcBoard->cols * srcBoard->rows; i++) {
+		for (j = 0; j < srcBoard->rows * srcBoard->cols; j++) {
+			trgtBoard->board[i][j].value = srcBoard->board[i][j].value;
+		}
+	}
+}
+
+int checkCell(int x, int y, int z, board *check) {
+	int i, j;
+	for (i = 0; i < check->cols * check->rows; i++) {/*Check column*/
+		if (check->board[i][y].value == z) {
 			return 0;
 		}
 	}
-	for (i = 0; i < cols * rows; i++) {/*Check row*/
-		if (abs(board[x][i]) == z) {
+	for (i = 0; i < check->cols * check->rows; i++) {/*Check row*/
+		if (check->board[x][i].value == z) {
 			return 0;
 		}
 	}
-	for (i = floor(x / rows) * rows; i < floor(x / rows) * rows + rows; i++) {
-		for (j = floor(y / cols) * cols; j < floor(y / cols) * cols + cols;
-				j++) {
+	for (i = (x / check->rows) * check->rows;
+			i < (int) (x / check->rows) * check->rows + check->rows; i++) {
+		for (j = (y / check->cols) * check->cols;
+				j < (int) (y / check->cols) * check->cols + check->cols; j++) {
 			if (!((i == x) && (j == y))) {
-				if (abs(board[i][j]) == z) {
+				if (check->board[i][j].value == z) {
 					return 0;
 				}
 			}
@@ -45,80 +69,76 @@ int checkCell(int x, int y, int z) {
 	return 1;
 }
 
-void setBoard(int x, int y, int z) {
-	if (board[x][y] >= 0) {
-		if (z == 0){
-			if (board[x][y] > 0){
-				board[x][y] = 0;
-				countCells--;
+void setBoard(int x, int y, int z, gameState *metaBoard) {
+	if (!metaBoard->gameBoard->board[x][y].fixed) {
+		if (z == 0) {/*User tries to erase a value on the board*/
+			if (metaBoard->gameBoard->board[x][y].value > 0) {/*Check if we erase a value on the board or cell is already empty*/
+				metaBoard->gameBoard->board[x][y].value = 0;
+				metaBoard->filledCells--;
+				printBoard(metaBoard->gameBoard);
 			}
-		}
-		else if (checkCell(x, y, z)) {
-			board[x][y] = z;
-			printBoard();
-			countCells++;
-			checkWin(countCells, cols, rows);
+		} else if (checkCell(x, y, z, metaBoard->gameBoard)) {
+			metaBoard->gameBoard->board[x][y].value = z;
+			printBoard(metaBoard->gameBoard);
+			metaBoard->filledCells++;
+			checkWin(metaBoard);
 		} else {
 			printf("Error: value is invalid\n");
 		}
-		printBoard(cols, rows, board);
 	} else {
 		printf("Error: cell is fixed\n");
 	}
 }
 
-void hintBoard(int x, int y) {
+void hintBoard(int x, int y, board *sol) {
 	int solution;
-	solution = abs(sol[x][y]);/*The appropriate number for this cell of the latest solution of the board is stored in this cell*/
+	solution = sol->board[x][y].value;/*The appropriate number for this cell of the latest solution of the board is stored in this cell*/
 	printf("Hint: set cell to %d\n", solution);
 }
 
-void validate() {
-	copyBoard(board, tempBoard);
-	if (solver(tempBoard, cols, rows, 0)) {
-		copyBoard(tempBoard, sol);
+void validate(gameState *metaBoard) {
+	int rows = metaBoard->gameBoard->rows;
+	int cols = metaBoard->gameBoard->cols;
+	board tempBoard;
+	tempBoard.rows = rows;
+	tempBoard.cols = cols;
+	initalizeBoard(&tempBoard);
+	copyBoard(metaBoard->gameBoard, &tempBoard);
+	if (solver(&tempBoard, 0)) {
+		copyBoard(&tempBoard, metaBoard->solution);
 		printf("Validation passed: board is solvable\n");
 	} else {
 		printf("Validation failed: board is unsolvable\n");
 	}
+	freeBoard(&tempBoard);
 }
 
-void generateBoard(int hints) {
+void generateBoard(gameState *metaBoard) {
 	int i, j;
-	builder(cols, rows, sol, 0, 0);/*Sol will contain a completely solved board*/
-	hinter(hints, cols, rows, sol);/*Adding fixed cells to the board*/
-	copyBoard(sol, board);
-	for (i = 0; i < rows * cols; i++) {
-		for (j = 0; j < rows * cols; j++) {
-			if (board[i][j] > 0)
-				board[i][j] = 0;/*Erase unfixed cells in game board*/
+	builder(metaBoard->solution, 0, 0);/*metaBoard->solution will contain a completely solved board*/
+	hinter(metaBoard);/*Adding fixed cells to the board*/
+	copyBoard(metaBoard->solution, metaBoard->gameBoard);
+	for (i = 0; i < metaBoard->rows * metaBoard->cols; i++) {
+		for (j = 0; j < metaBoard->rows * metaBoard->cols; j++) {
+			if (!metaBoard->gameBoard->board[i][j].fixed)
+				metaBoard->gameBoard->board[i][j].value = 0;/*Erase unfixed cells in game board*/
 		}
 	}
 }
 
-void initalizeBoard() {
-	int i;
-	int hints = readBoard(&rows, &cols);/*Get number of hints and size of blocks from user (default 3*3 in this exercise)*/
-	board = calloc(rows * cols, sizeof(int *));
-	sol = calloc(rows * cols, sizeof(int *));
-	tempBoard = calloc(rows * cols, sizeof(int *));
-	for (i = 0; i < rows * cols; i++) {
-		board[i] = calloc(rows * cols, sizeof(int));
-		sol[i] = calloc(rows * cols, sizeof(int));
-		tempBoard[i] = calloc(rows * cols, sizeof(int));
-	}
-	generateBoard(hints);
-	printBoard(cols, rows, board);
+void initalizeGame(gameState *metaBoard) {
+	readBoard(metaBoard);/*Get number of hints and size of blocks from user (default 3*3 in this exercise)*/
+	metaBoard->solution->rows = metaBoard->rows;
+	metaBoard->solution->cols = metaBoard->cols;
+	metaBoard->gameBoard->rows = metaBoard->rows;
+	metaBoard->gameBoard->cols = metaBoard->cols;
+	initalizeBoard(metaBoard->solution);
+	initalizeBoard(metaBoard->gameBoard);
+	generateBoard(metaBoard);
+	printBoard(metaBoard->gameBoard);
 }
 
-void exitGame() {
-	int i;
-	for (i = 0; i < rows * cols; i++) {
-		free(tempBoard[i]);
-		free(sol[i]);
-		free(board[i]);
-	}
-	free(tempBoard);
-	free(sol);
-	free(board);
+void exitGame(gameState *metaBoard) {
+	freeBoard(metaBoard->solution);
+	freeBoard(metaBoard->gameBoard);
 }
