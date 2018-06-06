@@ -4,8 +4,8 @@ do we re/undo autofill and if so what do we print
 
 ask Moshe if in reading from files, if m and n can be seperated (not in the same line)
 
+Ask what is the exact meaning of erroneous, is the board is valid, or only no same number in block, column, row, question comes since num of solutions ignores 0 solution on board
+
 -------------------- already sent mail about this questions ^^
 
 remember to change current move to the returned move from addNextMove
-
-Ask what is the exact meaning of erroneous, is the board is valid, or only no same number in block, column, row, question comes since num of solutions ignores 0 solution on board
