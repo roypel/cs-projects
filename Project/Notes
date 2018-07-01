@@ -9,3 +9,9 @@ Ask what is the exact meaning of erroneous, is the board is valid, or only no sa
 -------------------- already sent mail about this questions ^^
 
 remember to change current move to the returned move from addNextMove
+
+-------------------- New Questions
+
+What if we set the same value to the same cell twice, do we add it as a change to the linked list bitch?
+
+What is a good way to check erroneous? We don't like checking everything, very bad complexity
