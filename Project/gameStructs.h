@@ -18,18 +18,22 @@ typedef enum gameMode{
 }gameMode;
 
 typedef struct node{
-	board move;
-	char *change;
+	int *change;
 	struct node *next;
 	struct node *prev;
 }node;
 
+typedef struct linkedList{
+	node *firstNode;
+	node *currentMove;
+}linkedList;
+
 typedef struct gameState{
 	board *gameBoard;
-	board *solution;
+	board *solution;/*NEED TO ERASE, OBSOLETE!*/
 	gameMode mode;
 	int markError;
-
+	linkedList *moves;
 	int filledCells;
 	int cols;
 	int rows;

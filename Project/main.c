@@ -5,8 +5,9 @@
 #include "gameStructs.h"
 #include "SPBufferset.h"
 
-int main(int argc, char *argv[]) {
+int main() {
 	gameState metaBoard;
+	printf("Sudoku\n------\n");
 	metaBoard.gameBoard = (board *) malloc(sizeof(board));
 	if (metaBoard.gameBoard == NULL) {
 		printf("Error: malloc has failed\n");
@@ -17,12 +18,9 @@ int main(int argc, char *argv[]) {
 		printf("Error: malloc has failed\n");
 		exit(0);
 	}
+	metaBoard.mode = Init;
 	SP_BUFF_SET()
 	;
-	if (argc < 2)
-		srand(5);
-	else
-		srand(getSeed(argv[1]));
 	readInput(&metaBoard);
 	return 0;
 }

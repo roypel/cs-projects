@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "game.h"
 #include "gameStructs.h"
+#include "linkedListFunc.h"
 
 int nextEmptyCell(int index, board *checkBoard) {
 	/*The function recursively finds the next empty cell in board checkBoard, in case it exists (board not filled), starting search from input "index".
@@ -20,63 +21,87 @@ int nextEmptyCell(int index, board *checkBoard) {
 	return nextEmptyCell(index + 1, checkBoard);
 }
 
-int solver(board *tmpBoard, int index) {
+void solver(board *tmpBoard, int *indexCounter) {
 	int x, y, i;
-	index = nextEmptyCell(index, tmpBoard);/*Find next Empty Cell*/
-	if (index == -1) {/*We reached the end of the board so we found a valid solution*/
-		return 1;
-	}
-	x = index % (tmpBoard->cols * tmpBoard->rows);/*Extract the column of the cell by index*/
-	y = (int) (index / (tmpBoard->rows * tmpBoard->cols));/*Extract the row of the cell by index*/
-	for (i = 1; i < tmpBoard->rows * tmpBoard->cols + 1; i++) {
-		if (checkCell(x, y, i, tmpBoard)) {
-			tmpBoard->board[x][y].value = i;
-			if (solver(tmpBoard, index + 1))/*Current board is a valid solution*/
-				return 1;
-			tmpBoard->board[x][y].value = 0;/*Current board isn't valid, need to increase input on cell*/
+	indexCounter[0] = nextEmptyCell(indexCounter[0], tmpBoard);/*Find next Empty Cell*/
+	if (indexCounter[0] == -1) {/*We reached the end of the board so we found a valid solution*/
+		indexCounter[1]++;
+	} else {
+		x = indexCounter[0] % (tmpBoard->cols * tmpBoard->rows);/*Extract the column of the cell by index*/
+		y = (int) (indexCounter[0] / (tmpBoard->rows * tmpBoard->cols));/*Extract the row of the cell by index*/
+		indexCounter[0]++;
+		for (i = 1; i < tmpBoard->rows * tmpBoard->cols + 1; i++) {
+			if (checkCell(x, y, i, tmpBoard)) {
+				tmpBoard->board[x][y].value = i;
+				solver(tmpBoard, indexCounter);/*Current board is a valid solution*/
+			}
 		}
+		tmpBoard->board[x][y].value = 0;/*We need to reverse the cell back to empty*/
 	}
-	return 0;/*Couldn't find a valid solution for cell, backtrack without any changes to board*/
 }
 
-void builder(board *buildBoard, int x, int y) {
-	int i, nextTry;
-	int *posValues;
-	if (y != buildBoard->rows * buildBoard->cols) {
-		posValues = calloc(buildBoard->rows * buildBoard->cols + 1,
-				sizeof(int));/*Possible values for cell <x,y>*/
-		if (posValues == NULL) {
-			printf("Error: calloc has failed\n");
-			exit(0);
+int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
+	int i, j;
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check column*/
+		if (metaBoard->gameBoard->board[i][y].value == z) {
+			return 0;
 		}
-		for (i = 1; i <= buildBoard->rows * buildBoard->cols; i++) {
-			if (checkCell(x, y, i, buildBoard)) {
-				posValues[0]++;/*Amount of possible values for cell <x,y>*/
-				posValues[posValues[0]] = i;
+	}
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
+		if (metaBoard->gameBoard->board[x][i].value == z) {
+			return 0;
+		}
+	}
+	for (i = (x / metaBoard->rows) * metaBoard->rows;
+			i < (int) (x / metaBoard->rows) * metaBoard->rows + metaBoard->rows;
+			i++) {
+		for (j = (y / metaBoard->cols) * metaBoard->cols;
+				j
+						< (int) (y / metaBoard->cols) * metaBoard->cols
+								+ metaBoard->cols; j++) {
+			if (metaBoard->gameBoard->board[i][j].value == z) {
+				return 0;
 			}
 		}
-		while (posValues[0] != 0) {/*There are still possible values to insert to cell <x,y>*/
-			if (posValues[0] == 1) {/*Only one possible value to insert, don't use random*/
-				nextTry = 1;
-			} else {
-				nextTry = (rand() % posValues[0]) + 1;/*The index of the next random try*/
+	}
+	return 1;
+}
+
+void autoFill(gameState *metaBoard) {
+	int i, j, k, counter = 0, posValues;
+	int * moves = (int *) malloc(0);
+	for (i = 0; i < metaBoard->cols; i++) {
+		for (j = 0; j < metaBoard->rows; j++) {
+			posValues = 0;
+			for (k = 1; i <= metaBoard->rows * metaBoard->cols; i++) {/*Check the possible values to insert to the <i,j> cell*/
+				if (checkSingleValue(i, j, k, metaBoard)) {
+					if (posValues == 0)
+						posValues = k;
+					else {
+						posValues = 0;
+						break;
+					}
+				}
 			}
-			buildBoard->board[x][y].value = posValues[nextTry];
-			for (i = nextTry; i < posValues[0]; i++) {/*Shift left the possible values for continuity of the array*/
-				posValues[i] = posValues[i + 1];
+			if (posValues == 0)/*Didn't found a single value to enter*/
+				continue;
+			else {
+				counter++;
+				moves = realloc(moves, sizeof(int) * counter * 4);/*Reallocate extra space*/
+				moves[(counter - 1) * 4] = i;
+				moves[(counter - 1) * 4 + 1] = j;
+				moves[(counter - 1) * 4 + 2] = 0;
+				moves[(counter - 1) * 4 + 3] = posValues;
 			}
-			posValues[0]--;/*Update the remaining possible values*/
-			if (x == buildBoard->rows * buildBoard->cols - 1)
-				builder(buildBoard, 0, y + 1);/*Recursive call for next new row (Rightmost column,
-				 we need to move to the leftmost column of the next row)*/
-			else
-				builder(buildBoard, x + 1, y);/*Recursive call for next right cell*/
-			if (buildBoard->board[buildBoard->rows * buildBoard->cols - 1][buildBoard->rows
-					* buildBoard->cols - 1].value != 0)/*Board is full, no need for further tries*/
-				break;
-			buildBoard->board[x][y].value = 0;
 		}
-		free(posValues);
+	}
+	metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove,
+			moves, counter);/*Update linked list of moves*/
+	for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
+		metaBoard->gameBoard->board[moves[i * 4]][moves[i * 4 + 1]].value = moves[i
+				* 4 + 3];
+		checkCell(moves[i * 4], moves[i * 4 + 1], moves[i * 4 + 3],
+				metaBoard->gameBoard);
 	}
 }
 

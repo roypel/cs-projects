@@ -3,21 +3,25 @@
 #include <stdlib.h>
 #include "game.h"
 #include "gameStructs.h"
+#include "MainAux.h"
 
 #define inputSize 1024
 #define setValues 3
 #define hintValues 2
 #define maxValues 3
+#define invalidError printf("ERROR: invalid command\n")
+#define erroneousError printf("Error: board contains erroneous values\n")
 
 int checkInput(int userCol, int userRow, int userVal, int col, int row,
 		char *cmd) {
+	/*TODO: Fix documentation*/
 	/*Function checks if the input for set and hint has the correct amount of strings and is a valid input for current board
 	 * userCol, userRow and userVal are the user inputs (if he entered any, else they valued at -2)
 	 * col, row are current board size
 	 * cmd is a string representing the command we need to check ,since hint and set have different requirements*/
 	if (strcmp(cmd, "set") == 0) {
 		if ((userCol == -2) || (userRow == -2) || (userVal == -1))/*We didn't read three strings after "set"*/
-			printf("Error: invalid command\n");
+			invalidError;
 		else {
 			if (((userCol >= 0) && (userCol < col * row))/*Make sure input is valid for board*/
 			&& ((userRow >= 0) && (userRow < col * row))
@@ -26,7 +30,7 @@ int checkInput(int userCol, int userRow, int userVal, int col, int row,
 		}
 	} else if (strcmp(cmd, "hint") == 0) {
 		if ((userCol == -2) || (userRow == -2))/*We didn't read two strings after "hint"*/
-			printf("Error: invalid command\n");
+			invalidError;
 		else {
 			if ((userCol >= 0) && (userCol < col * row) && (userRow >= 0)
 					&& (userRow < col * row))/*Make sure input is valid for board*/
@@ -52,7 +56,21 @@ void readInput(gameState *metaBoard) {
 		if (fgets(input, inputSize, stdin) != NULL) {
 			token = strtok(input, delim);
 			if (token != NULL) {
-				if ((strcmp(token, "set") == 0)
+				if ((strcmp(token, "mark_errors") == 0)){
+					token = strtok(NULL, delim);
+					if (token){
+						if ((*token - '0' == 0) || (*token - '0' == 1))
+							metaBoard->markError = *token - '0';
+						else
+							printf("Error: the value should be 0 or 1\n");
+					}
+					else
+						invalidError;
+				}
+				else if ((strcmp(token, "print_board") == 0)){
+					printBoard(metaBoard->gameBoard, metaBoard->markError);
+				}
+				else if ((strcmp(token, "set") == 0)
 						&& (metaBoard->filledCells
 								!= boardCol * boardCol * boardRow * boardRow)) {
 					for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
@@ -78,11 +96,16 @@ void readInput(gameState *metaBoard) {
 					userRow = values[1];
 					if (checkInput(userCol, userRow, userVal, boardCol,
 							boardRow, "hint"))
-						hintBoard(userCol, userRow, metaBoard->solution);
+						hintBoard(userCol, userRow, metaBoard);
 				} else if ((strcmp(token, "validate") == 0)
 						&& (metaBoard->filledCells
 								!= boardCol * boardCol * boardRow * boardRow)) {
 					validate(metaBoard);
+				} else if (strcmp(token, "num_solutions") == 0) {
+					if (isErroneous(metaBoard))
+						erroneousError;
+					else
+						numOfSol(metaBoard->gameBoard);/*MAKE SURE WE DON'T RUIN THE BOARD LIKE THIS!!! ORIGINALLY IT'S TEMPBOARD!!!*/
 				} else if (strcmp(token, "restart") == 0) {
 					resetGame(metaBoard);
 					initalizeGame(metaBoard);
@@ -91,7 +114,7 @@ void readInput(gameState *metaBoard) {
 				} else if (strcmp(token, "exit") == 0) {
 					exitGame(metaBoard);
 				} else {
-					printf("Error: invalid command\n");
+					invalidError;
 				}
 			}
 		} else if (feof(stdin)) {
