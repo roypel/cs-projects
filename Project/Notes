@@ -15,3 +15,7 @@ remember to change current move to the returned move from addNextMove
 What if we set the same value to the same cell twice, do we add it as a change to the linked list bitch?
 
 What is a good way to check erroneous? We don't like checking everything, very bad complexity
+
+What to print in edit mode - with dot for fixed? without? both? WTF?
+
+Do we really need to undo in reset or we can just temp board our way out of it?
