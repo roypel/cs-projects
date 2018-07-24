@@ -4,9 +4,27 @@ Function that uses fillBoard
 
 Maybe split paresers between modes (maybe diffrent modules)
 
+remember to change current move to the returned move from addNextMove
 
+
+
+--------------------------Remarks
+
+Only in Solve mode: autofill, mark_errors, hint. Only in Edit mode: generate.
 
 -------------------------Questions
+
+Is it possible to have a cell both fixed and erroneous and how to print it (possible when entering same value in a row/.../... of a fixed cell)
+
+What if we set the same value to the same cell twice, do we add it as a change to the linked list bitch?
+
+What is a good way to check erroneous? We don't like checking everything, very bad complexity
+
+What to print in edit mode - with dot for fixed? without? both? WTF?
+
+Moshe, listen you MOFO what the heck is going on with "[]" in edit? is it a required characters on input? or you're just messing up with us? Get your shit together.
+
+-------------------- The Archive of Forbidden Questions
 
 Check if we autofill even if board is unsolveable but doesn't contain same number in block, cell and row
 
@@ -15,17 +33,3 @@ do we re/undo autofill and if so what do we print
 ask Moshe if in reading from files, if m and n can be seperated (not in the same line)
 
 Ask what is the exact meaning of erroneous, is the board is valid, or only no same number in block, column, row, question comes since num of solutions ignores 0 solution on board
-
--------------------- already sent mail about this questions ^^
-
-remember to change current move to the returned move from addNextMove
-
--------------------- New Questions
-
-What if we set the same value to the same cell twice, do we add it as a change to the linked list bitch?
-
-What is a good way to check erroneous? We don't like checking everything, very bad complexity
-
-What to print in edit mode - with dot for fixed? without? both? WTF?
-
-Do we really need to undo in reset or we can just temp board our way out of it?
