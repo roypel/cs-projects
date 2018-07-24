@@ -1,12 +1,8 @@
 --------------------------To do list
 
-Function that uses fillBoard
+In order for us to dynamically allocate the space needed for a cell we need to implement the log_10 and roof function in order to know the length that we will need in order to represent the value of a cell
 
-Maybe split paresers between modes (maybe diffrent modules)
-
-remember to change current move to the returned move from addNextMove
-
-
+Learn Gurobi
 
 --------------------------Remarks
 
