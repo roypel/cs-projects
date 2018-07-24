@@ -1,3 +1,13 @@
+--------------------------To do list
+
+Function that uses fillBoard
+
+Maybe split paresers between modes (maybe diffrent modules)
+
+
+
+-------------------------Questions
+
 Check if we autofill even if board is unsolveable but doesn't contain same number in block, cell and row
 
 do we re/undo autofill and if so what do we print
