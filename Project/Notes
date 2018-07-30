@@ -8,17 +8,10 @@ Learn Gurobi
 
 Only in Solve mode: autofill, mark_errors, hint. Only in Edit mode: generate.
 
--------------------------Questions
-
-Is it possible to have a cell both fixed and erroneous and how to print it (possible when entering same value in a row/.../... of a fixed cell)
-
-What if we set the same value to the same cell twice, do we add it as a change to the linked list bitch?
-
 What is a good way to check erroneous? We don't like checking everything, very bad complexity
 
-What to print in edit mode - with dot for fixed? without? both? WTF?
+-------------------------Questions
 
-Moshe, listen you MOFO what the heck is going on with "[]" in edit? is it a required characters on input? or you're just messing up with us? Get your shit together.
 
 -------------------- The Archive of Forbidden Questions
 
@@ -29,3 +22,12 @@ do we re/undo autofill and if so what do we print
 ask Moshe if in reading from files, if m and n can be seperated (not in the same line)
 
 Ask what is the exact meaning of erroneous, is the board is valid, or only no same number in block, column, row, question comes since num of solutions ignores 0 solution on board
+
+Is it possible to have a cell both fixed and erroneous and how to print it (possible when entering same value in a row/.../... of a fixed cell) --- Cells can't be both, only fixed or erroneous.
+
+What to print in edit mode - with dot for fixed? without? both? WTF? -- Cells are only fixed in Solve mode, not erroneous
+
+
+What if we set the same value to the same cell twice, do we add it as a change to the linked list bitch? -- Yes, we add it
+
+Moshe, listen you MOFO what the heck is going on with "[]" in edit? is it a required characters on input? or you're just messing up with us? Get your shit together. -- [] Are not part of the input
