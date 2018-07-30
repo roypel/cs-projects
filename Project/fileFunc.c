@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "gameStructs.h"
 #include "linkedListFunc.h"
 #include "solver.h"
@@ -27,7 +28,7 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 				filled--;
 			} else {
 				while (c != '\0') {/*Read until end of cell*/
-					if (*c == '.') {/*Cell is fixed*/
+					if ((*c == '.') && (metaBoard->mode == Solve)) {/*Cell is fixed in Solve mode (in edit everything is unfixed)*/
 						metaBoard->gameBoard->board[i][j].fixed = 1;
 					} else {
 						metaBoard->gameBoard->board[i][j].value *= 10;/*Insert another digit*/
@@ -39,7 +40,6 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 		}
 	}
 }
-
 
 void saveFile(gameState *metaBoard, char *fileName) {
 	FILE *ifp;
@@ -73,4 +73,31 @@ void saveFile(gameState *metaBoard, char *fileName) {
 		}
 		fprintf(ifp, "\n");
 	}
+	fclose(ifp);
+	printf("Saved to: %s\n", fileName);
 }
+
+void sendToFill(gameState *metaBoard, char *fileName) {
+	FILE *ifp;
+	ifp = fopen(fileName, "r");
+	if (!ifp) {
+		if (metaBoard->mode == Solve) {/*Solve mode and file can't be opened or doesn't exist*/
+			printf("Error: File doesn't exist or cannot be opened\n");
+			return;
+		}
+		if (!fileName){/*Edit mode and file name wasn't provided*/
+			freeBoard(metaBoard->gameBoard);
+			removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
+			metaBoard->cols = 3;
+			metaBoard->rows = 3;
+			metaBoard->gameBoard->cols = 3;
+			metaBoard->gameBoard->rows = 3;
+			initalizeBoard(metaBoard->gameBoard);
+			return;
+		}
+		printf("Error: File cannot be opened\n");/*Edit mode and file can't be opened or doesn't exist*/
+		return;
+	}
+	fillBoard(metaBoard, ifp);
+}
+

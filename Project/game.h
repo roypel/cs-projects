@@ -33,6 +33,8 @@ void validate(gameState *metaBoard);
 /*The function verifies the current gameBoard of gameState metaBoard is a valid board that can be completed by using brute-force algorithm to solve it, and prints an appropriate message accordingly.
  *INPUT: gameState *metaBoard - a pointer to a valid gameState with board gameBoard filled with numbers 0 to board length which we try to solve by brute-force.*/
 void numOfSol(board *tmpBoard);
+void undo(gameState *metaBoard);
+void redo(gameState *metaBoard);
 void generateBoard(gameState *metaBoard);
 /*The function generates a valid board for the current game with the size and number of filled cells the user has given as input.
  *The function updates the boards solution and gameBoard of gameState metaBoard accordingly.

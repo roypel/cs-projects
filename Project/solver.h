@@ -9,6 +9,7 @@ void solver(board *tmpBoard, int *indexCounter);
  *INPUT: board *tmpBoard - a pointer to a valid board filled with 0 in empty places and values between 1 to board length in fixed cells or user inputed cells.
  *		 int index - the cell we start the filling from, can be between 0 and board length squared.
  *OUTPUT: int representing if we failed to build a valid board (0) or succeed and found a valid solution (1)*/
+void autoFill(gameState *metaBoard);
 void hinter(gameState *metaBoard);
 /*The function randomly chooses cells (first column then row) which will be fixed for the current game, by the value the user entered on the beginning of the game.
  *The function updates the solution board of the gameState metaBoard with the correct cells to be fixed, while the rest of the cells remains unfixed, and no value is being changed on the board.

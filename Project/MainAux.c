@@ -2,8 +2,9 @@
 #include <string.h>
 #include "gameStructs.h"
 
-void printBoard(board *playerBoard, int markError) {
+void printBoard(gameState *metaBoard) {
 	int i, j;
+	board *playerBoard = metaBoard->gameBoard;
 	for (i = 0; i < playerBoard->cols * playerBoard->rows; i++) {
 		if (i % playerBoard->rows == 0) {
 			for (j = 0;	j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->cols + 1; j++) {
@@ -17,7 +18,7 @@ void printBoard(board *playerBoard, int markError) {
 			}
 			if (playerBoard->board[j][i].fixed)
 				printf(" %2d.", playerBoard->board[j][i].value);
-			else if ((playerBoard->board[j][i].error) && (markError))
+			else if ((playerBoard->board[j][i].error) && ((metaBoard->markError) || (metaBoard->mode == Edit)))
 				printf(" %2d*", playerBoard->board[j][i].value);
 			else {
 				printf(" ");
