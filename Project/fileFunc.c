@@ -10,7 +10,8 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 	int input, i, j, filled = 0;
 	char *c, string[4] = { 0 };/*USING THE 5*5 LIMITATION, MAYBE USE CALLOC WITH log_10 instead*/
 	/*c used to check each char in a cell, string used to read a cell (number + fixed + \0)*/
-	freeBoard(metaBoard->gameBoard);
+	if (metaBoard->gameBoard)
+		freeBoard(metaBoard->gameBoard);
 	fscanf(ifp, "%d", &input); /*Read block size*/
 	metaBoard->gameBoard->cols = metaBoard->cols = input;
 	filled += input;
@@ -85,13 +86,16 @@ void sendToFill(gameState *metaBoard, char *fileName) {
 			printf("Error: File doesn't exist or cannot be opened\n");
 			return;
 		}
-		if (!fileName){/*Edit mode and file name wasn't provided*/
-			freeBoard(metaBoard->gameBoard);
-			removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
+		if (!fileName) {/*Edit mode and file name wasn't provided*/
+			if (metaBoard->mode == Init) {
+				freeBoard(metaBoard->gameBoard);
+				removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
+			}
 			metaBoard->cols = 3;
 			metaBoard->rows = 3;
 			metaBoard->gameBoard->cols = 3;
 			metaBoard->gameBoard->rows = 3;
+			metaBoard->filledCells = 0;
 			initalizeBoard(metaBoard->gameBoard);
 			return;
 		}

@@ -3,10 +3,12 @@
 #include "gameStructs.h"
 
 void removeAllNext(node *head) {
-	if (head != NULL)
+	if (head != NULL) {
 		removeAllNext(head->next);
-	free(head->change);
-	free(head);
+		head->next = NULL;
+		free(head->change);
+		free(head);
+	}
 }
 
 node* addNextMove(node *currentMove, int *move, int numOfMoves) {

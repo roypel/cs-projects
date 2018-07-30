@@ -39,10 +39,6 @@ void generateBoard(gameState *metaBoard);
 /*The function generates a valid board for the current game with the size and number of filled cells the user has given as input.
  *The function updates the boards solution and gameBoard of gameState metaBoard accordingly.
  *INPUT: gameState *metaBoard - a pointer to a valid gameState with boards solution and gameBoard with allocated memory, and without any values (all cells are 0).*/
-void initalizeGame(gameState *metaBoard);
-/*The function initializes the gameState metaBoard with values for number of filled cells, columns and rows for current game by user input.
- *The function allocates memory accordingly and generates the gameBoard so in the end of the function the game is ready to be played.
- *INPUT: gameState *metaBoard - a pointer to a gameState with only allocated memory for boards solution and gameBoard as type board.*/
 void resetGame(gameState *metaBoard);
 /*The function resets the game by freeing metaBoard boards solution and gameBoard memory and making them ready for a new allocation without wasting resources.
  *INPUT: gameState *metaBoard - a pointer to a gameState with allocated memory for boards solution and gameBoard that needs to be freed.*/

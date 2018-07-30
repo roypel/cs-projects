@@ -69,10 +69,7 @@ void readInput(gameState *metaBoard) {
 	const char delim[5] = " \t\r\n";
 	char input[inputSize] = { 0 };
 	char *token;/*Separates input to tokens*/
-	int values[maxValues], i, boardCol, boardRow;/*For the sake of readability we have excess variables*/
-	initalizeGame(metaBoard);
-	boardCol = metaBoard->cols;
-	boardRow = metaBoard->rows;
+	int values[maxValues], i;/*For the sake of readability we have excess variables*/
 	while (!feof(stdin)) {
 		for (i = 0; i < maxValues; i++) {
 			values[i] = -1;
@@ -81,6 +78,7 @@ void readInput(gameState *metaBoard) {
 		if (fgets(input, inputSize, stdin) != NULL) {
 			token = strtok(input, delim);
 			if (token != NULL) {
+				printf("555%d\n", metaBoard->filledCells);
 				if (!strcmp(token, "solve")) {
 					token = strtok(NULL, delim);
 					if (token) {
@@ -107,18 +105,21 @@ void readInput(gameState *metaBoard) {
 					printBoard(metaBoard);
 				} else if (!(strcmp(token, "set") && (metaBoard->mode != Init))
 						&& (metaBoard->filledCells
-								!= boardCol * boardCol * boardRow * boardRow)) {
+								!= metaBoard->cols * metaBoard->cols
+										* metaBoard->rows * metaBoard->rows)) {
 					for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
 						token = strtok(NULL, delim);
 						if (token)
 							values[i] = checkIsInt(token);
 					}
-					if (checkInput(values, boardCol, boardRow, "set"))
+					if (checkInput(values, metaBoard->cols, metaBoard->rows,
+							"set"))
 						setBoard(values[0], values[1], values[2], metaBoard);
 				} else if (!(strcmp(token, "validate"))
 						&& (metaBoard->mode != Init)
 						&& (metaBoard->filledCells
-								!= boardCol * boardCol * boardRow * boardRow)) {
+								!= metaBoard->cols * metaBoard->cols
+										* metaBoard->rows * metaBoard->rows)) {
 					validate(metaBoard);
 				} else if (!strcmp(token, "generate")
 						&& (metaBoard->mode == Edit)) {
@@ -130,7 +131,8 @@ void readInput(gameState *metaBoard) {
 							if (token)
 								values[i] = checkIsInt(token);
 						}
-						if (checkInput(values, boardCol, boardRow, "generate"))
+						if (checkInput(values, metaBoard->cols, metaBoard->rows,
+								"generate"))
 							hintBoard(values[0], values[1], metaBoard);/*TODO: Replace with GENERATE AND MAKE ThE FUNCTION*/
 					}
 				} else if (!strcmp(token, "undo")
@@ -148,13 +150,15 @@ void readInput(gameState *metaBoard) {
 						invalidError;
 				} else if ((strcmp(token, "hint") == 0)
 						&& (metaBoard->filledCells
-								!= boardCol * boardCol * boardRow * boardRow)) {
+								!= metaBoard->cols * metaBoard->cols
+										* metaBoard->rows * metaBoard->rows)) {
 					for (i = 0; i < hintValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
 						token = strtok(NULL, delim);
 						if (token)
 							values[i] = checkIsInt(token);
 					}
-					if (checkInput(values, boardCol, boardRow, "hint"))
+					if (checkInput(values, metaBoard->cols, metaBoard->rows,
+							"hint"))
 						hintBoard(values[0], values[1], metaBoard);/*TODO: Replace with ILP version*/
 				} else if (!strcmp(token, "num_solutions")
 						&& (metaBoard->mode != Init)) {
@@ -162,11 +166,10 @@ void readInput(gameState *metaBoard) {
 						erroneousError;
 					else
 						numOfSol(metaBoard->gameBoard);/*MAKE SURE WE DON'T RUIN THE BOARD LIKE THIS!!! ORIGINALLY IT'S TEMPBOARD!!!*/
-				}  else if (!strcmp(token, "autofill")
+				} else if (!strcmp(token, "autofill")
 						&& (metaBoard->mode == Solve)) {
 					autoFill(metaBoard);
-				}
-				else if (!strcmp(token, "reset")
+				} else if (!strcmp(token, "reset")
 						&& (metaBoard->mode != Init)) {
 					resetGame(metaBoard);
 				} else if (!strcmp(token, "exit")) {
@@ -185,48 +188,3 @@ void readInput(gameState *metaBoard) {
 	}
 	exitGame(metaBoard);
 }
-
-void readBoard(gameState *metaBoard) {
-	int hints, cols, rows, i;
-	char input[inputSize] = { 0 };
-	int fullBoard;
-	int notValid = 1;/*A flag variable to record if the input was valid*/
-	cols = 3;/*In this assignment the board size is already defined, in the future will be provided by user*/
-	rows = 3;
-	metaBoard->cols = cols;
-	metaBoard->rows = rows;
-	fullBoard = (metaBoard->rows * rows * cols * cols);
-	while ((notValid) && (!feof(stdin))) {
-		printf("Please enter the number of cells to fill [0-%d]:\n",
-				fullBoard - 1);/*The biggest number of fillings is whole board minus 1*/
-		hints = 0;
-		fflush(stdin);
-		if (fgets(input, inputSize, stdin) != NULL) {
-			if (input[0] != '\n') {/*If we read next line, we skip it*/
-				for (i = 0; input[i] != '\n'; i++) {/*Read until next line*/
-					if ((input[i] != (' ') && (input[i] != '\r')
-							&& (input[i] != '\t')) && (input[i] != EOF)) {/*Take into account only meaningful characters, also it's assumed that the input is a single integer*/
-						hints = hints * 10 + (input[i] - '0');/*Translate the characters to int*/
-					}
-				}
-				if ((hints >= fullBoard) || (hints < 0))/*Check if the amount of hints is valid*/
-					printf(
-							"Error: invalid number of cells to fill (should be between 0 and %d)\n",
-							fullBoard - 1);
-				else
-					notValid = 0;/*Input is valid and we may continue*/
-			}
-		} else {
-			printf("Error: fgets has failed\n");
-			exit(0);
-		}
-	}
-	if (feof(stdin)) {/*Received EOF before game initialized requires different procedure than exitGame function*/
-		printf("Exiting...\n");
-		free(metaBoard->solution);
-		free(metaBoard->gameBoard);
-		exit(0);
-	}
-	metaBoard->filledCells = hints;
-}
-

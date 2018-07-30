@@ -7,6 +7,8 @@
 
 int main() {
 	gameState metaBoard;
+	SP_BUFF_SET()
+	;
 	printf("Sudoku\n------\n");
 	metaBoard.gameBoard = (board *) malloc(sizeof(board));
 	if (metaBoard.gameBoard == NULL) {
@@ -19,8 +21,25 @@ int main() {
 		exit(0);
 	}
 	metaBoard.mode = Init;
-	SP_BUFF_SET()
-	;
+	metaBoard.moves = (linkedList *) malloc(sizeof(linkedList));
+	if (metaBoard.moves == NULL) {
+		printf("Error: malloc has failed\n");
+		exit(0);
+	}
+	metaBoard.moves->currentMove = (node *) malloc(sizeof(node));
+	if (metaBoard.moves->currentMove == NULL) {
+		printf("Error: malloc has failed\n");
+		exit(0);
+	}
+	metaBoard.moves->currentMove->change = (int *) malloc(sizeof(int));
+	if (metaBoard.moves->currentMove->change == NULL) {
+		printf("Error: malloc has failed\n");
+		exit(0);
+	}
+	metaBoard.moves->currentMove->change[0] = -1;
+	metaBoard.moves->currentMove->next = NULL;
+	metaBoard.moves->firstNode = metaBoard.moves->currentMove;
+	metaBoard.markError = 1;
 	readInput(&metaBoard);
 	return 0;
 }

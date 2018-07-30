@@ -263,61 +263,34 @@ void generateBoard(gameState *metaBoard) {
 	}
 }
 
-void initalizeGame(gameState *metaBoard) {
-	readBoard(metaBoard);/*Get number of hints and size of blocks from user (default 3*3 in this exercise)*/
-	metaBoard->gameBoard->rows = metaBoard->rows;
-	metaBoard->gameBoard->cols = metaBoard->cols;
-	metaBoard->markError = 1;
-	metaBoard->moves = (linkedList *) malloc(sizeof(linkedList));
-	if (metaBoard->moves == NULL) {
-		printf("Error: malloc has failed\n");
-		exit(0);
-	}
-	metaBoard->moves->currentMove = (node *) malloc(sizeof(node));
-	if (metaBoard->moves->currentMove == NULL) {
-		printf("Error: malloc has failed\n");
-		exit(0);
-	}
-	metaBoard->moves->currentMove->change = (int *) malloc(sizeof(int));
-	if (metaBoard->moves->currentMove->change == NULL) {
-		printf("Error: malloc has failed\n");
-		exit(0);
-	}
-	metaBoard->moves->currentMove->change[0] = -1;
-	metaBoard->moves->firstNode = metaBoard->moves->currentMove;
-	initalizeBoard(metaBoard->gameBoard);
-	printBoard(metaBoard);
-}
-
 void resetGame(gameState *metaBoard) {
 	int* move;
 	int i, j, counter;
-	while (metaBoard->moves->currentMove != metaBoard->moves->firstNode) {
+	while (metaBoard->moves->currentMove->change[0] != -1) {
 		move = metaBoard->moves->currentMove->change;
 		counter = move[0];
 		for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
 			metaBoard->gameBoard->board[move[i * 4]][move[i * 4 + 1]].value =
 					move[i * 4 + 2];
 		}
+		metaBoard->moves->currentMove = metaBoard->moves->currentMove->prev;
 	}
 	counter = 0;
-	for (i = 0; i < metaBoard->cols; i++) {
-		for (j = 0; j < metaBoard->rows; j++) {
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
+		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
 			if (metaBoard->gameBoard->board[i][j].value > 0)
 				counter++;
 			metaBoard->gameBoard->board[i][j].error = 0;
 		}
 	}
 	metaBoard->filledCells = counter;
-	removeAllNext(metaBoard->moves->firstNode); /*Clear undo/redo list*/
+	removeAllNext(metaBoard->moves->firstNode->next); /*Clear undo/redo list*/
 	printf("Board reset\n");
 }
 
 void exitGame(gameState *metaBoard) {
 	printf("Exiting...\n");
 	removeAllNext(metaBoard->moves->firstNode);
-	free(metaBoard->moves->firstNode);
-	free(metaBoard->moves);
 	freeBoard(metaBoard->gameBoard);
 	free(metaBoard->gameBoard);
 	exit(0);
