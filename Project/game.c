@@ -53,29 +53,32 @@ void copyBoard(board *srcBoard, board *trgtBoard) {
 
 void checkCell(int x, int y, int z, board *check) {
 	int i, j, erroneous = 0;
-	for (i = 0; i < check->cols * check->rows; i++) {/*Check column*/
-		if ((check->board[i][y].value == z) && (i != x)) {
-			if (!check->board[i][y].fixed)
-				check->board[i][y].error = 1;
-			erroneous = 1;
+	if (z != 0) {
+		for (i = 0; i < check->cols * check->rows; i++) {/*Check row*/
+			if ((check->board[i][y].value == z) && (i != x)) {
+				if (!check->board[i][y].fixed)
+					check->board[i][y].error = 1;
+				erroneous = 1;
+			}
 		}
-	}
-	for (i = 0; i < check->cols * check->rows; i++) {/*Check row*/
-		if ((check->board[x][i].value == z) && (i != y)) {
-			if (!check->board[x][i].fixed)
-				check->board[x][i].error = 1;
-			erroneous = 1;
+		for (i = 0; i < check->cols * check->rows; i++) {/*Check column*/
+			if ((check->board[x][i].value == z) && (i != y)) {
+				if (!check->board[x][i].fixed)
+					check->board[x][i].error = 1;
+				erroneous = 1;
+			}
 		}
-	}
-	for (i = (x / check->rows) * check->rows;
-			i < (int) (x / check->rows) * check->rows + check->rows; i++) {
-		for (j = (y / check->cols) * check->cols;
-				j < (int) (y / check->cols) * check->cols + check->cols; j++) {/*Check block*/
-			if (!((i == x) && (j == y))) {
-				if (check->board[i][j].value == z) {
-					if (!check->board[i][j].fixed)
-						check->board[i][j].error = 1;
-					erroneous = 1;
+		for (i = (x / check->cols) * check->cols;
+				i < (int) (x / check->cols) * check->cols + check->cols; i++) {
+			for (j = (y / check->rows) * check->rows;
+					j < (int) (y / check->rows) * check->rows + check->rows;
+					j++) {/*Check block*/
+				if (!((i == x) && (j == y))) {
+					if (check->board[i][j].value == z) {
+						if (!check->board[i][j].fixed)
+							check->board[i][j].error = 1;
+						erroneous = 1;
+					}
 				}
 			}
 		}
@@ -121,44 +124,47 @@ void checkWin(gameState *metaBoard) {
 void checkErroneous(gameState *metaBoard, int x, int y) {
 	/*The function checks the column, row and block of cell x,y to check if any erroneous values are now fixed*/
 	int i, j;
-	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check column*/
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
 		if (i != x)
 			checkCell(i, y, metaBoard->gameBoard->board[i][y].value,
 					metaBoard->gameBoard);
 	}
-	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check column*/
 		if (i != y)
 			checkCell(x, i, metaBoard->gameBoard->board[x][i].value,
 					metaBoard->gameBoard);
 	}
-	for (i = (x / metaBoard->rows) * metaBoard->rows;
-			i < (int) (x / metaBoard->rows) * metaBoard->rows + metaBoard->rows;
+	for (i = (x / metaBoard->cols) * metaBoard->cols;
+			i < (int) (x / metaBoard->cols) * metaBoard->cols + metaBoard->cols;
 			i++) {
-		for (j = (y / metaBoard->cols) * metaBoard->cols;
+		for (j = (y / metaBoard->rows) * metaBoard->rows;
 				j
-						< (int) (y / metaBoard->cols) * metaBoard->cols
-								+ metaBoard->cols; j++) {/*Check block*/
+						< (int) (y / metaBoard->rows) * metaBoard->rows
+								+ metaBoard->rows; j++) {/*Check block*/
 			if (!((i == x) && (j == y))) {
-
+				checkCell(i, j, metaBoard->gameBoard->board[i][j].value,
+						metaBoard->gameBoard);
 			}
 		}
 	}
 }
 
-void setBoard(int x, int y, int z, gameState *metaBoard) {
+void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*the set boolean parameter is used in order to not advance the undo/redo list when not needed eg. undo/redo*/
 	int newMove[4];
 	newMove[0] = x;
 	newMove[1] = y;
 	newMove[2] = metaBoard->gameBoard->board[x][y].value;
 	newMove[3] = z;
 	if (!metaBoard->gameBoard->board[x][y].fixed) {
-		metaBoard->moves->currentMove = addNextMove(
-				metaBoard->moves->currentMove, newMove, 1);
+		if (set)
+			metaBoard->moves->currentMove = addNextMove(
+					metaBoard->moves->currentMove, newMove, 1);
 		if (z == 0) {/*User tries to erase a value on the board*/
 			if (metaBoard->gameBoard->board[x][y].value > 0) {/*Check if we erase a value on the board or cell is already empty*/
 				metaBoard->gameBoard->board[x][y].value = 0;
 				metaBoard->gameBoard->board[x][y].error = 0;
 				metaBoard->filledCells--;
+				checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
 				printBoard(metaBoard);
 			} else {
 				printBoard(metaBoard);
@@ -171,8 +177,8 @@ void setBoard(int x, int y, int z, gameState *metaBoard) {
 			}
 			metaBoard->gameBoard->board[x][y].value = z;
 			checkCell(x, y, z, metaBoard->gameBoard);
-			printBoard(metaBoard);
 			checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
+			printBoard(metaBoard);
 			checkWin(metaBoard);
 		}
 	} else {
@@ -211,13 +217,12 @@ void validate(gameState *metaBoard) {
 	freeBoard(&tempBoard);
 }
 
-void numOfSol(board *tmpBoard) {
-	int indexCounter[2] = { 0 };
-	solver(tmpBoard, indexCounter);
-	printf("Number of solutions:%d\n", indexCounter[1]);
-	if (indexCounter[1] == 1)
+void numOfSol(board *gameBoard) {
+	int solutions = solver(gameBoard);
+	printf("Number of solutions:%d\n", solutions);
+	if (solutions == 1)
 		printf("This is a good board!\n");
-	else if (indexCounter[1] != 0)
+	else if (solutions != 0)
 		printf("The puzzle has more than 1 solution, try to edit further\n");
 }
 
@@ -226,8 +231,8 @@ void undo(gameState *metaBoard) {
 	int * moves = metaBoard->moves->currentMove->change;
 	if (moves[0] != -1) {
 		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
-			setBoard(moves[i], moves[i + 1], moves[i + 2], metaBoard);
-			printf("Undo %d,%d: from ", moves[i], moves[i + 1]);
+			setBoard(moves[i], moves[i + 1], moves[i + 2], metaBoard, 0);
+			printf("Undo %d,%d: from ", moves[i] + 1, moves[i + 1] + 1);
 			printChanges(moves[i + 3], moves[i + 2]);
 		}
 		metaBoard->moves->currentMove = metaBoard->moves->currentMove->prev;
@@ -241,7 +246,7 @@ void redo(gameState *metaBoard) {
 	if (metaBoard->moves->currentMove->next != NULL) {
 		moves = metaBoard->moves->currentMove->next->change;
 		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
-			setBoard(moves[i], moves[i + 1], moves[i + 3], metaBoard);
+			setBoard(moves[i], moves[i + 1], moves[i + 3], metaBoard, 0);
 			printf("Redo %d,%d: from ", moves[i], moves[i + 1]);
 			printChanges(moves[i + 2], moves[i + 3]);
 		}
@@ -285,6 +290,8 @@ void resetGame(gameState *metaBoard) {
 	}
 	metaBoard->filledCells = counter;
 	removeAllNext(metaBoard->moves->firstNode->next); /*Clear undo/redo list*/
+	metaBoard->moves->currentMove = metaBoard->moves->firstNode;
+	metaBoard->moves->currentMove->next = NULL;
 	printf("Board reset\n");
 }
 

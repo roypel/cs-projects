@@ -10,9 +10,9 @@ int main() {
 	SP_BUFF_SET()
 	;
 	printf("Sudoku\n------\n");
-	metaBoard.gameBoard = (board *) malloc(sizeof(board));
+	metaBoard.gameBoard = (board *) calloc(1, sizeof(board));/*We use calloc in order to reset the values of gameBoard so it will be Null\0 as needed*/
 	if (metaBoard.gameBoard == NULL) {
-		printf("Error: malloc has failed\n");
+		printf("Error: calloc has failed\n");
 		exit(0);
 	}
 	metaBoard.solution = (board *) malloc(sizeof(board));

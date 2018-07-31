@@ -7,7 +7,7 @@ void printBoard(gameState *metaBoard) {
 	board *playerBoard = metaBoard->gameBoard;
 	for (i = 0; i < playerBoard->cols * playerBoard->rows; i++) {
 		if (i % playerBoard->rows == 0) {
-			for (j = 0;	j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->cols + 1; j++) {
+			for (j = 0;	j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
 				printf("-");
 			}
 			printf("\n");
@@ -34,7 +34,7 @@ void printBoard(gameState *metaBoard) {
 		printf("\n");
 	}
 	for (j = 0;	j < playerBoard->rows * playerBoard->cols * 4
-							+ playerBoard->cols + 1; j++) {
+							+ playerBoard->rows + 1; j++) {
 		printf("-");
 	}
 	printf("\n");

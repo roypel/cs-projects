@@ -28,6 +28,17 @@ typedef struct linkedList{
 	node *currentMove;
 }linkedList;
 
+typedef struct item{
+	int col;
+	int row;
+	int val;
+}item;
+
+typedef struct stack{
+	item *stack;
+	item bottom;
+}stack;
+
 typedef struct gameState{
 	board *gameBoard;
 	board *solution;/*NEED TO ERASE, OBSOLETE!*/

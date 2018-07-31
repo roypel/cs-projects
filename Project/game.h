@@ -17,7 +17,7 @@ int isErroneous(gameState *metaBoard);
 void checkWin(gameState *metaBoard);
 /*The function checks if the board is completely filled, and if so, prints an according message.
  *INPUT: gameState *metaBoard - a pointer to a gameState with field filledCells that represents the amount of cells already filled in the game board of the current game.*/
-void setBoard(int x, int y, int z, gameState *metaBoard);
+void setBoard(int x, int y, int z, gameState *metaBoard,int set);
 /*The function tries to set the value z in the cell <x,y> in the game board of the gameState metaBoard.
  *Value 0 erases the cell, fixed cells can't be changed, field filledCells of metaBoard updates accordingly, and the game board is printed after a successful move or an appropriate message if the move failed.
  *INPUT: int x,y - Integers representing the column and row of the cell the user wish to change by <x,y>.
