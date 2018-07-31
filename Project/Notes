@@ -20,7 +20,15 @@ print_board - working good
 
 save - worked from edit, solve
 
+undo\redo - Check and check!
 
+autofill - looks really good
+
+set - also looks good, need more testing
+
+CheckErroneous - looks fine now
+
+save - seems fine
 
 --------------------------Remarks
 
@@ -30,8 +38,11 @@ What is a good way to check erroneous? We don't like checking everything, very b
 
 Send array of triplets that contains col,row,val of a cell that is filled so we add a constraint that this value equals 1 in the correct col and row (ILP)
 
+Stack ----- (NumOfSol) run while didn't pop bottome with val == -1, untill then push every possible move with good values, pop when we get stuck somewhere/no next empty cell (solutions++)
+
 -------------------------Questions
 
+Do we need to put fixed values on zeroes when we save in edit mode and does it matter?
 
 -------------------- The Archive of Forbidden Questions
 
