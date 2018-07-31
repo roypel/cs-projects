@@ -4,11 +4,31 @@ In order for us to dynamically allocate the space needed for a cell we need to i
 
 Learn Gurobi
 
+Validate for save and for validate - ILP
+
+Generate - ILP
+
+hint - ILP
+
+-------------------------Tests we have done
+
+Edit - witout file, with file, with non existing file
+
+Solve - Same as Edit
+
+print_board - working good
+
+save - worked from edit, solve
+
+
+
 --------------------------Remarks
 
 Only in Solve mode: autofill, mark_errors, hint. Only in Edit mode: generate.
 
 What is a good way to check erroneous? We don't like checking everything, very bad complexity
+
+Send array of triplets that contains col,row,val of a cell that is filled so we add a constraint that this value equals 1 in the correct col and row (ILP)
 
 -------------------------Questions
 
@@ -26,7 +46,6 @@ Ask what is the exact meaning of erroneous, is the board is valid, or only no sa
 Is it possible to have a cell both fixed and erroneous and how to print it (possible when entering same value in a row/.../... of a fixed cell) --- Cells can't be both, only fixed or erroneous.
 
 What to print in edit mode - with dot for fixed? without? both? WTF? -- Cells are only fixed in Solve mode, not erroneous
-
 
 What if we set the same value to the same cell twice, do we add it as a change to the linked list bitch? -- Yes, we add it
 
