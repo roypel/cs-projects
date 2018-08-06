@@ -12,23 +12,23 @@ hint - ILP
 
 -------------------------Tests we have done
 
-Edit - witout file, with file, with non existing file
+Solve - without file, with file, with non existing file
 
-Solve - Same as Edit
+Edit - Same as Edit
 
 print_board - working good
 
-save - worked from edit, solve
+set - also looks good, need more testing
 
 undo\redo - Check and check!
 
-autofill - looks really good
+save - worked from edit, solve
 
-set - also looks good, need more testing
+autofill - looks really good
 
 CheckErroneous - looks fine now
 
-save - seems fine
+Exit, Reset - Check with ValGrind, looks cool
 
 --------------------------Remarks
 
