@@ -3,6 +3,7 @@
 #include "game.h"
 #include "gameStructs.h"
 #include "linkedListFunc.h"
+#include "stackFunc.h"
 
 int nextEmptyCell(int index, board *checkBoard) {
 	/*The function recursively finds the next empty cell in board checkBoard, in case it exists (board not filled), starting search from input "index".
@@ -21,34 +22,62 @@ int nextEmptyCell(int index, board *checkBoard) {
 	return nextEmptyCell(index + 1, checkBoard);
 }
 
-void solver(board *gameBoard) {
+int solver(board *gameBoard) {
 	int x, y, i, index = 0;
 	int solutions = 0;
+	int found = 1;
 	item temp;
-	stack stack = malloc(sizeof(stack));
-	stack.stack = calloc(1, sizeof(item));
-	stack.bottom = *stack.stack;
-	stack.bottom.val = -1;
-	index = nextEmptyCell(index, gameBoard);/*Find next Empty Cell*/
-	if (index == -1) {/*We reached the end of the board so we found a valid solution*/
-		solutions++;
-	} else {
-		x = index % (gameBoard->cols * gameBoard->rows);/*Extract the column of the cell by index*/
-		y = (int) (index / (gameBoard->rows * gameBoard->cols));/*Extract the row of the cell by index*/
-		index++;
-		for (i = 1; i < gameBoard->rows * gameBoard->cols + 1; i++) {
-			if (checkCell(x, y, i, gameBoard)) {
+	stackPointer backStack;
+	backStack.maxSize = gameBoard->cols * gameBoard->rows;
+	backStack.stack = calloc(backStack.maxSize, sizeof(item));
+	if (backStack.stack == NULL) {
+				printf("Error: calloc has failed\n");
+				exit(0);
+			}
+	backStack.size = 0;
+	do {
+		if (found) {/*We try to find a new cell to fill*/
+			index = nextEmptyCell(index, gameBoard);/*Find next Empty Cell*/
+			if (index == -1) {/*We reached the end of the board so we found a valid solution*/
+				solutions++;
+				temp = pop(&backStack);/*Pop the last cell that we have filled*/
+				i = temp.val + 1;/*Try bigger values for this cell*/
+				x = temp.col;
+				y = temp.row;
+			} else {
+				x = index % (gameBoard->cols * gameBoard->rows);/*Extract the column of the cell by index*/
+				y = index / (gameBoard->rows * gameBoard->cols);/*Extract the row of the cell by index*/
+				index++;
+				i = 1;/*Try values from 1 since it's a new cell we try to fill*/
+			}
+		} else {/*We backtracked so we try bigger values for this cell*/
+			i = temp.val + 1;/*Try bigger values for this cell*/
+			x = temp.col;
+			y = temp.row;
+		}
+		found = 0;
+		for (; i < gameBoard->rows * gameBoard->cols + 1; i++) {
+			checkCell(x, y, i, gameBoard);
+			if (!gameBoard->board[x][y].error) {
+				printf("wazzup%d %d %d\n", x , y ,i);
 				gameBoard->board[x][y].value = i;
 				temp.col = x;
 				temp.row = y;
 				temp.val = i;
-				push(temp, stack);
+				push(temp, &backStack);
+				found = 1;
+				temp = *(backStack.stack + (sizeof(item) * (backStack.size-1)));
+				printf("col %d row %d val %d\n", temp.col, temp.row, temp.val);
+				break;/*We found a fitting value to this cell, we move to next cell*/
 			}
 		}
-		gameBoard->board[x][y].value = 0;/*We need to reverse the cell back to empty*/
-	}
-	free (stack.stack);
-	free(stack);
+		if (!found) {
+			gameBoard->board[x][y].value = 0;/*We need to reverse the cell back to empty*/
+			temp = pop(&backStack);
+		}
+	} while (backStack.size != 0);
+	free(backStack.stack);
+	return solutions;
 }
 
 int checkSingleValue(int x, int y, int z, gameState *metaBoard) {

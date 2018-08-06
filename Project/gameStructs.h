@@ -34,10 +34,12 @@ typedef struct item{
 	int val;
 }item;
 
-typedef struct stack{
+typedef struct stackPointer{
 	item *stack;
-	item bottom;
-}stack;
+	item bottom;/*QUESTIONABLE IMPLEMENTATION*/
+	int size;
+	int maxSize;
+}stackPointer;
 
 typedef struct gameState{
 	board *gameBoard;
