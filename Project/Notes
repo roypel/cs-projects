@@ -1,5 +1,7 @@
 --------------------------To do list
 
+Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
+
 In order for us to dynamically allocate the space needed for a cell we need to implement the log_10 and roof function in order to know the length that we will need in order to represent the value of a cell
 
 Learn Gurobi
