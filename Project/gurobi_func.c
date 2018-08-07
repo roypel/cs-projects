@@ -12,6 +12,13 @@
 #include <stdio.h>
 #include "gurobi_c.h"
 
+void free_stuffs(){
+	free(sol);
+	free(ind);
+	free(val);
+	free(vtype);
+}
+
 int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/integer on success*/
 	/*also need to return the solution of the filled board,so find howto optimally*/
 	int i,j,k;
@@ -35,12 +42,14 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBloadenv(&env, "mip1.log");
 	if (error) {
 		printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 	/*Cancel log being written to console*/
 	error=GRBsetintparam(env, GRB_INT_PAR_LOGTOCONSOLE, 0)
 	if(error){
 		printf("ERROR %d GRBsetintparam(): %s\n",error,GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -48,6 +57,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL );
 	if (error) {
 		printf("ERROR %d GRBnewmodel(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -68,6 +78,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 			NULL );
 	if (error) {
 		printf("ERROR %d GRBaddvars(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -75,6 +86,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
 	if (error) {
 		printf("ERROR %d GRBsetintattr(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -83,6 +95,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBupdatemodel(model);
 	if (error) {
 		printf("ERROR %d GRBupdatemodel(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -102,6 +115,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBaddconstr(model, 3, ind, val, GRB_LESS_EQUAL, 4.0, "c0");
 	if (error) {
 		printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -116,6 +130,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBaddconstr(model, 2, ind, val, GRB_GREATER_EQUAL, 1.0, "c1");
 	if (error) {
 		printf("ERROR %d 2nd GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -123,6 +138,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBoptimize(model);
 	if (error) {
 		printf("ERROR %d GRBoptimize(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -130,6 +146,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBwrite(model, "mip1.lp");
 	if (error) {
 		printf("ERROR %d GRBwrite(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -138,6 +155,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
 	if (error) {
 		printf("ERROR %d GRBgetintattr(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -145,6 +163,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &objval);
 	if (error) {
 		printf("ERROR %d GRBgettdblattr(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -154,6 +173,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	if (error) {
 		printf("ERROR %d GRBgetdblattrarray(): %s\n", error,
 				GRBgeterrormsg(env));
+		free_stuffs();
 		return -1;
 	}
 
@@ -177,6 +197,6 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	/* IMPORTANT !!! - Free model and environment */
 	GRBfreemodel(model);
 	GRBfreeenv(env);
-
+	free_stuffs();
 	return 0;
 }
