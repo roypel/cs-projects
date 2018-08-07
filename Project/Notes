@@ -2,8 +2,6 @@
 
 test the gurobi file(check if the constraints are correct)
 
-in gurobi-check if filled can be int** and not just int* like the rest(Probably int*,and if so check how to add the things correctly)
-
 Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
 
 In order for us to dynamically allocate the space needed for a cell we need to implement the log_10 and roof function in order to know the length that we will need in order to represent the value of a cell
