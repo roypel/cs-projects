@@ -18,8 +18,8 @@ void free_stuffs(){
 	free(val);
 	free(vtype);
 }
-/*check if filled can be int** and not just int* since this is gurobi*/
-int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/integer on success*/
+
+int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer on success*/
 	/*also need to return the solution of the filled board,so find howto optimally*/
 	int i,j,k;
 	GRBenv *env = NULL;
@@ -150,9 +150,8 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 	/*same number only once per block constraints*/
 
 	/*cells already filled constraints*/
-	/*check if filled can be int** and not just int* since this is gurobi*/
-	for(i=0;i<(int)( sizeof(filled) / sizeof(filled[0])),i++){
-		ind[0]=filled[i][0]*cols*rows+filled[i][1]*cols*rows*cols*rows+filled[i][2];/*[0] is the col,[1] is the row,[k] is the value*/
+	for(i=0;i<(sizeof(filled)/12),i++){/*sizeof(int)=4,and the items are in triplets of col row and val,4*3=12*/
+		ind[0]=filled[i*3]*cols*rows+filled[(i*3)+1]*cols*rows*cols*rows+filled[(i*3)+2];/*+0 is the col,+1 is the row,+2 is the value*/
 		val[0]=1;
 		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 												care what it's name is*/
