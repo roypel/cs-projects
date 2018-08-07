@@ -66,15 +66,15 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 
 	/* set the variables to be binary */
 	for(i=0;i<cols*rows;i++){
-		for(j=0;i<cols*rows;j++){
+		for(j=0;j<cols*rows;j++){
 			for(k=0;k<cols*rows;k++){
-				vtype[i][j][k]=GRB_BINARY;
+				vtype[i*cols*rows*cols*rows+j*cols*rows+k]=GRB_BINARY;
 			}
 		}
 	}
 
 	/* add variables to model */
-	error = GRBaddvars(model, 3, 0, NULL, NULL, NULL, obj, NULL, NULL, vtype,
+	error = GRBaddvars(model, cols*rows*cols*rows*cols*rows, 0, NULL, NULL, NULL, obj, NULL, NULL, vtype,
 			NULL );
 	if (error) {
 		printf("ERROR %d GRBaddvars(): %s\n", error, GRBgeterrormsg(env));
@@ -97,6 +97,23 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 		printf("ERROR %d GRBupdatemodel(): %s\n", error, GRBgeterrormsg(env));
 		free_stuffs();
 		return -1;
+	}
+	
+	/*only one number per cell constraint*/
+	for(i=0;i<cols*rows;i++){
+		for(j=0;j<cols*rows;j++){
+			for(k=0;k<cols*rows;k++){
+				ind[k]=i*cols*rows*cols*rows+j*cols*rows+k;
+				val[k]=1;
+			}
+			error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
+												care what it's name is*/
+			if (error) {
+				printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+				free_stuffs();
+				return -1;
+			}
+		}
 	}
 
 	/* First constraint: x + 2 y + 3 z <= 4 */
