@@ -37,6 +37,12 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 		printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
 		return -1;
 	}
+	/*Cancel log being written to console*/
+	error=GRBsetintparam(env, GRB_INT_PAR_LOGTOCONSOLE, 0)
+	if(error){
+		printf("ERROR %d GRBsetintparam(): %s\n",error,GRBgeterrormsg(env));
+		return -1;
+	}
 
 	/* Create an empty model named "mip1" */
 	error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL );
