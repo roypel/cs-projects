@@ -18,7 +18,7 @@ void free_stuffs(){
 	free(val);
 	free(vtype);
 }
-
+/*check if filled can be int** and not just int* since this is gurobi*/
 int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/integer on success*/
 	/*also need to return the solution of the filled board,so find howto optimally*/
 	int i,j,k;
@@ -116,11 +116,52 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 		}
 	}
 	/*same number only once per row constraints*/
+	for(i=0;i<cols*rows;i++){
+		for(k=0;k<cols*rows;k++){
+			for(j=0;j<cols*rows;j++){
+				ind[j]=i*cols*rows*cols*rows+j*cols*rows+k;
+				val[j]=1;
+			}
+			error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
+												care what it's name is*/
+			if (error) {
+				printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+				free_stuffs();
+				return -1;
+		}
+	}
 	
 	/*same number only once per col constraints*/
+	for(j=0;j<cols*rows;j++){
+		for(k=0;k<cols*rows;k++){
+			for(i=0;i<cols*rows;i++){
+				ind[i]=i*cols*rows*cols*rows+j*cols*rows+k;
+				val[i]=1;
+			}
+			error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
+												care what it's name is*/
+			if (error) {
+				printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+				free_stuffs();
+				return -1;
+		}
+	}
 	
 	/*same number only once per block constraints*/
 
+	/*cells already filled constraints*/
+	/*check if filled can be int** and not just int* since this is gurobi*/
+	for(i=0;i<(int)( sizeof(filled) / sizeof(filled[0])),i++){
+		ind[0]=filled[i][0]*cols*rows+filled[i][1]*cols*rows*cols*rows+filled[i][2];/*[0] is the col,[1] is the row,[k] is the value*/
+		val[0]=1;
+		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
+												care what it's name is*/
+		if (error) {
+			printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+			free_stuffs();
+			return -1;
+		}
+	}
 
 	/* First constraint: x + 2 y + 3 z <= 4 */
 
