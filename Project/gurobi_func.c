@@ -99,7 +99,7 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 		return -1;
 	}
 	
-	/*only one number per cell constraint*/
+	/*only one number per cell constraints*/
 	for(i=0;i<cols*rows;i++){
 		for(j=0;j<cols*rows;j++){
 			for(k=0;k<cols*rows;k++){
@@ -115,6 +115,12 @@ int fillboard(int cols, int rows, int** filled) {/*return -1 on failure,1/intege
 			}
 		}
 	}
+	/*same number only once per row constraints*/
+	
+	/*same number only once per col constraints*/
+	
+	/*same number only once per block constraints*/
+
 
 	/* First constraint: x + 2 y + 3 z <= 4 */
 
