@@ -109,7 +109,7 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 			error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 												care what it's name is*/
 			if (error) {
-				printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+				printf("ERROR %d in cell constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 				free_stuffs();
 				return -1;
 			}
@@ -125,7 +125,7 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 			error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 												care what it's name is*/
 			if (error) {
-				printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+				printf("ERROR %d in row constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 				free_stuffs();
 				return -1;
 		}
@@ -141,7 +141,7 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 			error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 												care what it's name is*/
 			if (error) {
-				printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+				printf("ERROR %d in col constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 				free_stuffs();
 				return -1;
 		}
@@ -149,6 +149,12 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 	
 	/*same number only once per block constraints*/
 	/*how to do(i think lmao)-loop on the blocks,and in each block loop on each cell,do when not tired*/
+		error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
+												care what it's name is*/
+		if (error) {
+			printf("ERROR %d in block constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+			free_stuffs();
+			return -1;
 	/*cells already filled constraints*/
 	for(i=0;i<(sizeof(filled)/(sizeof(int)*3)),i++){/*data is in col row val triplets,need to find how many triplets there are*/
 		ind[0]=filled[i*3]*cols*rows+filled[(i*3)+1]*cols*rows*cols*rows+filled[(i*3)+2];/*+0 is the col,+1 is the row,+2 is the value*/
@@ -156,12 +162,12 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 												care what it's name is*/
 		if (error) {
-			printf("ERROR %d 1st GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+			printf("ERROR %d in filled constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 			free_stuffs();
 			return -1;
 		}
 	}
-
+	/*keeping for reference,this is from the example that was provided
 	/* First constraint: x + 2 y + 3 z <= 4 */
 
 	/* variables x,y,z (0,1,2) */
@@ -196,7 +202,7 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 		free_stuffs();
 		return -1;
 	}
-
+	*/
 	/* Optimize model - need to call this before calculation */
 	error = GRBoptimize(model);
 	if (error) {
