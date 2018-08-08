@@ -148,7 +148,7 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 	}
 	
 	/*same number only once per block constraints*/
-
+	/*how to do(i think lmao)-loop on the blocks,and in each block loop on each cell,do when not tired*/
 	/*cells already filled constraints*/
 	for(i=0;i<(sizeof(filled)/(sizeof(int)*3)),i++){/*data is in col row val triplets,need to find how many triplets there are*/
 		ind[0]=filled[i*3]*cols*rows+filled[(i*3)+1]*cols*rows*cols*rows+filled[(i*3)+2];/*+0 is the col,+1 is the row,+2 is the value*/
@@ -221,7 +221,7 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 		free_stuffs();
 		return -1;
 	}
-
+	/*probably dont need this since we maximize 0 in our shit my dude*/
 	/* get the objective -- the optimal result of the function */
 	error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &objval);
 	if (error) {
@@ -231,18 +231,18 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 	}
 
 	/* get the solution - the assignment to each variable */
-	/* 3-- number of variables, the size of "sol" should match */
-	error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, 3, sol);
+	/* cols*rows*cols*rows*cols*rows-- number of variables, the size of "sol" should match */
+	error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, cols*rows*cols*rows*cols*rows, sol);
 	if (error) {
 		printf("ERROR %d GRBgetdblattrarray(): %s\n", error,
 				GRBgeterrormsg(env));
 		free_stuffs();
 		return -1;
 	}
-
+	/*probably dont need these since we dont need to print to the user,maybe keep for the tests
 	/* print results */
 	printf("\nOptimization complete\n");
-
+	
 	/* solution found */
 	if (optimstatus == GRB_OPTIMAL) {
 		printf("Optimal objective: %.4e\n", objval);
@@ -256,6 +256,7 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 	else {
 		printf("Optimization was stopped early\n");
 	}
+	*/
 
 	/* IMPORTANT !!! - Free model and environment */
 	GRBfreemodel(model);
