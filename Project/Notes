@@ -1,6 +1,6 @@
 --------------------------To do list
 
-test the gurobi file(check if the constraints are correct/check in filled cells constraint if (sizeof(filled)/12) is the correct size)
+test the gurobi file(check if the constraints are correct)
 
 Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
 
