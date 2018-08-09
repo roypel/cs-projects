@@ -1,5 +1,7 @@
 --------------------------To do list
 
+when we load a board find out why empty cells are erroneous 
+
 test the gurobi file(check if the constraints are correct)
 
 Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
