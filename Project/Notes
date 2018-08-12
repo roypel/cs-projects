@@ -5,6 +5,8 @@ add the prints in a command what is written in the forum in the  פרויקט ת
 
 when we load a board find out why empty cells are erroneous 
 
+*** check erroneous cells when opening a file, we don't save the notation of error but we need to check if board has erroneous values?
+
 test the gurobi file(check if the constraints are correct)
 
 Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
