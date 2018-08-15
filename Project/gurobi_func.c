@@ -156,14 +156,17 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 					for(a=0;a<cols;a++){/*cell col index*/
 						ind[i]=(i+l)*cols*rows*cols*rows+(j+a)*cols*rows+k;
 						val[i]=1;
-			
-			
-			error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
+					}
+				}
+				error = GRBaddconstr(model, cols*rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 												care what it's name is*/
-		if (error) {
-			printf("ERROR %d in block constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
-			free_stuffs();
-			return -1;
+			if (error) {
+				printf("ERROR %d in block constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
+				free_stuffs();
+				return -1;
+			}
+		}
+	}	
 	/*cells already filled constraints*/
 	for(i=0;i<(sizeof(filled)/(sizeof(int)*3)),i++){/*data is in col row val triplets,need to find how many triplets there are*/
 		ind[0]=filled[i*3]*cols*rows+filled[(i*3)+1]*cols*rows*cols*rows+filled[(i*3)+2];/*+0 is the col,+1 is the row,+2 is the value*/
