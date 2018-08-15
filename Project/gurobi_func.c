@@ -151,10 +151,10 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 	/*how to do(i think lmao)-loop on the blocks,and in each block loop on each cell,do when not tired*/
 	for(i=0;i<cols;i++){/*block row index*/
 		for(j=0;j<rows;j++){/*block col index*/
-			for(k=0;k<rows;k++){/*cell row index*/
-				for(l=0;l<cols;l++){/*cell col index*/
-					for(a=0;a<cols*rows;a++){/*cell number index*/
-						ind[i]=(i+k)*cols*rows*cols*rows+(j+l)*cols*rows+k;
+			for(k=0;k<rows*cols;k++){/*cell number index*/
+				for(l=0;l<rows;l++){/*cell row index*/
+					for(a=0;a<cols;a++){/*cell col index*/
+						ind[i]=(i+l)*cols*rows*cols*rows+(j+a)*cols*rows+k;
 						val[i]=1;
 			
 			
