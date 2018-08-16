@@ -1,4 +1,6 @@
 --------------------------To do list
+when we load a board set the filledcells to the correct value(not 57)
+
 fix a print as told by mosses in רווח בהדפסת שגיאה בgenerate in the forum
 
 check if what is written in פרויקט תוכנה: תשובה ל: פקודה ארוכה מאוד + שאלה נוספת is implemented correctly in our code
