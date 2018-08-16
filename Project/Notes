@@ -1,21 +1,12 @@
 --------------------------To do list
-when we load a board set the filledcells to the correct value(not 57)
 
 fix a print as told by mosses in רווח בהדפסת שגיאה בgenerate in the forum
 
-check if what is written in פרויקט תוכנה: תשובה ל: פקודה ארוכה מאוד + שאלה נוספת is implemented correctly in our code
-
 add the prints in a command what is written in the forum in the  פרויקט תוכנה: שגיאות בקריאה\כתיבה לקובץ subject
-
-when we load a board find out why empty cells are erroneous 
-
-*** check erroneous cells when opening a file, we don't save the notation of error but we need to check if board has erroneous values?
 
 test the gurobi file(check if the constraints are correct)
 
-Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
-
-(is this needed in the todo lol)In order for us to dynamically allocate the space needed for a cell we need to implement the log_10 and roof function in order to know the length that we will need in order to represent the value of a cell
+Update the value of filledCells properlly in Generate
 
 Learn Gurobi(maybe done??????)
 
@@ -26,6 +17,18 @@ Generate - ILP
 YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET
 
 hint - ILP
+
+-------------------------Grandiose Library of Done list
+
+check erroneous cells when opening a file, we don't save the notation of error but we need to check if board has erroneous values?
+
+(is this needed in the todo lol [NOPE])In order for us to dynamically allocate the space needed for a cell we need to implement the log_10 and roof function in order to know the length that we will need in order to represent the value of a cell
+
+when we load a board find out why empty cells are erroneous 
+
+check if what is written in פרויקט תוכנה: תשובה ל: פקודה ארוכה מאוד + שאלה נוספת is implemented correctly in our code
+
+Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
 
 -------------------------Tests we have done
 
@@ -41,7 +44,7 @@ undo\redo - Check and check!
 
 save - worked from edit, solve
 
-autofill - looks really good
+autofill - looks really good, I mean REALLY REALLY GOOD!
 
 CheckErroneous - looks fine now
 
