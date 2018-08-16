@@ -51,20 +51,20 @@ void copyBoard(board *srcBoard, board *trgtBoard) {
 	}
 }
 
-void checkCell(int x, int y, int z, board *check) {
+void checkCell(int x, int y, int z, int change, board *check) {
 	int i, j, erroneous = 0;
 	if (z != 0) {
 		for (i = 0; i < check->cols * check->rows; i++) {/*Check row*/
 			if ((check->board[i][y].value == z) && (i != x)) {
 				if (!check->board[i][y].fixed)
-					check->board[i][y].error = 1;
+					check->board[i][y].error = 1 * change;
 				erroneous = 1;
 			}
 		}
 		for (i = 0; i < check->cols * check->rows; i++) {/*Check column*/
 			if ((check->board[x][i].value == z) && (i != y)) {
 				if (!check->board[x][i].fixed)
-					check->board[x][i].error = 1;
+					check->board[x][i].error = 1 * change;
 				erroneous = 1;
 			}
 		}
@@ -76,7 +76,7 @@ void checkCell(int x, int y, int z, board *check) {
 				if (!((i == x) && (j == y))) {
 					if (check->board[i][j].value == z) {
 						if (!check->board[i][j].fixed)
-							check->board[i][j].error = 1;
+							check->board[i][j].error = 1 * change;
 						erroneous = 1;
 					}
 				}
@@ -126,12 +126,12 @@ void checkErroneous(gameState *metaBoard, int x, int y) {
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
 		if (i != x)
-			checkCell(i, y, metaBoard->gameBoard->board[i][y].value,
+			checkCell(i, y, metaBoard->gameBoard->board[i][y].value, 1,
 					metaBoard->gameBoard);
 	}
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check column*/
 		if (i != y)
-			checkCell(x, i, metaBoard->gameBoard->board[x][i].value,
+			checkCell(x, i, metaBoard->gameBoard->board[x][i].value, 1,
 					metaBoard->gameBoard);
 	}
 	for (i = (x / metaBoard->cols) * metaBoard->cols;
@@ -142,7 +142,7 @@ void checkErroneous(gameState *metaBoard, int x, int y) {
 						< (int) (y / metaBoard->rows) * metaBoard->rows
 								+ metaBoard->rows; j++) {/*Check block*/
 			if (!((i == x) && (j == y))) {
-				checkCell(i, j, metaBoard->gameBoard->board[i][j].value,
+				checkCell(i, j, metaBoard->gameBoard->board[i][j].value, 1,
 						metaBoard->gameBoard);
 			}
 		}
@@ -165,22 +165,18 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*the set boo
 				metaBoard->gameBoard->board[x][y].error = 0;
 				metaBoard->filledCells--;
 				checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
-				printBoard(metaBoard);
-			} else {
-				printBoard(metaBoard);
 			}
-		} else if (z == metaBoard->gameBoard->board[x][y].value) {/*Trying to re-enter value shouldn't change anything*/
-			printBoard(metaBoard);
-		} else {
+		} else if (z != metaBoard->gameBoard->board[x][y].value) {/*We don't re-enter the same value, so changes should be made*/
 			if (metaBoard->gameBoard->board[x][y].value == 0) {
 				metaBoard->filledCells++;
 			}
 			metaBoard->gameBoard->board[x][y].value = z;
-			checkCell(x, y, z, metaBoard->gameBoard);
+			checkCell(x, y, z, 1, metaBoard->gameBoard);
 			checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
-			printBoard(metaBoard);
-			checkWin(metaBoard);
 		}
+		if (set)
+			printBoard(metaBoard);
+		checkWin(metaBoard);
 	} else {
 		printf("Error: cell is fixed\n");
 	}
@@ -232,6 +228,9 @@ void undo(gameState *metaBoard) {
 	if (moves[0] != -1) {
 		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
 			setBoard(moves[i], moves[i + 1], moves[i + 2], metaBoard, 0);
+		}
+		printBoard(metaBoard);
+		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
 			printf("Undo %d,%d: from ", moves[i] + 1, moves[i + 1] + 1);
 			printChanges(moves[i + 3], moves[i + 2]);
 		}
@@ -247,7 +246,10 @@ void redo(gameState *metaBoard) {
 		moves = metaBoard->moves->currentMove->next->change;
 		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
 			setBoard(moves[i], moves[i + 1], moves[i + 3], metaBoard, 0);
-			printf("Redo %d,%d: from ", moves[i], moves[i + 1]);
+		}
+		printBoard(metaBoard);
+		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
+			printf("Redo %d,%d: from ", moves[i] + 1, moves[i + 1] + 1);
 			printChanges(moves[i + 2], moves[i + 3]);
 		}
 		metaBoard->moves->currentMove = metaBoard->moves->currentMove->next;

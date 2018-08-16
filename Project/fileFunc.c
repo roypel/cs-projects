@@ -29,6 +29,8 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 			c = string; /*Questionable implementation, maybe can replace string with c*/
 			if (*c == '0') {/*Cell is empty, filled decrease and not fixed (default 0)*/
 				filled--;
+				metaBoard->gameBoard->board[j][i].error = 0;
+				metaBoard->gameBoard->board[j][i].fixed = 0;
 			} else {
 				for (k = 0; k < (int) strlen(c); k++) {
 					/*while (c != '\0') {Read until end of cell*/
@@ -40,9 +42,11 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 						metaBoard->gameBoard->board[j][i].value += (c[k] - '0');
 					}
 				}
+				checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1, metaBoard->gameBoard);
 			}
 		}
 	}
+	metaBoard->filledCells = filled;
 }
 
 void saveFile(gameState *metaBoard, char *fileName) {
@@ -85,7 +89,7 @@ void sendToFill(gameState *metaBoard, char *fileName, gameMode mode) {
 	FILE *ifp;
 	ifp = fopen(fileName, "r");
 	if (!ifp) {
-		if (metaBoard->mode == Solve) {/*Solve mode and file can't be opened or doesn't exist*/
+		if (mode == Solve) {/*Solve mode and file can't be opened or doesn't exist*/
 			printf("Error: File doesn't exist or cannot be opened\n");
 			return;
 		}

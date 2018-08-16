@@ -7,7 +7,7 @@ void freeBoard(board *freeBird);
 void initalizeBoard(board *newBoard);
 /*The function allocates the memory needed for the board newBoard according to the values in it's rows and cols fields, as a 2-D array of type cell.
  *INPUT: board *newBoard - a pointer to a board that has values in it's rows and cols fields, and haven't had any memory allocated to it yet.*/
-int checkCell(int x, int y, int z, board *check);
+void checkCell(int x, int y, int z, int change, board *check);
 /*The function checks if the value z is a valid value in cell <x,y> of board check, which means it hasn't appeared in the row, column or block yet.
  *INPUT: int x,y - Integers representing the column and row of the cell to check by <x,y>.
  *		 int z - The value which we want to insert to the given cell.
