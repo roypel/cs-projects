@@ -64,6 +64,8 @@ Stack ----- (NumOfSol) run while didn't pop bottome with val == -1, untill then 
 
 Do we need to put fixed values on zeroes when we save in edit mode and does it matter?
 
+What to do with a board completely filled on opening
+
 -------------------- The Archive of Forbidden Questions
 
 Check if we autofill even if board is unsolveable but doesn't contain same number in block, cell and row
