@@ -32,19 +32,8 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 	char* vtype;
 	int optimstatus;
 	double objval;
-
-	sol=(int*)calloc(cols*rows*cols*rows*cols*rows,sizeof(int));
-	ind=(int*)calloc(cols*rows,sizeof(int));
-	val=(int*)calloc(cols*rows,sizeof(int));
-	vtype=(char*) calloc(cols*rows*cols*rows*cols*rows);
-
-	/* Create environment - log file is mip1.log */
-	error = GRBloadenv(&env, "mip1.log");
-	if (error) {
-		printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs();
-		return -1;
-	}
+	
+	/*not sure which one of the next 2 cancels unneeded prints,check it,probably both are exactly the same*/
 	/*Cancel log being written to console*/
 	error=GRBsetintparam(env, GRB_INT_PAR_LOGTOCONSOLE, 0)
 	if(error){
@@ -60,6 +49,19 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 		return -1;
 	}
 
+	sol=(int*)calloc(cols*rows*cols*rows*cols*rows,sizeof(int));
+	ind=(int*)calloc(cols*rows,sizeof(int));
+	val=(int*)calloc(cols*rows,sizeof(int));
+	vtype=(char*) calloc(cols*rows*cols*rows*cols*rows);
+
+	/* Create environment - log file is mip1.log */
+	error = GRBloadenv(&env, "mip1.log");
+	if (error) {
+		printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs();
+		return -1;
+	}
+	
 	/* Create an empty model named "mip1" */
 	error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL );
 	if (error) {
