@@ -52,6 +52,13 @@ int fillboard(int cols, int rows, int* filled) {/*return -1 on failure,1/integer
 		free_stuffs();
 		return -1;
 	}
+	/*This too?*/
+	error=GRBsetintparam(env,"OutputFlag",0);
+	if(error){
+		printf("ERROR %d GRBsetintparam(): %s\n",error,GRBgeterrormsg(env));
+		free_stuffs();
+		return -1;
+	}
 
 	/* Create an empty model named "mip1" */
 	error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL );
