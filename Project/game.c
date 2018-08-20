@@ -5,6 +5,7 @@
 #include "solver.h"
 #include "gameStructs.h"
 #include "linkedListFunc.h"
+#include "gurobi_func.h"
 
 void freeBoard(board *freeBird) {
 	/*The function frees the memory allocated for the board in the input, starting from each row and then frees the board itself.
@@ -183,8 +184,9 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*the set boo
 }
 
 void hintBoard(int x, int y, gameState *metaBoard) {
-	if (x < 1 || y < 1 || x > metaBoard->cols * metaBoard->rows
-			|| y > metaBoard->cols * metaBoard->rows)
+	int rows = metaBoard->rows, cols = metaBoard->cols;
+	double *sol;
+	if (x < 1 || y < 1 || x > cols * rows || y > cols * rows)
 		printf("Error: value not in range 1-%d\n",
 				metaBoard->cols * metaBoard->rows);
 	else if (isErroneous(metaBoard))
@@ -194,23 +196,25 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 	else if (metaBoard->gameBoard->board[x][y].value)
 		printf("Error: cell already contains a value\n");
 	/*ADD ILP FUNCTION TO RETURN THE HINT PLEASE DONT DISSAPOINT ME FUTURE US*/
+	else {
+		sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
+				sizeof(int));
+		if (sol[0] == 0) {/*TODO This is also a lie, supposedto be if board solved or not*/
+			printf("Hint: set cell to %f", sol[x]);/*TODO: erase this lie*/
+		} else
+			printf("Error: board is unsolvable\n");
+	}
 }
 
-void validate(gameState *metaBoard) {
+int validate(gameState *metaBoard) {
 	int rows = metaBoard->gameBoard->rows;
 	int cols = metaBoard->gameBoard->cols;
-	board tempBoard;
-	tempBoard.rows = rows;
-	tempBoard.cols = cols;
-	initalizeBoard(&tempBoard);
-	copyBoard(metaBoard->gameBoard, &tempBoard);
-	/*if (solver(&tempBoard, 0)) {
-	 copyBoard(&tempBoard, metaBoard->solution);
-	 printf("Validation passed: board is solvable\n");
-	 } else {
-	 printf("Validation failed: board is unsolvable\n");
-	 }*/
-	freeBoard(&tempBoard);
+	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
+			sizeof(int));
+	if (sol[0] == 0)/*TODO: erase this lie, supposed to be solution was found*/
+		return 1;
+	return 0;
+
 }
 
 void numOfSol(board *gameBoard) {
@@ -259,6 +263,9 @@ void redo(gameState *metaBoard) {
 
 void generateBoard(gameState *metaBoard) {
 	int i, j;
+	int cols = metaBoard->cols, rows = metaBoard->rows;
+	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
+			sizeof(int));
 	/*builder(metaBoard->solution, 0, 0);FUNCTION IS NOW OBSOLETE, DELETED! metaBoard->solution will contain a completely solved board*/
 	hinter(metaBoard);/*Adding fixed cells to the board*/
 	copyBoard(metaBoard->solution, metaBoard->gameBoard);
@@ -268,6 +275,8 @@ void generateBoard(gameState *metaBoard) {
 				metaBoard->gameBoard->board[i][j].value = 0;/*Erase unfixed cells in game board*/
 		}
 	}
+	if (sol[0] == 0)/*TODO: erase this lie*/
+		printf("The Cake");
 }
 
 void resetGame(gameState *metaBoard) {
@@ -277,17 +286,18 @@ void resetGame(gameState *metaBoard) {
 		move = metaBoard->moves->currentMove->change;
 		counter = move[0];
 		for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
-			metaBoard->gameBoard->board[move[i * 4]][move[i * 4 + 1]].value =
-					move[i * 4 + 2];
+			metaBoard->gameBoard->board[move[i * 4 + 1]][move[i * 4 + 2]].value =
+					move[i * 4 + 3];
 		}
 		metaBoard->moves->currentMove = metaBoard->moves->currentMove->prev;
 	}
 	counter = 0;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			if (metaBoard->gameBoard->board[i][j].value > 0)
+			if (metaBoard->gameBoard->board[j][i].value > 0)
 				counter++;
-			metaBoard->gameBoard->board[i][j].error = 0;
+			checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1,
+					metaBoard->gameBoard);
 		}
 	}
 	metaBoard->filledCells = counter;
@@ -300,6 +310,7 @@ void resetGame(gameState *metaBoard) {
 void exitGame(gameState *metaBoard) {
 	printf("Exiting...\n");
 	removeAllNext(metaBoard->moves->firstNode);
+	free(metaBoard->moves);
 	freeBoard(metaBoard->gameBoard);
 	free(metaBoard->gameBoard);
 	exit(0);

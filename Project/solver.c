@@ -158,6 +158,7 @@ void autoFill(gameState *metaBoard) {
 				metaBoard->gameBoard);
 	}
 	metaBoard->filledCells += counter; /*Update amount of cells filled*/
+	free(moves);
 	printBoard(metaBoard);
 	checkWin(metaBoard);
 }

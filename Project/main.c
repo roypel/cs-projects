@@ -15,11 +15,11 @@ int main() {
 		printf("Error: calloc has failed\n");
 		exit(0);
 	}
-	metaBoard.solution = (board *) malloc(sizeof(board));
+/*	metaBoard.solution = (board *) malloc(sizeof(board));
 	if (metaBoard.solution == NULL) {
 		printf("Error: malloc has failed\n");
 		exit(0);
-	}
+	}*/
 	metaBoard.mode = Init;
 	metaBoard.moves = (linkedList *) malloc(sizeof(linkedList));
 	if (metaBoard.moves == NULL) {

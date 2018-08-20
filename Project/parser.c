@@ -34,7 +34,7 @@ int checkInput(int *values, int col, int row, char *cmd) {
 	 * col, row are current board size
 	 * cmd is a string representing the command we need to check ,since hint and set have different requirements*/
 	if (!strcmp(cmd, "set")) {
-		if ((values[0] == -2) || (values[1] == -2) || (values[2] == -2))/*We didn't read three strings after "set"*/
+		if ((values[0] == -2) || (values[1] == -2) || (values[2] == -1))/*We didn't read three strings after "set"*/
 			invalidError;
 		else {
 			if (((values[0] >= 0) && (values[0] < col * row))/*Make sure input is valid for board*/
@@ -85,7 +85,10 @@ void readInput(gameState *metaBoard) {
 				invalidError;
 				while (input[256] != 0) {
 					input[256] = 0;
-					fgets(input, inputSize, stdin);
+					if (fgets(input, inputSize, stdin) == NULL) {
+						printf("Error: fgets has failed\n");
+						exit(0);
+					}
 				}
 			} else {
 				token = strtok(input, delim);
@@ -132,7 +135,10 @@ void readInput(gameState *metaBoard) {
 						if (isErroneous(metaBoard))
 							erroneousError;
 						else
-							validate(metaBoard);
+							if (validate(metaBoard))
+								printf("Validation passed: board is solvable\n");
+							else
+								printf("Validation failed: board is unsolvable\n");
 					} else if (!strcmp(token, "generate")
 							&& (metaBoard->mode == Edit)) {
 						if (metaBoard->filledCells != 0)

@@ -29,7 +29,7 @@ int hintBoard(int x, int y, gameState *metaBoard);
  *INPUT: int x,y - Integers representing the column and row of the cell the user want hint by <x,y>.
  *		 board *sol - a pointer to a valid solution of the board, filled with integers ranging from 1 to board length.
  *OUTPUT: An integer between 1 and board length, equals to the value in cell <x,y> of the board sol.*/
-void validate(gameState *metaBoard);
+int validate(gameState *metaBoard);
 /*The function verifies the current gameBoard of gameState metaBoard is a valid board that can be completed by using brute-force algorithm to solve it, and prints an appropriate message accordingly.
  *INPUT: gameState *metaBoard - a pointer to a valid gameState with board gameBoard filled with numbers 0 to board length which we try to solve by brute-force.*/
 void numOfSol(board *tmpBoard);

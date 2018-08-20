@@ -12,10 +12,16 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 	/*c used to check each char in a cell, string used to read a cell (number + fixed + \0)*/
 	if (metaBoard->gameBoard->board)
 		freeBoard(metaBoard->gameBoard);
-	fscanf(ifp, "%d", &input); /*Read block size*/
+	if (fscanf(ifp, "%d", &input) == EOF) {/*Read block size*/
+		printf("Error: fscanf has failed\n");
+		exit(0);
+	}
 	metaBoard->gameBoard->cols = metaBoard->cols = input;
 	filled += input;
-	fscanf(ifp, "%d", &input);
+	if (fscanf(ifp, "%d", &input) == EOF) {
+		printf("Error: fscanf has failed\n");
+		exit(0);
+	}
 	metaBoard->gameBoard->rows = metaBoard->rows = input;
 	filled *= input;
 	filled *= filled; /*Number of possible filled cells is block size squared*/
@@ -25,7 +31,10 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 	initalizeBoard(metaBoard->gameBoard);
 	for (i = 0; i < metaBoard->rows * metaBoard->cols; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			fscanf(ifp, "%s", string); /*Read next cell*/
+			if (fscanf(ifp, "%s", string) == EOF) { /*Read next cell*/
+				printf("Error: fscanf has failed\n");
+				exit(0);
+			}
 			c = string; /*Questionable implementation, maybe can replace string with c*/
 			if (*c == '0') {/*Cell is empty, filled decrease and not fixed (default 0)*/
 				filled--;
@@ -42,11 +51,13 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 						metaBoard->gameBoard->board[j][i].value += (c[k] - '0');
 					}
 				}
-				checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1, metaBoard->gameBoard);
+				checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1,
+						metaBoard->gameBoard);
 			}
 		}
 	}
 	metaBoard->filledCells = filled;
+	fclose(ifp);
 }
 
 void saveFile(gameState *metaBoard, char *fileName) {
@@ -56,13 +67,13 @@ void saveFile(gameState *metaBoard, char *fileName) {
 		if (isErroneous(metaBoard)) {
 			printf("Error: board contains erroneous values\n");
 			return;
-		} /*else { WE NEED TO PUT VALIDATE HERE USING ILP
-			solver(metaBoard->gameBoard, indexCounter);
-			if (!indexCounter[1]) {
-				printf("Error: board validation failed\n");
-				return;
-			}
-		}*/
+		} /*else {TODO: WE NEED TO PUT VALIDATE HERE USING ILP
+		 solver(metaBoard->gameBoard, indexCounter);
+		 if (!indexCounter[1]) {
+		 printf("Error: board validation failed\n");
+		 return;
+		 }
+		 }*/
 	}
 	ifp = fopen(fileName, "w");
 	if (!ifp) {
@@ -87,26 +98,26 @@ void saveFile(gameState *metaBoard, char *fileName) {
 
 void sendToFill(gameState *metaBoard, char *fileName, gameMode mode) {
 	FILE *ifp;
+	if ((mode == Edit) && (!fileName)) {/*Edit mode and file name wasn't provided*/
+		if (metaBoard->mode == Init) {
+			freeBoard(metaBoard->gameBoard);
+			removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
+			metaBoard->moves->currentMove = metaBoard->moves->firstNode;
+			metaBoard->moves->currentMove->next = NULL;
+		}
+		metaBoard->mode = Edit;
+		metaBoard->cols = 3;
+		metaBoard->rows = 3;
+		metaBoard->gameBoard->cols = 3;
+		metaBoard->gameBoard->rows = 3;
+		metaBoard->filledCells = 0;
+		initalizeBoard(metaBoard->gameBoard);
+		return;
+	}
 	ifp = fopen(fileName, "r");
 	if (!ifp) {
 		if (mode == Solve) {/*Solve mode and file can't be opened or doesn't exist*/
 			printf("Error: File doesn't exist or cannot be opened\n");
-			return;
-		}
-		if (!fileName) {/*Edit mode and file name wasn't provided*/
-			if (metaBoard->mode == Init) {
-				freeBoard(metaBoard->gameBoard);
-				removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
-				metaBoard->moves->currentMove = metaBoard->moves->firstNode;
-				metaBoard->moves->currentMove->next = NULL;
-			}
-			metaBoard->mode = Edit;
-			metaBoard->cols = 3;
-			metaBoard->rows = 3;
-			metaBoard->gameBoard->cols = 3;
-			metaBoard->gameBoard->rows = 3;
-			metaBoard->filledCells = 0;
-			initalizeBoard(metaBoard->gameBoard);
 			return;
 		}
 		printf("Error: File cannot be opened\n");/*Edit mode and file can't be opened or doesn't exist*/
