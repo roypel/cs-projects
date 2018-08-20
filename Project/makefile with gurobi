@@ -1,4 +1,5 @@
 /*this is the makefile,under it will be what we started with*/
+/*todo:1.find what is the needed filepath.2.find if $(GUROBI_COMP) is needed in every .o creation*/
 COMP_FLAG = -ansi -O3 -Wall -Wextra -Werror -pedantic-errors
 OBJS = main.o MainAux.o parser.o solver.o game.o fileFunc.o linkedListFunc.o stackFunc.o
 GUROBI_COMP = -I/usr/local/lib/gurobi563/include /*find if this is the correct filepath*/
