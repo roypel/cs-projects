@@ -205,9 +205,8 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	for (i = 0; i < amountFilled; i++) {/*data is in col row val triplets*/
 		ind[0] = filled[i * 3] * cols * rows
 				+ filled[(i * 3) + 1] * cols * rows * cols * rows
-				+ filled[(i * 3) + 2];/*+0 is the col,+1 is the row,+2 is the value*/
+				+ filled[(i * 3) + 2] - 1;/*+0 is the col,+1 is the row,+2 is the value, we do -1 since indexing start from 0 and the value starts from 1*/
 		val[0] = 1;
-printf("%d\n", ind[0]);
 		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 		 care what it's name is*/
 		if (error) {
