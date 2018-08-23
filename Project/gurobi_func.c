@@ -11,13 +11,14 @@
 #include "gameStructs.h"
 #include "gurobi_c.h"
 
-void free_stuffs(int* ind, double* val, char* vtype) {
+void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 	free(ind);
 	free(val);
+free(obj);
 	free(vtype);
 }
 
-int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure,1/integer on success*/
+int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure,1/integer on success*/
 	/*also need to return the solution of the filled board,so find howto optimally*/
 	/*sol will hold which cells contain which numbers. We want to return the solution and to free it, so we allocate it outside and free it outside so we can return inside*/
 	int i, j, k, a, l;
@@ -26,7 +27,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	int error = 0;
 	int* ind;/*Which variable are used in each constraint*/
 	double* val;/*The coefficients of the constraints*/
-	double obj[1] = { 0 };
+	double *obj = { 0 };
 	char* vtype;/*What type the variable will be (all will be binary)*/
 	int optimstatus;
 	double objval;
@@ -46,11 +47,17 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 			printf("Error: calloc has failed\n");
 			exit(0);
 		}
+	obj = (double*) calloc(cols * rows * cols * rows * cols * rows,
+ sizeof(double));
+	if (obj == NULL) {
+			printf("Error: calloc has failed\n");
+			exit(0);
+		}
 	/* Create environment - log file is mip1.log */
 	error = GRBloadenv(&env, "mip1.log");
 	if (error) {
 		printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -59,14 +66,14 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	error = GRBsetintparam(env, GRB_INT_PAR_LOGTOCONSOLE, 0);
 	if (error) {
 		printf("ERROR %d GRBsetintparam(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 	/*This too?*/
 	error = GRBsetintparam(env, "OutputFlag", 0);
 	if (error) {
 		printf("ERROR %d GRBsetintparam(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -74,7 +81,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL);
 	if (error) {
 		printf("ERROR %d GRBnewmodel(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -96,7 +103,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	NULL);
 	if (error) {
 		printf("ERROR %d GRBaddvars(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -104,7 +111,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
 	if (error) {
 		printf("ERROR %d GRBsetintattr(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -113,7 +120,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	error = GRBupdatemodel(model);
 	if (error) {
 		printf("ERROR %d GRBupdatemodel(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -130,7 +137,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 			if (error) {
 				printf("ERROR %d in cell constraints GRBaddconstr(): %s\n",
 						error, GRBgeterrormsg(env));
-				free_stuffs(ind, val, vtype);
+				free_stuffs(ind, val, obj, vtype);
 				return -1;
 			}
 		}
@@ -148,7 +155,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 			if (error) {
 				printf("ERROR %d in row constraints GRBaddconstr(): %s\n",
 						error, GRBgeterrormsg(env));
-				free_stuffs(ind, val, vtype);
+				free_stuffs(ind, val, obj, vtype);
 				return -1;
 			}
 		}
@@ -166,7 +173,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 			if (error) {
 				printf("ERROR %d in col constraints GRBaddconstr(): %s\n",
 						error, GRBgeterrormsg(env));
-				free_stuffs(ind, val, vtype);
+				free_stuffs(ind, val, obj, vtype);
 				return -1;
 			}
 		}
@@ -176,9 +183,9 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 			for (k = 0; k < rows * cols; k++) {/*cell number index*/
 				for (l = 0; l < rows; l++) {/*cell row index*/
 					for (a = 0; a < cols; a++) {/*cell col index*/
-						ind[i] = (i + l) * cols * rows * cols * rows
+						ind[l*cols+a] = (i + l) * cols * rows * cols * rows
 								+ (j + a) * cols * rows + k;
-						val[i] = 1;
+						val[l*cols+a] = 1;
 					}
 				}
 				error = GRBaddconstr(model, cols * rows, ind, val, GRB_EQUAL,
@@ -187,24 +194,26 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 				if (error) {
 					printf("ERROR %d in block constraints GRBaddconstr(): %s\n",
 							error, GRBgeterrormsg(env));
-					free_stuffs(ind, val, vtype);
+					free_stuffs(ind, val, obj, vtype);
 					return -1;
 				}
 			}
 		}
 	}
+
 	/*cells already filled constraints*/
 	for (i = 0; i < amountFilled; i++) {/*data is in col row val triplets*/
 		ind[0] = filled[i * 3] * cols * rows
 				+ filled[(i * 3) + 1] * cols * rows * cols * rows
 				+ filled[(i * 3) + 2];/*+0 is the col,+1 is the row,+2 is the value*/
 		val[0] = 1;
+printf("%d\n", ind[0]);
 		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 		 care what it's name is*/
 		if (error) {
 			printf("ERROR %d in filled constraints GRBaddconstr(): %s\n", error,
 					GRBgeterrormsg(env));
-			free_stuffs(ind, val, vtype);
+			free_stuffs(ind, val, obj, vtype);
 			return -1;
 		}
 	}
@@ -227,7 +236,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	 if (error) {
 	 printf("ERROR %d 1st GRBaddconstr(): %s\n", error,
 	 GRBgeterrormsg(env));
-	 free_stuffs(sol, ind, val, vtype);
+	 free_stuffs(ind, val, obj, vtype);
 	 return -1;
 	 }
 
@@ -244,7 +253,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	 if (error) {
 	 printf("ERROR %d 2nd GRBaddconstr(): %s\n", error,
 	 GRBgeterrormsg(env));
-	 free_stuffs(sol, ind, val, vtype);
+	 free_stuffs(ind, val, obj, vtype);
 	 return -1;
 	 }
 	 Optimize model - need to call this before calculation
@@ -252,7 +261,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	 if (error) {
 	 printf("ERROR %d GRBoptimize(): %s\n", error,
 	 GRBgeterrormsg(env));
-	 free_stuffs(sol, ind, val, vtype);
+	 free_stuffs(ind, val, obj, vtype);
 	 return -1;
 	 }
 	 */
@@ -261,7 +270,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	error = GRBwrite(model, "mip1.lp");
 	if (error) {
 		printf("ERROR %d GRBwrite(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -270,7 +279,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
 	if (error) {
 		printf("ERROR %d GRBgetintattr(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 	/*probably dont need this since we maximize 0 in our shit my dude*/
@@ -278,7 +287,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &objval);
 	if (error) {
 		printf("ERROR %d GRBgettdblattr(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -289,7 +298,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	if (error) {
 		printf("ERROR %d GRBgetdblattrarray(): %s\n", error,
 				GRBgeterrormsg(env));
-		free_stuffs(ind, val, vtype);
+		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
 
@@ -316,7 +325,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	/* IMPORTANT !!! - Free model and environment */
 	GRBfreemodel(model);
 	GRBfreeenv(env);
-	free_stuffs(ind, val, vtype);
+	free_stuffs(ind, val, obj, vtype);
 	if(optimstatus== GRB_INF_OR_UNBD)/*cant be unbound because the obj is const 0.if it's infesible then there is no solution,so return accordingly*/
 		return 0;/*no solution*/
 	return 1;/*found solution,and it's stored in sol*/
