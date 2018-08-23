@@ -162,16 +162,3 @@ void autoFill(gameState *metaBoard) {
 	printBoard(metaBoard);
 	checkWin(metaBoard);
 }
-
-void hinter(gameState *metaBoard) {
-	int col, row;
-	int hints = metaBoard->filledCells;
-	while (hints) {/*As long as we need to add more hints*/
-		col = rand() % (metaBoard->cols * metaBoard->rows);
-		row = rand() % (metaBoard->cols * metaBoard->rows);
-		if (!metaBoard->gameBoard->board[col][row].fixed) {
-			metaBoard->gameBoard->board[col][row].fixed = 1;
-			hints--;
-		}
-	}
-}

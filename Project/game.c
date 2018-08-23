@@ -17,8 +17,19 @@ void freeBoard(board *freeBird) {
 	free(freeBird->board);
 }
 
-void initalizeBoard(board *newBoard) {
+void eraseBoard(board *toErase) {
 	int i, j;
+	for (i = 0; i < toErase->cols * toErase->rows; i++) {
+		for (j = 0; j < toErase->cols * toErase->rows; j++) {
+			toErase->board[i][j].value = 0;
+			toErase->board[i][j].error = 0;
+			toErase->board[i][j].fixed = 0;
+		}
+	}
+}
+
+void initalizeBoard(board *newBoard) {
+	int i;
 	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols,
 			sizeof(cell *));
 	if (newBoard->board == NULL) {
@@ -32,12 +43,8 @@ void initalizeBoard(board *newBoard) {
 			printf("Error: calloc has failed\n");
 			exit(0);
 		}
-		for (j = 0; j < newBoard->rows * newBoard->cols; j++) {
-			newBoard->board[i][j].value = 0;
-			newBoard->board[i][j].fixed = 0;
-			newBoard->board[i][j].error = 0;
-		}
 	}
+	eraseBoard(newBoard);
 }
 
 void copyBoard(board *srcBoard, board *trgtBoard) {
@@ -150,7 +157,7 @@ void checkErroneous(gameState *metaBoard, int x, int y) {
 	}
 }
 
-void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*the set boolean parameter is used in order to not advance the undo/redo list when not needed eg. undo/redo*/
+void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boolean parameter is used in order to not advance the undo/redo list when not needed eg. undo/redo*/
 	int newMove[4];
 	newMove[0] = x;
 	newMove[1] = y;
@@ -177,43 +184,144 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*the set boo
 		}
 		if (set)
 			printBoard(metaBoard);
-		checkWin(metaBoard);
+		if (metaBoard->mode == Solve)
+			checkWin(metaBoard);
 	} else {
 		printf("Error: cell is fixed\n");
 	}
+}
+int* findFilled(gameState *metaBoard, int* amountFilled) {
+	int* filled;
+	int i, j;
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
+		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
+			if (metaBoard->gameBoard->board[j][i].value != 0) {
+				filled = (int*) realloc(filled, (*amountFilled + 1) * 3);
+				if (filled == NULL) {
+					printf("Error: realloc has failed\n");
+					exit(0);
+				}
+				filled[(*amountFilled) * 3] = j;
+				filled[(*amountFilled) * 3 + 1] = i;
+				filled[(*amountFilled) * 3 + 2] =
+						metaBoard->gameBoard->board[j][i].value;
+				(*amountFilled)++;
+			}
+		}
+	}
+	return filled;
+}
+
+int findval(double* sol, int x, int y, int cols, int rows) {
+	int i;
+	for (i = 0; i < cols * rows; i++) {
+		if (sol[x * cols * rows + y * cols * rows * cols * rows + i])/*If the location has 1 then the value in the cell in the valid board is the location-1*/
+			return i + 1;
+	}
+	return -1;/*Value not found, there was no valid solution, shouldn't happen since the function runs only if a valid solution was found*/
+}
+
+void eraseRandom(int erase, gameState *metaBoard) {
+	/*The function randomly chooses cells (first column then row) which will be fixed for the current game, by the value the user entered on the beginning of the game.
+	 *The function updates the solution board of the gameState metaBoard with the correct cells to be fixed, while the rest of the cells remains unfixed, and no value is being changed on the board.
+	 *INPUT: gameState *metaBoard - a pointer to a gameState with a completely filled solution board and a field filledCells with the user input of the amount of cells they wish to be filled.*/
+	int num, cols = metaBoard->cols, rows = metaBoard->rows, x, y;
+	while (erase) {/*As long as we need to add more hints*/
+		num = rand() % (cols * rows * cols * rows);/*Get an index for next cell to erase*/
+		x = num % (cols * rows);
+		y = (int) (num / (rows * cols));
+		if (metaBoard->gameBoard->board[x][y].value != 0) {
+			metaBoard->gameBoard->board[x][y].value = 0;
+			erase--;
+		}
+	}
+}
+
+int tryFill(int fill, int* values, int* filledCells, gameState *metaBoard) {
+	int amountFilled = 0, num, x, y, flag = 1, i;
+	int cols = metaBoard->cols, rows = metaBoard->rows;/*CONTINUE HERE, make fill board good and send from generate to here, run 1000 iterations and try again if no solution or a cell has no values*/
+	while (amountFilled < fill) {
+		for (i = 0; i < cols * rows; i++) {
+			values[i] = 0;
+		}
+		while (flag) {
+			num = rand() % (cols * rows * cols * rows);/*Get an index for next cell to enter*/
+			x = num % (cols * rows);
+			y = (int) (num / (rows * cols));
+			if (metaBoard->gameBoard->board[x][y].value == 0)
+				flag = 0;/*Found an empty cell to fill*/
+		}
+		flag = 1;
+		while (flag) {
+			for (i = 0; i < cols * rows; i++) {/*Check if there are values we didn't use yet*/
+				if (!values[i])
+					flag = 0;
+			}
+			if (flag)
+				return 0;/*Can't find value for this cell, clear the board and start again*/
+			num = rand() % (cols * rows);/*Get a value to try to enter the x,y cell*/
+			if (values[num] == 0) {/*We haven't tried this value yet*/
+				values[num]++;
+				checkCell(x, y, num, 0, metaBoard->gameBoard);
+				if (!metaBoard->gameBoard->board[x][y].error) {
+					flag = 0;/*Found a legal value to enter*/
+					metaBoard->gameBoard->board[x][y].value = num;
+					filledCells[amountFilled * 3] = x;/*Update filled cells array to keep track of changes*/
+					filledCells[amountFilled * 3 + 1] = y;
+					filledCells[amountFilled * 3 + 2] = num;
+					amountFilled++;
+				} else
+					metaBoard->gameBoard->board[x][y].error = 0;
+			}
+		}
+	}
+	return 1;
 }
 
 void hintBoard(int x, int y, gameState *metaBoard) {
 	int rows = metaBoard->rows, cols = metaBoard->cols;
 	double *sol;
-	if (x < 1 || y < 1 || x > cols * rows || y > cols * rows)
-		printf("Error: value not in range 1-%d\n",
-				metaBoard->cols * metaBoard->rows);
-	else if (isErroneous(metaBoard))
-		printf("Error: board contains erroneous values\n");
-	else if (metaBoard->gameBoard->board[x][y].fixed)
+	int* filledCells;
+	int amountFilled = 0;
+	int val, solved;
+	if (metaBoard->gameBoard->board[x][y].fixed)
 		printf("Error: cell is fixed\n");
 	else if (metaBoard->gameBoard->board[x][y].value)
 		printf("Error: cell already contains a value\n");
-	/*ADD ILP FUNCTION TO RETURN THE HINT PLEASE DONT DISSAPOINT ME FUTURE US*/
+	/*TODO: ADD ILP FUNCTION TO RETURN THE HINT PLEASE DONT DISSAPOINT ME FUTURE US, check if free works properly when realloc was in different place*/
 	else {
 		sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
-				sizeof(int));
-		if (sol[0] == 0) {/*TODO This is also a lie, supposedto be if board solved or not*/
-			printf("Hint: set cell to %f", sol[x]);/*TODO: erase this lie*/
-		} else
-			printf("Error: board is unsolvable\n");
+				sizeof(double));
+		if (sol == NULL) {
+			printf("Error: calloc has failed\n");
+			exit(0);
+		}
+		filledCells = findFilled(metaBoard, &amountFilled);/*Get the already filled cells from the board*/
+		solved = fillBoard(cols, rows, filledCells, amountFilled, sol);
+		if (solved > 0) {/*Solution was found, we can give a hint*/
+			val = findval(sol, x, y, cols, rows);
+			printf("Hint: set cell to %d\n", val);
+		} else if (!solved) {
+			printf("Error: board is unsolvable\n");/*solved is 0 here so board is unsolveable*/
+		}/*If we didn't enter the conditions above, we had an error in the Gurobi library and a message was printed*/
 	}
+	free(filledCells);
+	free(sol);
 }
 
-int validate(gameState *metaBoard) {
+int validate(gameState *metaBoard) {/*We need this for save as well, so we return a value and not print right away*/
 	int rows = metaBoard->gameBoard->rows;
 	int cols = metaBoard->gameBoard->cols;
+	int solved;
+	int* filled;
 	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
 			sizeof(int));
-	if (sol[0] == 0)/*TODO: erase this lie, supposed to be solution was found*/
-		return 1;
-	return 0;
+	int amountFilled = 0;
+	filled = findFilled(metaBoard, &amountFilled);
+	solved = fillBoard(cols, rows, filled, amountFilled, sol);
+	free(filled);
+	free(sol);
+	return solved;/*Solved will return -1 on Gurobi failure, 0 on unsolvable board and 1 if a solution was found*/
 
 }
 
@@ -261,22 +369,38 @@ void redo(gameState *metaBoard) {
 		printf("Error: no moves to redo\n");
 }
 
-void generateBoard(gameState *metaBoard) {
-	int i, j;
+void generateBoard(int fill, int keep, gameState *metaBoard) {
+	int i, *filledCells, *values;
 	int cols = metaBoard->cols, rows = metaBoard->rows;
-	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(int));
-	/*builder(metaBoard->solution, 0, 0);FUNCTION IS NOW OBSOLETE, DELETED! metaBoard->solution will contain a completely solved board*/
-	hinter(metaBoard);/*Adding fixed cells to the board*/
-	copyBoard(metaBoard->solution, metaBoard->gameBoard);
-	for (i = 0; i < metaBoard->rows * metaBoard->cols; i++) {
-		for (j = 0; j < metaBoard->rows * metaBoard->cols; j++) {
-			if (!metaBoard->gameBoard->board[i][j].fixed)
-				metaBoard->gameBoard->board[i][j].value = 0;/*Erase unfixed cells in game board*/
-		}
+	double *sol;
+	sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
+			sizeof(double));
+	if (sol == NULL) {
+		printf("Error: calloc has failed\n");
+		exit(0);
 	}
-	if (sol[0] == 0)/*TODO: erase this lie*/
-		printf("The Cake");
+	filledCells = (int *) malloc(sizeof(int) * fill * 3);
+	if (filledCells == NULL) {
+		printf("Error: malloc has failed\n");
+		exit(0);
+	}
+	values = (int *) malloc(sizeof(int) * cols * rows);
+	if (values == NULL) {
+		printf("Error: malloc has failed\n");
+		exit(0);
+	}
+	for (i = 0; i < 1000; i++) {
+		if (!tryFill(fill, values, filledCells, metaBoard))
+			eraseBoard(metaBoard->gameBoard);
+		else if (fillBoard(cols, rows, filledCells, fill, sol) > 0) {
+			eraseRandom(cols * rows * cols * rows - keep, metaBoard);
+			printBoard(metaBoard);
+			return;
+		} else
+			eraseBoard(metaBoard->gameBoard);
+	}
+	eraseBoard(metaBoard->gameBoard);
+	printf("Error: puzzle generator failed\n");
 }
 
 void resetGame(gameState *metaBoard) {

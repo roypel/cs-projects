@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "gameStructs.h"
 #include "gurobi_c.h"
 
@@ -305,5 +306,7 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	GRBfreemodel(model);
 	GRBfreeenv(env);
 	free_stuffs(ind, val, vtype);
-	return 0;
-}
+	if(optimstatus== GRB_INF_OR_UNBD)/*cant be unbound because the obj is const 0.if it's infesible then there is no solution,so return accordingly*/
+		return 0;/*no solution*/
+	return 1;/*found solution,and it's stored in sol*/
+	}

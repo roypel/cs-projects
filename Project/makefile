@@ -3,7 +3,7 @@ OBJS = main.o MainAux.o parser.o solver.o game.o fileFunc.o linkedListFunc.o sta
 GUROBI_COMP = -I/usr/local/lib/gurobi563/include
 GUROBI_LIB = -L/usr/local/lib/gurobi563/lib -lgurobi56
 
-sudoku-console: $(OBJS)
+all: sudoku-console $(OBJS)
 	gcc -o $@ $(OBJS) $(GUROBI_LIB)
 
 main.o: main.c parser.h MainAux.h gameStructs.h SPBufferset.h

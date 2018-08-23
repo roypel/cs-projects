@@ -9,6 +9,7 @@ int main() {
 	gameState metaBoard;
 	SP_BUFF_SET()
 	;
+	srand(time(NULL));
 	printf("Sudoku\n------\n");
 	metaBoard.gameBoard = (board *) calloc(1, sizeof(board));/*We use calloc in order to reset the values of gameBoard so it will be Null\0 as needed*/
 	if (metaBoard.gameBoard == NULL) {

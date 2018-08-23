@@ -35,7 +35,7 @@ int validate(gameState *metaBoard);
 void numOfSol(board *tmpBoard);
 void undo(gameState *metaBoard);
 void redo(gameState *metaBoard);
-void generateBoard(gameState *metaBoard);
+void generateBoard(int X, int Y, gameState *metaBoard);
 /*The function generates a valid board for the current game with the size and number of filled cells the user has given as input.
  *The function updates the boards solution and gameBoard of gameState metaBoard accordingly.
  *INPUT: gameState *metaBoard - a pointer to a valid gameState with boards solution and gameBoard with allocated memory, and without any values (all cells are 0).*/

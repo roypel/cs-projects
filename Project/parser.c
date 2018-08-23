@@ -45,7 +45,7 @@ int checkInput(int *values, int col, int row, char *cmd) {
 				printf("Error: value not in range 1-%d\n", row * col);
 		}
 	} else if (!strcmp(cmd, "hint")) {
-		if ((values[0] == -1) || (values[1] == -1))/*We didn't read two strings after "hint"*/
+		if ((values[0] == -2) || (values[1] == -2))/*We didn't read two strings after "hint"*/
 			invalidError;
 		else {
 			if ((values[0] >= 0) && (values[0] < col * row) && (values[1] >= 0)
@@ -55,7 +55,7 @@ int checkInput(int *values, int col, int row, char *cmd) {
 				printf("Error: value not in range 1-%d\n", row * col);
 		}
 	} else if (!strcmp(cmd, "generate")) {
-		if ((values[0] == -1) || (values[1] == -1))/*We didn't read two strings after "hint"*/
+		if ((values[0] == -2) || (values[1] == -2))/*We didn't read two strings after "generate"*/
 			invalidError;
 		else {
 			if ((values[0] >= 0) && (values[0] < col * row * col * row)
@@ -134,25 +134,30 @@ void readInput(gameState *metaBoard) {
 							&& (metaBoard->mode != Init)) {
 						if (isErroneous(metaBoard))
 							erroneousError;
-						else
-							if (validate(metaBoard))
-								printf("Validation passed: board is solvable\n");
-							else
-								printf("Validation failed: board is unsolvable\n");
+						else {
+							i = validate(metaBoard);
+							if (i == 1)
+								printf(
+										"Validation passed: board is solvable\n");
+							else if (!i)
+								printf(
+										"Validation failed: board is unsolvable\n");
+						}
 					} else if (!strcmp(token, "generate")
 							&& (metaBoard->mode == Edit)) {
-						if (metaBoard->filledCells != 0)
-							printf("Error: board is not empty \n");
-						else {
-							for (i = 0; i < generateValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
-								token = strtok(NULL, delim);
-								if (token)
-									values[i] = checkIsInt(token);
-							}
-							if (checkInput(values, metaBoard->cols,
-									metaBoard->rows, "generate"))
-								hintBoard(values[0], values[1], metaBoard);/*TODO: Replace with GENERATE AND MAKE ThE FUNCTION*/
+						for (i = 0; i < generateValues; i++) {/*Reading at least two strings after "generate", else invalid input*/
+							token = strtok(NULL, delim);
+							if (token)
+								values[i] = checkIsInt(token) - 1;
 						}
+						if (checkInput(values, metaBoard->cols, metaBoard->rows,
+								"generate")) {
+							if (metaBoard->filledCells != 0)
+								printf("Error: board is not empty\n");
+							else
+								generateBoard(values[0], values[1], metaBoard);/*TODO: Replace with GENERATE AND MAKE ThE FUNCTION*/
+						}
+
 					} else if (!strcmp(token, "undo")
 							&& (metaBoard->mode != Init)) {
 						undo(metaBoard);
@@ -168,16 +173,16 @@ void readInput(gameState *metaBoard) {
 							invalidError;
 					} else if ((strcmp(token, "hint") == 0)
 							&& (metaBoard->mode == Solve)) {
-						if (isErroneous(metaBoard))
-							erroneousError;
-						else {
-							for (i = 0; i < hintValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
-								token = strtok(NULL, delim);
-								if (token)
-									values[i] = checkIsInt(token) - 1;
-							}
-							if (checkInput(values, metaBoard->cols,
-									metaBoard->rows, "hint"))
+						for (i = 0; i < hintValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
+							token = strtok(NULL, delim);
+							if (token)
+								values[i] = checkIsInt(token) - 1;
+						}
+						if (checkInput(values, metaBoard->cols, metaBoard->rows,
+								"hint")) {
+							if (isErroneous(metaBoard))
+								erroneousError;
+							else
 								hintBoard(values[0], values[1], metaBoard);/*TODO: Replace with ILP version*/
 						}
 					} else if (!strcmp(token, "num_solutions")
