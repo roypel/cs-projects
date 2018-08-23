@@ -31,10 +31,21 @@ int fillboard(int cols, int rows, int* filled, int amountFilled, double* sol) {/
 	int optimstatus;
 	double objval;
 	ind = (int*) calloc(cols * rows, sizeof(int));
+	if (ind == NULL) {
+			printf("Error: calloc has failed\n");
+			exit(0);
+		}
 	val = (double*) calloc(cols * rows, sizeof(double));
+	if (val == NULL) {
+			printf("Error: calloc has failed\n");
+			exit(0);
+		}
 	vtype = (char*) calloc(cols * rows * cols * rows * cols * rows,
 			sizeof(char));
-
+	if (vtype == NULL) {
+			printf("Error: calloc has failed\n");
+			exit(0);
+		}
 	/* Create environment - log file is mip1.log */
 	error = GRBloadenv(&env, "mip1.log");
 	if (error) {
