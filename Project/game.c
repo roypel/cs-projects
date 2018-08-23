@@ -191,12 +191,12 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boo
 	}
 }
 int* findFilled(gameState *metaBoard, int* amountFilled) {
-	int* filled;
+	int *filled = {0};
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
 			if (metaBoard->gameBoard->board[j][i].value != 0) {
-				filled = (int*) realloc(filled, (*amountFilled + 1) * 3);
+				filled = (int*) realloc(filled, ((*amountFilled) + 1) * 3 * sizeof(int));
 				if (filled == NULL) {
 					printf("Error: realloc has failed\n");
 					exit(0);
@@ -238,7 +238,7 @@ void eraseRandom(int erase, gameState *metaBoard) {
 }
 
 int tryFill(int fill, int* values, int* filledCells, gameState *metaBoard) {
-	int amountFilled = 0, num, x, y, flag = 1, i;
+	int amountFilled = 0, num, x = 0, y = 0, flag = 1, i;
 	int cols = metaBoard->cols, rows = metaBoard->rows;/*CONTINUE HERE, make fill board good and send from generate to here, run 1000 iterations and try again if no solution or a cell has no values*/
 	while (amountFilled < fill) {
 		for (i = 0; i < cols * rows; i++) {
@@ -297,28 +297,31 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 			exit(0);
 		}
 		filledCells = findFilled(metaBoard, &amountFilled);/*Get the already filled cells from the board*/
-		solved = fillBoard(cols, rows, filledCells, amountFilled, sol);
+		solved = findSol(cols, rows, filledCells, amountFilled, sol);
 		if (solved > 0) {/*Solution was found, we can give a hint*/
 			val = findval(sol, x, y, cols, rows);
 			printf("Hint: set cell to %d\n", val);
 		} else if (!solved) {
 			printf("Error: board is unsolvable\n");/*solved is 0 here so board is unsolveable*/
 		}/*If we didn't enter the conditions above, we had an error in the Gurobi library and a message was printed*/
+		free(filledCells);
+		free(sol);
 	}
-	free(filledCells);
-	free(sol);
 }
 
 int validate(gameState *metaBoard) {/*We need this for save as well, so we return a value and not print right away*/
 	int rows = metaBoard->gameBoard->rows;
 	int cols = metaBoard->gameBoard->cols;
-	int solved;
+	int solved, amountFilled = 0;
 	int* filled;
 	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
 			sizeof(int));
-	int amountFilled = 0;
+	if (sol == NULL) {
+		printf("Error: calloc has failed\n");
+		exit(0);
+	}
 	filled = findFilled(metaBoard, &amountFilled);
-	solved = fillBoard(cols, rows, filled, amountFilled, sol);
+	solved = findSol(cols, rows, filled, amountFilled, sol);
 	free(filled);
 	free(sol);
 	return solved;/*Solved will return -1 on Gurobi failure, 0 on unsolvable board and 1 if a solution was found*/
@@ -392,7 +395,7 @@ void generateBoard(int fill, int keep, gameState *metaBoard) {
 	for (i = 0; i < 1000; i++) {
 		if (!tryFill(fill, values, filledCells, metaBoard))
 			eraseBoard(metaBoard->gameBoard);
-		else if (fillBoard(cols, rows, filledCells, fill, sol) > 0) {
+		else if (findSol(cols, rows, filledCells, fill, sol) > 0) {
 			eraseRandom(cols * rows * cols * rows - keep, metaBoard);
 			printBoard(metaBoard);
 			return;
