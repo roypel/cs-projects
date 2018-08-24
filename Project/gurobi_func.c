@@ -14,12 +14,12 @@
 void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 	free(ind);
 	free(val);
-free(obj);
+	free(obj);
 	free(vtype);
 }
 
 int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure,1/integer on success*/
-	/*also need to return the solution of the filled board,so find howto optimally*/
+	/*also need to return the solution of the filled board,so find how to optimally*/
 	/*sol will hold which cells contain which numbers. We want to return the solution and to free it, so we allocate it outside and free it outside so we can return inside*/
 	int i, j, k, a, l;
 	GRBenv *env = NULL;
@@ -30,7 +30,7 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	double *obj = { 0 };
 	char* vtype;/*What type the variable will be (all will be binary)*/
 	int optimstatus;
-	double objval;
+/*	double objval;*/
 	ind = (int*) calloc(cols * rows, sizeof(int));
 	if (ind == NULL) {
 			printf("Error: calloc has failed\n");
@@ -255,8 +255,9 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	 free_stuffs(ind, val, obj, vtype);
 	 return -1;
 	 }
-	 */
-	 Optimize model - need to call this before calculation
+	  */
+
+	 /*  Optimize model - need to call this before calculation  */
 	 error = GRBoptimize(model);
 	 if (error) {
 	 printf("ERROR %d GRBoptimize(): %s\n", error,
@@ -264,6 +265,7 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	 free_stuffs(ind, val, obj, vtype);
 	 return -1;
 	 }
+	 
 
 	/* Write model to 'mip1.lp' - this is not necessary but very helpful */
 	error = GRBwrite(model, "mip1.lp");
@@ -282,13 +284,13 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		return -1;
 	}
 	/*probably dont need this since we maximize 0 in our shit my dude*/
-	/* get the objective -- the optimal result of the function */
+	/* get the objective -- the optimal result of the function 
 	error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &objval);
 	if (error) {
 		printf("ERROR %d GRBgettdblattr(): %s\n", error, GRBgeterrormsg(env));
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
-	}
+	}*/
 
 	/* get the solution - the assignment to each variable */
 	/* cols*rows*cols*rows*cols*rows-- number of variables, the size of "sol" should match */
@@ -300,6 +302,7 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
+
 
 	/*TODO: Fill toBeFilled board with solution*/
 	/*probably dont need these since we dont need to print to the user,maybe keep for the tests
