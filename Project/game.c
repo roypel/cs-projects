@@ -315,7 +315,7 @@ int validate(gameState *metaBoard) {/*We need this for save as well, so we retur
 	int solved, amountFilled = 0;
 	int* filled;
 	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(int));
+			sizeof(double));
 	if (sol == NULL) {
 		printf("Error: calloc has failed\n");
 		exit(0);
