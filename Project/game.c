@@ -323,7 +323,7 @@ int validate(gameState *metaBoard) {/*We need this for save as well, so we retur
 	filled = findFilled(metaBoard, &amountFilled);
 	solved = findSol(cols, rows, filled, amountFilled, sol);
 	free(filled);
-	free(sol);
+/*	free(sol);*/
 	return solved;/*Solved will return -1 on Gurobi failure, 0 on unsolvable board and 1 if a solution was found*/
 
 }

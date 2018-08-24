@@ -41,10 +41,7 @@ int solver(board *gameBoard) {
 			index = nextEmptyCell(index, gameBoard);/*Find next Empty Cell*/
 			if (index == -1) {/*We reached the end of the board so we found a valid solution*/
 				solutions++;
-				printForTest(gameBoard);
-				printf("%d\n", backStack.size);
 				temp = pop(&backStack);/*Pop the last cell that we have filled*/
-				printf("after pop %d\n", backStack.size);
 				i = temp.val + 1;/*Try bigger values for this cell*/
 				x = temp.col;
 				y = temp.row;
@@ -73,21 +70,16 @@ int solver(board *gameBoard) {
 			}
 		}
 		if (!found) {
-			/*printForTest(gameBoard);*/
 			gameBoard->board[x][y].value = 0;/*We need to reverse the cell back to empty*/
+			gameBoard->board[x][y].error = 0;
 			if (backStack.size > 0) {
 				temp = pop(&backStack);
 				index = temp.col + temp.row * gameBoard->rows * gameBoard->cols;
 				i = temp.val + 1;/*Try bigger values for this cell*/
 			}
-			/*printf("Aferremovwe\n");
-			 printForTest(gameBoard);*/
 		}
-		printf("%d\n", backStack.size);
-		printf("i : %d\n", i);
 	} while ((backStack.size > 0)
 			|| (i < (gameBoard->cols * gameBoard->rows) + 1));
-	printf("%d\n", solutions);
 	free(backStack.stack);
 	return solutions;
 }
