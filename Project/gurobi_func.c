@@ -255,6 +255,7 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	 free_stuffs(ind, val, obj, vtype);
 	 return -1;
 	 }
+	 */
 	 Optimize model - need to call this before calculation
 	 error = GRBoptimize(model);
 	 if (error) {
@@ -263,7 +264,6 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	 free_stuffs(ind, val, obj, vtype);
 	 return -1;
 	 }
-	 */
 
 	/* Write model to 'mip1.lp' - this is not necessary but very helpful */
 	error = GRBwrite(model, "mip1.lp");
