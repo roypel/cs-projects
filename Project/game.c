@@ -221,7 +221,7 @@ int findval(double* sol, int x, int y, int cols, int rows) {
 	return -1;/*Value not found, there was no valid solution, shouldn't happen since the function runs only if a valid solution was found*/
 }
 
-void keepRandom(int keep, gameState *metaBoard,int* sol) {
+void keepRandom(int keep, gameState *metaBoard,double* sol) {
 	/*The function randomly chooses cells (first column then row) which will be fixed for the current game, by the value the user entered on the beginning of the game.
 	 *The function updates the solution board of the gameState metaBoard with the correct cells to be fixed, while the rest of the cells remains unfixed, and no value is being changed on the board.
 	 *INPUT: gameState *metaBoard - a pointer to a gameState with a completely filled solution board and a field filledCells with the user input of the amount of cells they wish to be filled.*/
@@ -231,9 +231,9 @@ void keepRandom(int keep, gameState *metaBoard,int* sol) {
 		num = rand() % (cols * rows * cols * rows);/*Get an index for next cell to erase*/
 		x = num % (cols * rows);
 		y = (int) (num / (rows * cols));
-		if (metaBoard->gameBoard->board[x][y].value != 0) {
-			metaBoard->gameBoard->board[x][y].value = 0;
-			erase--;
+		if (metaBoard->gameBoard->board[x][y].value == 0) {
+			metaBoard->gameBoard->board[x][y].value = findval(sol,x,y,cols,rows);
+			keep--;
 		}
 	}
 }
@@ -394,15 +394,17 @@ void generateBoard(int fill, int keep, gameState *metaBoard) {
 		exit(0);
 	}
 	for (i = 0; i < 1000; i++) {
-		if (!tryFill(fill, values, filledCells, metaBoard))/*couldn't fill X cells in the board,so we try again,doesn't count for the 1000 tries*/
+		if (!tryFill(fill, values, filledCells, metaBoard)){/*couldn't fill X cells in the board,so we try again,doesn't count for the 1000 tries*/
 			eraseBoard(metaBoard->gameBoard);
 			i--;
+		}
 		else if (findSol(cols, rows, filledCells, fill, sol) > 0) {
 			keepRandom(keep, metaBoard,sol);
 			printBoard(metaBoard);
 			free(sol);
 			free(filledCells);
 			free(values);
+			metaBoard->filledCells=keep;
 			return;
 		} else
 			eraseBoard(metaBoard->gameBoard);

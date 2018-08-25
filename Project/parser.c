@@ -148,14 +148,14 @@ void readInput(gameState *metaBoard) {
 						for (i = 0; i < generateValues; i++) {/*Reading at least two strings after "generate", else invalid input*/
 							token = strtok(NULL, delim);
 							if (token)
-								values[i] = checkIsInt(token) - 1;
+								values[i] = checkIsInt(token);
 						}
 						if (checkInput(values, metaBoard->cols, metaBoard->rows,
 								"generate")) {
 							if (metaBoard->filledCells != 0)
 								printf("Error: board is not empty\n");
 							else
-								generateBoard(values[0], values[1], metaBoard);/*TODO: Replace with GENERATE AND MAKE ThE FUNCTION*/
+								generateBoard(values[0], values[1], metaBoard);
 						}
 
 					} else if (!strcmp(token, "undo")

@@ -61,7 +61,7 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 
 void saveFile(gameState *metaBoard, char *fileName) {
 	FILE *ifp;
-	int i, j
+	int i, j;
 	if (metaBoard->mode == Edit) {
 		if (isErroneous(metaBoard)) {
 			printf("Error: board contains erroneous values\n");
