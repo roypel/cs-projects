@@ -1,5 +1,7 @@
 --------------------------To do list
 
+understand why generate fails alot,even on not so big numbers(maybe the subfunctions are not working properly,).maybe it's ok?
+
 DEBUGGING FOR VSS - check if there are enough contraints of each type and they are as we intended, so we won't miss any case
 
 IN AUTOFILL-IF IT DIDNT ADD ANY NEW VALUES,MAKE SURE WE DONT DELETE THE MOVES THAT WERE AFTER IT(REDO SHOULD NOT BE DELETED,SO DONT DO DELETE_ALL_NEXT)
