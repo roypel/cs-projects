@@ -1,6 +1,7 @@
 --------------------------To do list
 
-understand why generate fails alot,even on not so big numbers(maybe the subfunctions are not working properly,).maybe it's ok?
+understand why generate fails alot,even on not so big numbers(maybe the subfunctions are not working properly,).maybe it's ok?(for example,we had a 
+fail when only 2 cells were filled,which does not make sense.maybe we are doing the filling of X cells not correctly)
 
 DEBUGGING FOR VSS - check if there are enough contraints of each type and they are as we intended, so we won't miss any case
 
