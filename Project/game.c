@@ -221,12 +221,13 @@ int findval(double* sol, int x, int y, int cols, int rows) {
 	return -1;/*Value not found, there was no valid solution, shouldn't happen since the function runs only if a valid solution was found*/
 }
 
-void eraseRandom(int erase, gameState *metaBoard) {
+void keepRandom(int keep, gameState *metaBoard,int* sol) {
 	/*The function randomly chooses cells (first column then row) which will be fixed for the current game, by the value the user entered on the beginning of the game.
 	 *The function updates the solution board of the gameState metaBoard with the correct cells to be fixed, while the rest of the cells remains unfixed, and no value is being changed on the board.
 	 *INPUT: gameState *metaBoard - a pointer to a gameState with a completely filled solution board and a field filledCells with the user input of the amount of cells they wish to be filled.*/
 	int num, cols = metaBoard->cols, rows = metaBoard->rows, x, y;
-	while (erase) {/*As long as we need to add more hints*/
+	eraseBoard(metaBoard->gameBoard);
+	while (keep) {/*As long as we need to add more hints*/
 		num = rand() % (cols * rows * cols * rows);/*Get an index for next cell to erase*/
 		x = num % (cols * rows);
 		y = (int) (num / (rows * cols));
@@ -323,7 +324,7 @@ int validate(gameState *metaBoard) {/*We need this for save as well, so we retur
 	filled = findFilled(metaBoard, &amountFilled);
 	solved = findSol(cols, rows, filled, amountFilled, sol);
 	free(filled);
-/*	free(sol);*/
+	free(sol);
 	return solved;/*Solved will return -1 on Gurobi failure, 0 on unsolvable board and 1 if a solution was found*/
 
 }
@@ -393,16 +394,23 @@ void generateBoard(int fill, int keep, gameState *metaBoard) {
 		exit(0);
 	}
 	for (i = 0; i < 1000; i++) {
-		if (!tryFill(fill, values, filledCells, metaBoard))
+		if (!tryFill(fill, values, filledCells, metaBoard))/*couldn't fill X cells in the board,so we try again,doesn't count for the 1000 tries*/
 			eraseBoard(metaBoard->gameBoard);
+			i--;
 		else if (findSol(cols, rows, filledCells, fill, sol) > 0) {
-			eraseRandom(cols * rows * cols * rows - keep, metaBoard);
+			keepRandom(keep, metaBoard,sol);
 			printBoard(metaBoard);
+			free(sol);
+			free(filledCells);
+			free(values);
 			return;
 		} else
 			eraseBoard(metaBoard->gameBoard);
 	}
 	eraseBoard(metaBoard->gameBoard);
+	free(sol);
+	free(filledCells);
+	free(values);
 	printf("Error: puzzle generator failed\n");
 }
 

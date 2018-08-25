@@ -3,7 +3,6 @@
 #include <string.h>
 #include "gameStructs.h"
 #include "linkedListFunc.h"
-#include "solver.h"
 #include "game.h"
 
 void fillBoard(gameState *metaBoard, FILE* ifp) {
@@ -62,18 +61,15 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 
 void saveFile(gameState *metaBoard, char *fileName) {
 	FILE *ifp;
-	int i, j/*, indexCounter[2] = { 0 }*/;/*USED ONLY TEMPORARY NTIL WE DO VALIDATE ILP*/
+	int i, j
 	if (metaBoard->mode == Edit) {
 		if (isErroneous(metaBoard)) {
 			printf("Error: board contains erroneous values\n");
 			return;
-		} /*else {TODO: WE NEED TO PUT VALIDATE HERE USING ILP
-		 solver(metaBoard->gameBoard, indexCounter);
-		 if (!indexCounter[1]) {
-		 printf("Error: board validation failed\n");
-		 return;
-		 }
-		 }*/
+		}else if(!validate(metaBoard)){
+			printf("Error: board validation failed\n");
+			return;
+		}
 	}
 	ifp = fopen(fileName, "w");
 	if (!ifp) {

@@ -18,10 +18,10 @@ void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 	free(vtype);
 }
 
-int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure,1/integer on success*/
+int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure(error),0 on no solution,1 on solution found*/
 	/*also need to return the solution of the filled board,so find how to optimally*/
 	/*sol will hold which cells contain which numbers. We want to return the solution and to free it, so we allocate it outside and free it outside so we can return inside*/
-	int i, j, k/*, a, l*/;
+	int i, j, k, a, l;
 	GRBenv *env = NULL;
 	GRBmodel *model = NULL;
 	int error = 0;
@@ -179,21 +179,21 @@ printf("%d %d\n", filled[0], amountFilled);
 			}
 		}
 	}
-/*
-	for (i = 0; i < cols; i++) {*//*block row index*/
-/*		for (j = 0; j < rows; j++) {*//*block col index*/
-/*			for (k = 0; k < rows * cols; k++) {*//*cell number index*/
-/*				for (l = 0; l < rows; l++) {*//*cell row index*/
-/*					for (a = 0; a < cols; a++) {*//*cell col index*/
-/*						ind[l*cols+a] = (i + l) * cols * rows * cols * rows
-								+ (j + a) * cols * rows + k;
+	/*same number only one per block*/
+	for (i = 0; i < cols; i++) {/*block row index*/
+		for (j = 0; j < rows; j++) {/*block col index*/
+			for (k = 0; k < rows * cols; k++) {/*cell number index*/
+				for (l = 0; l < rows; l++) {/*cell row index*/
+					for (a = 0; a < cols; a++) {/*cell col index*/
+						ind[l*cols+a] = (i*rows + l) * cols * rows * cols * rows
+								+ (j*cols + a) * cols * rows + k;
 						val[l*cols+a] = 1;
 					}
 				}
 				error = GRBaddconstr(model, cols * rows, ind, val, GRB_EQUAL,
-						1.0, NULL);*//*constraint name is defaulted because we dont
+						1.0, NULL);/*constraint name is defaulted because we dont
 						 care what it's name is*/
-/*				if (error) {
+				if (error) {
 					printf("ERROR %d in block constraints GRBaddconstr(): %s\n",
 							error, GRBgeterrormsg(env));
 					free_stuffs(ind, val, obj, vtype);
@@ -202,23 +202,23 @@ printf("%d %d\n", filled[0], amountFilled);
 			}
 		}
 	}
-*/
+
 	/*cells already filled constraints*/
-/*
-	for (i = 0; i < amountFilled; i++) {*//*data is in col row val triplets*/
-/*		ind[0] = filled[i * 3] * cols * rows
+
+	for (i = 0; i < amountFilled; i++) {/*data is in col row val triplets*/
+		ind[0] = filled[i * 3] * cols * rows
 				+ filled[(i * 3) + 1] * cols * rows * cols * rows
-				+ filled[(i * 3) + 2] - 1;*//*+0 is the col,+1 is the row,+2 is the value, we do -1 since indexing start from 0 and the value starts from 1*/
-/*		val[0] = 1;
-		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);*//*constraint name is defaulted because we dont
+				+ filled[(i * 3) + 2] - 1;/*+0 is the col,+1 is the row,+2 is the value, we do -1 since indexing start from 0 and the value starts from 1*/
+		val[0] = 1;
+		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 		 care what it's name is*/
-/*		if (error) {
+		if (error) {
 			printf("ERROR %d in filled constraints GRBaddconstr(): %s\n", error,
 					GRBgeterrormsg(env));
 			free_stuffs(ind, val, obj, vtype);
 			return -1;
 		}
-	}*/
+	}
 	/*
 	 keeping for reference,this is from the example that was provided
 	 First constraint: x + 2 y + 3 z <= 4
@@ -286,6 +286,14 @@ printf("%d %d\n", filled[0], amountFilled);
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
+
+	if(optimstatus==GRB_INFEASIBLE){
+	printf("YEET\n");
+	GRBfreemodel(model);
+	GRBfreeenv(env);
+	free_stuffs(ind, val, obj, vtype);
+	return 0;
+}
 	/*probably dont need this since we maximize 0 in our shit my dude*/
 	/* get the objective -- the optimal result of the function 
 	error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &objval);
@@ -330,7 +338,5 @@ printf("%d %d\n", filled[0], amountFilled);
 	GRBfreemodel(model);
 	GRBfreeenv(env);
 /*	free_stuffs(ind, val, obj, vtype);*/
-	if(optimstatus== GRB_INF_OR_UNBD)/*cant be unbound because the obj is const 0.if it's infesible then there is no solution,so return accordingly*/
-		return 0;/*no solution*/
 	return 1;/*found solution,and it's stored in sol*/
 	}
