@@ -262,10 +262,10 @@ int tryRandValue(int x, int y, int amountFilled, int *values, int *filledCells,
 		gameState *metaBoard) {
 	int num = rand() % (metaBoard->cols * metaBoard->rows);/*Get a value to try to enter the x,y cell*/
 	if (values[num] == 0) {/*We haven't tried this value yet*/
-		values[num]++;
+		values[num++]++;
 		checkCell(x, y, num, 0, metaBoard->gameBoard);
 		if (!metaBoard->gameBoard->board[x][y].error) {/*Found a legal value to enter*/
-			metaBoard->gameBoard->board[x][y].value = num + 1;
+			metaBoard->gameBoard->board[x][y].value = num;
 			filledCells[amountFilled * 3] = x;/*Update filled cells array to keep track of changes*/
 			filledCells[amountFilled * 3 + 1] = y;
 			filledCells[amountFilled * 3 + 2] = num;
@@ -281,24 +281,17 @@ int tryFill(int fill, int *values, int *filledCells, gameState *metaBoard) {
 	int amountFilled = 0, x = 0, y = 0, i;
 	int cols = metaBoard->cols, rows = metaBoard->rows;/*CONTINUE HERE, make fill board good and send from generate to here, run 1000 iterations and try again if no solution or a cell has no values*/
 		while (amountFilled < fill) {
-		printf("Amount: %d\n", amountFilled);
 		for (i = 0; i < cols * rows; i++) {
 			values[i] = 0;
 		}
 		while (!randEmptyCell(&x, &y, metaBoard));/*Find empty cell in the board using random generator*/
-		printf("x: %d y: %d\n", x, y);
 		while (checkRemainingValues(cols, rows, values)){
-			for (i = 0; i < cols * rows; i++) {
-				printf("%d: %d  ", i, values[i]);
-			}
-printf("\n");
 			if (tryRandValue(x, y, amountFilled, values, filledCells, metaBoard)){
-				printf("amount: %d\n", amountFilled);
 				amountFilled++;
 				break;
 			}
 		}
-		if (!checkRemainingValues(cols, rows, values))
+		if (!checkRemainingValues(cols, rows, values) && (!metaBoard->gameBoard->board[x][y].value))
 			return 0;/*Can't find value for this cell, clear the board and start again*/
 	}
 	return 1;
@@ -419,13 +412,10 @@ void generateBoard(int fill, int keep, gameState *metaBoard) {
 		exit(0);
 	}
 	for (i = 0; i < 1000; i++) {
-	printf("i: %d\n", i);
 		if (!tryFill(fill, values, filledCells, metaBoard)){/*couldn't fill X cells in the board,so we try again,doesn't count for the 1000 tries*/
-			printf("AAAA\n");
 			eraseBoard(metaBoard->gameBoard);
 		}
 		else {
-		printBoard(metaBoard);
 if (findSol(cols, rows, filledCells, fill, sol) > 0) {
 			keepRandom(keep, metaBoard,sol);
 			printBoard(metaBoard);
