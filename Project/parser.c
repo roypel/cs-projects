@@ -188,7 +188,7 @@ void readInput(gameState *metaBoard) {
 						if (isErroneous(metaBoard))
 							erroneousError;
 						else
-							numOfSol(metaBoard);
+							numOfSol(metaBoard->gameBoard);
 					} else if (!strcmp(token, "autofill")
 							&& (metaBoard->mode == Solve)) {
 						if (isErroneous(metaBoard))

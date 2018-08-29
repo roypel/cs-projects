@@ -33,7 +33,7 @@ int hintBoard(int x, int y, gameState *metaBoard);
 int validate(gameState *metaBoard);
 /*The function verifies the current gameBoard of gameState metaBoard is a valid board that can be completed by using brute-force algorithm to solve it, and prints an appropriate message accordingly.
  *INPUT: gameState *metaBoard - a pointer to a valid gameState with board gameBoard filled with numbers 0 to board length which we try to solve by brute-force.*/
-void numOfSol(gameState *metaBoard);
+void numOfSol(board *gameBoard);
 void undo(gameState *metaBoard);
 void redo(gameState *metaBoard);
 void generateBoard(int X, int Y, gameState *metaBoard);

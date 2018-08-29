@@ -2,7 +2,7 @@
 #define SOLVER_H_
 #include "gameStructs.h"
 
-int solver(gameState *metaBoard);
+int solver(board *gameBoard);
 /*TODO: fix documentation*/
 /*The function recursively tries to find a valid solution to tmpBoard by using brute-force method (trying all possible values in every empty cell from left to right, up to down).
  *The function starts to fill from place index (or next empty cell), and tries each possible value and send the board another step until it's filled or we ran out of options and need to backtrack without changing anything.

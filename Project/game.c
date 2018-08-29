@@ -336,8 +336,8 @@ int validate(gameState *metaBoard) {/*We need this for save as well, so we retur
 
 }
 
-void numOfSol(gameState *metaBoard) {
-	int solutions = solver(metaBoard);
+void numOfSol(board *gameBoard) {
+	int solutions = solver(gameBoard);
 	printf("Number of solutions:%d\n", solutions);
 	if (solutions == 1)
 		printf("This is a good board!\n");
