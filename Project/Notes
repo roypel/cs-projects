@@ -4,6 +4,8 @@ Make sure we print after every move that changes the board and on opening of new
 
 Make sure we don't finish game if board erroneous (Probaly did it already).
 
+Make sure we print an error when player sets erroneous value.
+
 understand why generate fails alot,even on not so big numbers(maybe the subfunctions are not working properly,).maybe it's ok?(for example,we had a 
 fail when only 2 cells were filled,which does not make sense.maybe we are doing the filling of X cells not correctly)
 
