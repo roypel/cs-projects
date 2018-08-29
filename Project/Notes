@@ -1,6 +1,6 @@
 --------------------------To do list
 
-Add generate to undo/redo list, check what's wrong with numSol, after one time, number of solutions is 0? or diffrent values after first time, not sure why.
+Add generate to undo/redo list.
 
 Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
 
@@ -15,8 +15,6 @@ fail when only 2 cells were filled,which does not make sense.maybe we are doing 
 
 DEBUGGING FOR VSS - check if there are enough contraints of each type and they are as we intended, so we won't miss any case
 
-IN AUTOFILL-IF IT DIDNT ADD ANY NEW VALUES,MAKE SURE WE DONT DELETE THE MOVES THAT WERE AFTER IT(REDO SHOULD NOT BE DELETED,SO DONT DO DELETE_ALL_NEXT)
-
 fix a print as told by mosses in רווח בהדפסת שגיאה בgenerate in the forum
 
 add the prints in a command what is written in the forum in the  פרויקט תוכנה: שגיאות בקריאה\כתיבה לקובץ subject
@@ -27,15 +25,19 @@ Update the value of filledCells properlly in Generate
 
 Learn Gurobi(maybe done??????)
 
+YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET
+
+-------------------------Grandiose Library of Done list
+
+IN AUTOFILL-IF IT DIDNT ADD ANY NEW VALUES,MAKE SURE WE DONT DELETE THE MOVES THAT WERE AFTER IT(REDO SHOULD NOT BE DELETED,SO DONT DO DELETE_ALL_NEXT) - looks good.
+
 Validate for save and for validate - ILP
 
 Generate - ILP
 
-YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET
-
 hint - ILP
 
--------------------------Grandiose Library of Done list
+Check what's wrong with numSol, after one time, number of solutions is 0? or diffrent values after first time, not sure why - updated x and y at end of function and erased cell before we quit the function.
 
 check erroneous cells when opening a file, we don't save the notation of error but we need to check if board has erroneous values?
 
