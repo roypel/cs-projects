@@ -1,5 +1,7 @@
 --------------------------To do list
 
+Add generate to undo/redo list, check what's wrong with numSol, after one time, number of solutions is 0?
+
 Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
 
 Make sure we don't finish game if board erroneous (Probaly did it already).
