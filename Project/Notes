@@ -1,6 +1,6 @@
 --------------------------To do list
 
-Add generate to undo/redo list, check what's wrong with numSol, after one time, number of solutions is 0?
+Add generate to undo/redo list, check what's wrong with numSol, after one time, number of solutions is 0? or diffrent values after first time, not sure why.
 
 Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
 
