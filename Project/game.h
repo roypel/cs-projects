@@ -17,6 +17,7 @@ int isErroneous(gameState *metaBoard);
 void checkWin(gameState *metaBoard);
 /*The function checks if the board is completely filled, and if so, prints an according message.
  *INPUT: gameState *metaBoard - a pointer to a gameState with field filledCells that represents the amount of cells already filled in the game board of the current game.*/
+void checkErroneous(gameState *metaBoard, int x, int y);
 void setBoard(int x, int y, int z, gameState *metaBoard,int set);
 /*The function tries to set the value z in the cell <x,y> in the game board of the gameState metaBoard.
  *Value 0 erases the cell, fixed cells can't be changed, field filledCells of metaBoard updates accordingly, and the game board is printed after a successful move or an appropriate message if the move failed.
@@ -32,7 +33,7 @@ int hintBoard(int x, int y, gameState *metaBoard);
 int validate(gameState *metaBoard);
 /*The function verifies the current gameBoard of gameState metaBoard is a valid board that can be completed by using brute-force algorithm to solve it, and prints an appropriate message accordingly.
  *INPUT: gameState *metaBoard - a pointer to a valid gameState with board gameBoard filled with numbers 0 to board length which we try to solve by brute-force.*/
-void numOfSol(board *tmpBoard);
+void numOfSol(gameState *metaBoard);
 void undo(gameState *metaBoard);
 void redo(gameState *metaBoard);
 void generateBoard(int X, int Y, gameState *metaBoard);

@@ -23,19 +23,19 @@ int nextEmptyCell(int index, board *checkBoard) {
 	return nextEmptyCell(index + 1, checkBoard);
 }
 
-int solver(board *gameBoard) {
-	int x, y, i, index = 0;
+int solver(gameState *metaBoard) {
+	int x = 0, y = 0, i = 1, index = 0;
 	int solutions = 0;
 	int found = 1;
 	item temp;
 	stackPointer backStack;
-	backStack.maxSize = gameBoard->cols * gameBoard->rows;
+	backStack.maxSize = metaBoard->gameBoard->cols * metaBoard->gameBoard->rows;
 	backStack.stack = calloc(backStack.maxSize, sizeof(item));
 	checkInitalize(backStack.stack, "calloc");
 	backStack.size = 0;
 	do {
 		if (found) {/*We try to find a new cell to fill*/
-			index = nextEmptyCell(index, gameBoard);/*Find next Empty Cell*/
+			index = nextEmptyCell(index, metaBoard->gameBoard);/*Find next Empty Cell*/
 			if (index == -1) {/*We reached the end of the board so we found a valid solution*/
 				solutions++;
 				temp = pop(&backStack);/*Pop the last cell that we have filled*/
@@ -43,20 +43,23 @@ int solver(board *gameBoard) {
 				x = temp.col;
 				y = temp.row;
 			} else {
-				x = index % (gameBoard->cols * gameBoard->rows);/*Extract the column of the cell by index*/
-				y = index / (gameBoard->rows * gameBoard->cols);/*Extract the row of the cell by index*/
+				x = index
+						% (metaBoard->gameBoard->cols
+								* metaBoard->gameBoard->rows);/*Extract the column of the cell by index*/
+				y = index
+						/ (metaBoard->gameBoard->rows
+								* metaBoard->gameBoard->cols);/*Extract the row of the cell by index*/
 				index++;
 				i = 1;/*Try values from 1 since it's a new cell we try to fill*/
 			}
-		} else {/*We backtracked so we try bigger values for this cell*/
-			x = temp.col;
-			y = temp.row;
 		}
+		/*If we didn't enter if, we backtracked so x, y and i were updated already for the last cell we entered to the stack*/
 		found = 0;
-		for (; i < gameBoard->rows * gameBoard->cols + 1; i++) {
-			checkCell(x, y, i, 0, gameBoard);
-			if (!gameBoard->board[x][y].error) {
-				gameBoard->board[x][y].value = i;
+		for (; i < metaBoard->gameBoard->rows * metaBoard->gameBoard->cols + 1;
+				i++) {
+			checkCell(x, y, i, 0, metaBoard->gameBoard);
+			if (!metaBoard->gameBoard->board[x][y].error) {
+				metaBoard->gameBoard->board[x][y].value = i;
 				temp.col = x;
 				temp.row = y;
 				temp.val = i;
@@ -67,16 +70,24 @@ int solver(board *gameBoard) {
 			}
 		}
 		if (!found) {
-			gameBoard->board[x][y].value = 0;/*We need to reverse the cell back to empty*/
-			gameBoard->board[x][y].error = 0;
+			metaBoard->gameBoard->board[x][y].value = 0;/*We need to reverse the cell back to empty*/
+			metaBoard->gameBoard->board[x][y].error = 0;
 			if (backStack.size > 0) {
 				temp = pop(&backStack);
-				index = temp.col + temp.row * gameBoard->rows * gameBoard->cols;
+				x = temp.col;/*We backtrack so we try bigger values for the last cell we entered*/
+				y = temp.row;
 				i = temp.val + 1;/*Try bigger values for this cell*/
+				index = temp.col
+										+ temp.row * metaBoard->gameBoard->rows
+												* metaBoard->gameBoard->cols;
 			}
 		}
 	} while ((backStack.size > 0)
-			|| (i < (gameBoard->cols * gameBoard->rows) + 1));
+			|| (i
+					< (metaBoard->gameBoard->cols * metaBoard->gameBoard->rows)
+							+ 1));
+	metaBoard->gameBoard->board[x][y].value = 0;/*We reverse the first cell we entered back to empty*/
+	metaBoard->gameBoard->board[x][y].error = 0;
 	free(backStack.stack);
 	return solutions;
 }
