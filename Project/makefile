@@ -27,13 +27,13 @@ fileFunc.o: fileFunc.c fileFunc.h gameStructs.h linkedListFunc.h game.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
 
-linkedListFunc.o: linkedListFunc.c linkedListFunc.h gameStructs.h
+linkedListFunc.o: linkedListFunc.c linkedListFunc.h gameStructs.h MainAux.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
-stackFunc.o: stackFunc.c stackFunc.h gameStructs.h
+stackFunc.o: stackFunc.c stackFunc.h gameStructs.h MainAux.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
-gurobi_func.o: gurobi_func.c gurobi_func.h gameStructs.h
+gurobi_func.o: gurobi_func.c gurobi_func.h gameStructs.h MainAux.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
 clean:

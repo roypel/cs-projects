@@ -32,17 +32,11 @@ void initalizeBoard(board *newBoard) {
 	int i;
 	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols,
 			sizeof(cell *));
-	if (newBoard->board == NULL) {
-		printf("Error: calloc has failed\n");
-		exit(0);
-	}
+	checkInitalize(newBoard->board, "calloc");
 	for (i = 0; i < newBoard->rows * newBoard->cols; i++) {
 		newBoard->board[i] = (cell*) calloc(newBoard->rows * newBoard->cols,
 				sizeof(cell));
-		if (newBoard->board[i] == NULL) {
-			printf("Error: calloc has failed\n");
-			exit(0);
-		}
+		checkInitalize(newBoard->board[i], "calloc");
 	}
 	eraseBoard(newBoard);
 }
@@ -198,10 +192,7 @@ int* findFilled(gameState *metaBoard, int* amountFilled) {
 			if (metaBoard->gameBoard->board[j][i].value != 0) {
 				filled = (int*) realloc(filled,
 						((*amountFilled) + 1) * 3 * sizeof(int));
-				if (filled == NULL) {
-					printf("Error: realloc has failed\n");
-					exit(0);
-				}
+				checkInitalize(filled, "realloc");
 				filled[(*amountFilled) * 3] = j;
 				filled[(*amountFilled) * 3 + 1] = i;
 				filled[(*amountFilled) * 3 + 2] =
@@ -261,9 +252,9 @@ int checkRemainingValues(int cols, int rows, int *values) {
 
 int tryRandValue(int x, int y, int amountFilled, int *values, int *filledCells,
 		gameState *metaBoard) {
-	int num = rand() % (metaBoard->cols * metaBoard->rows) + 1;/*Get a value to try to enter the x,y cell*/
+	int num = rand() % (metaBoard->cols * metaBoard->rows);/*Get a value to try to enter the x,y cell*/
 	if (values[num] == 0) {/*We haven't tried this value yet*/
-		values[num]++;
+		values[num++]++;
 		checkCell(x, y, num, 0, metaBoard->gameBoard);
 		if (!metaBoard->gameBoard->board[x][y].error) {/*Found a legal value to enter*/
 			metaBoard->gameBoard->board[x][y].value = num;
@@ -285,14 +276,17 @@ int tryFill(int fill, int *values, int *filledCells, gameState *metaBoard) {
 		for (i = 0; i < cols * rows; i++) {
 			values[i] = 0;
 		}
-		while (!randEmptyCell(&x, &y, metaBoard));/*Find empty cell in the board using random generator*/
-		while (checkRemainingValues(cols, rows, values)){
-			if (tryRandValue(x, y, amountFilled, values, filledCells, metaBoard)){
+		while (!randEmptyCell(&x, &y, metaBoard))
+			;/*Find empty cell in the board using random generator*/
+		while (checkRemainingValues(cols, rows, values)) {
+			if (tryRandValue(x, y, amountFilled, values, filledCells,
+					metaBoard)) {
 				amountFilled++;
-				continue;
+				break;
 			}
 		}
-		if (!checkRemainingValues(cols, rows, values))
+		if (!checkRemainingValues(cols, rows, values)
+				&& (!metaBoard->gameBoard->board[x][y].value))
 			return 0;/*Can't find value for this cell, clear the board and start again*/
 	}
 	return 1;
@@ -312,10 +306,7 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 	else {
 		sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
 				sizeof(double));
-		if (sol == NULL) {
-			printf("Error: calloc has failed\n");
-			exit(0);
-		}
+		checkInitalize(sol, "calloc");
 		filledCells = findFilled(metaBoard, &amountFilled);/*Get the already filled cells from the board*/
 		solved = findSol(cols, rows, filledCells, amountFilled, sol);
 		if (solved > 0) {/*Solution was found, we can give a hint*/
@@ -336,10 +327,7 @@ int validate(gameState *metaBoard) {/*We need this for save as well, so we retur
 	int* filled;
 	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
 			sizeof(double));
-	if (sol == NULL) {
-		printf("Error: calloc has failed\n");
-		exit(0);
-	}
+	checkInitalize(sol, "calloc");
 	filled = findFilled(metaBoard, &amountFilled);
 	solved = findSol(cols, rows, filled, amountFilled, sol);
 	free(filled);
@@ -398,33 +386,26 @@ void generateBoard(int fill, int keep, gameState *metaBoard) {
 	double *sol;
 	sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
 			sizeof(double));
-	if (sol == NULL) {
-		printf("Error: calloc has failed\n");
-		exit(0);
-	}
+	checkInitalize(sol, "calloc");
 	filledCells = (int *) malloc(sizeof(int) * fill * 3);
-	if (filledCells == NULL) {
-		printf("Error: malloc has failed\n");
-		exit(0);
-	}
+	checkInitalize(filledCells, "malloc");
 	values = (int *) malloc(sizeof(int) * cols * rows);
-	if (values == NULL) {
-		printf("Error: malloc has failed\n");
-		exit(0);
-	}
+	checkInitalize(values, "malloc");
 	for (i = 0; i < 1000; i++) {
 		if (!tryFill(fill, values, filledCells, metaBoard)) {/*couldn't fill X cells in the board,so we try again,doesn't count for the 1000 tries*/
 			eraseBoard(metaBoard->gameBoard);
-		} else if (findSol(cols, rows, filledCells, fill, sol) > 0) {
-			keepRandom(keep, metaBoard, sol);
-			printBoard(metaBoard);
-			free(sol);
-			free(filledCells);
-			free(values);
-			metaBoard->filledCells = keep;
-			return;
-		} else
-			eraseBoard(metaBoard->gameBoard);
+		} else {
+			if (findSol(cols, rows, filledCells, fill, sol) > 0) {
+				keepRandom(keep, metaBoard, sol);
+				printBoard(metaBoard);
+				free(sol);
+				free(filledCells);
+				free(values);
+				metaBoard->filledCells = keep;
+				return;
+			} else
+				eraseBoard(metaBoard->gameBoard);
+		}
 	}
 	eraseBoard(metaBoard->gameBoard);
 	free(sol);

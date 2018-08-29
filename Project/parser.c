@@ -75,7 +75,7 @@ void readInput(gameState *metaBoard) {
 	char *token;/*Separates input to tokens*/
 	int values[maxValues], i;/*For the sake of readability we have excess variables*/
 	while (!feof(stdin)) {
-		for (i = 0; i < maxValues; i++) {
+		for (i = 0; i < maxValues; i++) {/*Resets values array to know if new input is valid (for relevant functions)*/
 			values[i] = -2;
 		}
 		fflush(stdin);
@@ -85,10 +85,7 @@ void readInput(gameState *metaBoard) {
 				invalidError;
 				while (input[256] != 0) {
 					input[256] = 0;
-					if (fgets(input, inputSize, stdin) == NULL) {
-						printf("Error: fgets has failed\n");
-						exit(0);
-					}
+					checkInitalize(fgets(input, inputSize, stdin), "fgets");
 				}
 			} else {
 				token = strtok(input, delim);
@@ -106,8 +103,9 @@ void readInput(gameState *metaBoard) {
 							&& (metaBoard->mode == Solve)) {
 						token = strtok(NULL, delim);
 						if (token) {
-							if ((*token - '0' == 0) || (*token - '0' == 1))
-								metaBoard->markError = *token - '0';
+							values[0] = checkIsInt(token);
+							if ((values[0] == 0) || (values[0] == 1))
+								metaBoard->markError = values[0];
 							else
 								printf("Error: the value should be 0 or 1\n");
 						} else
@@ -123,7 +121,7 @@ void readInput(gameState *metaBoard) {
 						for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
 							token = strtok(NULL, delim);
 							if (token)
-								values[i] = checkIsInt(token) - 1;
+								values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
 						}
 						values[2]++;/*Fix value of what the user wants to enter to the cell, unneeded decrement*/
 						if (checkInput(values, metaBoard->cols, metaBoard->rows,
@@ -176,21 +174,21 @@ void readInput(gameState *metaBoard) {
 						for (i = 0; i < hintValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
 							token = strtok(NULL, delim);
 							if (token)
-								values[i] = checkIsInt(token) - 1;
+								values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
 						}
 						if (checkInput(values, metaBoard->cols, metaBoard->rows,
 								"hint")) {
 							if (isErroneous(metaBoard))
 								erroneousError;
 							else
-								hintBoard(values[0], values[1], metaBoard);/*TODO: Replace with ILP version*/
+								hintBoard(values[0], values[1], metaBoard);
 						}
 					} else if (!strcmp(token, "num_solutions")
 							&& (metaBoard->mode != Init)) {
 						if (isErroneous(metaBoard))
 							erroneousError;
 						else
-							numOfSol(metaBoard->gameBoard);/*MAKE SURE WE DON'T RUIN THE BOARD LIKE THIS!!! ORIGINALLY IT'S TEMPBOARD!!!*/
+							numOfSol(metaBoard->gameBoard);
 					} else if (!strcmp(token, "autofill")
 							&& (metaBoard->mode == Solve)) {
 						if (isErroneous(metaBoard))

@@ -43,7 +43,6 @@ typedef struct stackPointer{
 
 typedef struct gameState{
 	board *gameBoard;
-	board *solution;/*NEED TO ERASE, OBSOLETE!*/
 	gameMode mode;
 	int markError;
 	linkedList *moves;

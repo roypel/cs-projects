@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "game.h"
 #include "gameStructs.h"
 #include "linkedListFunc.h"
@@ -31,10 +31,7 @@ int solver(board *gameBoard) {
 	stackPointer backStack;
 	backStack.maxSize = gameBoard->cols * gameBoard->rows;
 	backStack.stack = calloc(backStack.maxSize, sizeof(item));
-	if (backStack.stack == NULL) {
-		printf("Error: calloc has failed\n");
-		exit(0);
-	}
+	checkInitalize(backStack.stack, "calloc");
 	backStack.size = 0;
 	do {
 		if (found) {/*We try to find a new cell to fill*/
@@ -113,6 +110,7 @@ int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
 void autoFill(gameState *metaBoard) {
 	int i, j, k, counter = 0, posValues;
 	int * moves = (int *) malloc(0);
+	checkInitalize(moves, "malloc");
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
 			if (metaBoard->gameBoard->board[i][j].value != 0)
@@ -133,6 +131,7 @@ void autoFill(gameState *metaBoard) {
 			else {
 				counter++;
 				moves = realloc(moves, sizeof(int) * counter * 4);/*Reallocate extra space*/
+				checkInitalize(moves, "realloc");
 				moves[(counter - 1) * 4] = i;
 				moves[(counter - 1) * 4 + 1] = j;
 				moves[(counter - 1) * 4 + 2] = 0;

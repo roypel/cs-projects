@@ -4,6 +4,14 @@
 #include "gameStructs.h"
 #include "linkedListFunc.h"
 #include "game.h"
+#include "MainAux.h"
+
+void checkScan(int scan) {
+	if (scan == EOF) {
+		printf("Error: fscanf has failed\n");
+		exit(0);
+	}
+}
 
 void fillBoard(gameState *metaBoard, FILE* ifp) {
 	int input, i, j, k, filled = 0;
@@ -11,16 +19,10 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 	/*c used to check each char in a cell, string used to read a cell (number + fixed + \0)*/
 	if (metaBoard->gameBoard->board)
 		freeBoard(metaBoard->gameBoard);
-	if (fscanf(ifp, "%d", &input) == EOF) {/*Read block size*/
-		printf("Error: fscanf has failed\n");
-		exit(0);
-	}
+	checkScan(fscanf(ifp, "%d", &input));/*Read block size*/
 	metaBoard->gameBoard->cols = metaBoard->cols = input;
 	filled += input;
-	if (fscanf(ifp, "%d", &input) == EOF) {
-		printf("Error: fscanf has failed\n");
-		exit(0);
-	}
+	checkScan(fscanf(ifp, "%d", &input));
 	metaBoard->gameBoard->rows = metaBoard->rows = input;
 	filled *= input;
 	filled *= filled; /*Number of possible filled cells is block size squared*/
@@ -30,10 +32,7 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 	initalizeBoard(metaBoard->gameBoard);
 	for (i = 0; i < metaBoard->rows * metaBoard->cols; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			if (fscanf(ifp, "%s", string) == EOF) { /*Read next cell*/
-				printf("Error: fscanf has failed\n");
-				exit(0);
-			}
+			checkScan(fscanf(ifp, "%s", string)); /*Read next cell*/
 			c = string; /*Questionable implementation, maybe can replace string with c*/
 			if (*c == '0') {/*Cell is empty, filled decrease and not fixed (default 0)*/
 				filled--;
@@ -57,6 +56,7 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 	}
 	metaBoard->filledCells = filled;
 	fclose(ifp);
+	printBoard(metaBoard);
 }
 
 void saveFile(gameState *metaBoard, char *fileName) {
@@ -66,7 +66,7 @@ void saveFile(gameState *metaBoard, char *fileName) {
 		if (isErroneous(metaBoard)) {
 			printf("Error: board contains erroneous values\n");
 			return;
-		}else if(!validate(metaBoard)){
+		} else if (!validate(metaBoard)) {
 			printf("Error: board validation failed\n");
 			return;
 		}
@@ -108,6 +108,7 @@ void sendToFill(gameState *metaBoard, char *fileName, gameMode mode) {
 		metaBoard->gameBoard->rows = 3;
 		metaBoard->filledCells = 0;
 		initalizeBoard(metaBoard->gameBoard);
+		printBoard(metaBoard);
 		return;
 	}
 	ifp = fopen(fileName, "r");
@@ -122,4 +123,3 @@ void sendToFill(gameState *metaBoard, char *fileName, gameMode mode) {
 	metaBoard->mode = mode;
 	fillBoard(metaBoard, ifp);
 }
-

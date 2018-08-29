@@ -8,5 +8,6 @@ void printBoard(gameState *metaBoard);
  *INPUT: board *playerBoard - a pointer to a board filled with values ranging from 0 to board length, while 0 indicates an empty cell, and a fixed cell has it's field marked correctly.*/
 void printChanges(int from, int to);
 void printForTest(board *gameBoard);
+void checkInitalize(void *pointer, char *cmd);
 
 #endif /* MAINAUX_H_ */

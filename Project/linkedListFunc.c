@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gameStructs.h"
+#include "MainAux.h"
 
 void removeAllNext(node *head) {
 	if (head != NULL) {
@@ -14,7 +15,9 @@ void removeAllNext(node *head) {
 node* addNextMove(node *currentMove, int *move, int numOfMoves) {
 	int i;
 	node *newMove = (node*) malloc(sizeof(node));
+	checkInitalize(newMove, "malloc");
 	newMove->change = (int*) malloc(sizeof(int) * (4 * numOfMoves + 1));
+	checkInitalize(newMove->change, "malloc");
 	newMove->change[0] = numOfMoves;
 	for (i = 1; i <= numOfMoves * 4; i++) {
 		newMove->change[i] = move[i-1];/*Insert the x y z1 z2 values of the changes to the array of changes in the current move*/

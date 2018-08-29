@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "gameStructs.h"
 
@@ -96,4 +97,12 @@ void printForTest(board *playerBoard) {
 		printf("-");
 	}
 	printf("\n");
+}
+
+
+void checkInitalize(void *pointer, char *cmd){
+	if (pointer == NULL){
+		printf("Error: %s has failed\n", cmd);
+		exit(0);
+	}
 }
