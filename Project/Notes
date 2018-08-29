@@ -6,6 +6,8 @@ Make sure we don't finish game if board erroneous (Probaly did it already).
 
 Make sure we print an error when player sets erroneous value.
 
+Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.
+
 understand why generate fails alot,even on not so big numbers(maybe the subfunctions are not working properly,).maybe it's ok?(for example,we had a 
 fail when only 2 cells were filled,which does not make sense.maybe we are doing the filling of X cells not correctly)
 
@@ -62,6 +64,18 @@ autofill - looks really good, I mean REALLY REALLY GOOD!
 CheckErroneous - looks fine now
 
 Exit, Reset - Check with ValGrind, looks cool
+
+--------------------------Tests simple tester supposed to check
+
+Any command except solve and edit in Init mode (start of game or puzzle solved) - shouldn't run.
+
+"solve" without another input, without an existing file, and with a good file.
+
+"undo" + "redo" on beginning of a game (list should be empty), more than the commands issued, and check how many commands acutally registered.
+
+"set" without enough values, with too many values (should work) with incorrect values - out of range, digits or negatives.
+
+"mark errors" - with incorrect value, changing in edit, change in solve, open a diffrent game and check value is still changed.
 
 --------------------------Remarks
 
