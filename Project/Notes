@@ -69,27 +69,27 @@ Exit, Reset - Check with ValGrind, looks cool
 
 Any command except solve and edit in Init mode (start of game or puzzle solved) - shouldn't run.
 
-"solve" - without another input, without an existing file, and with a good file.
-
-"undo" + "redo" - on beginning of a game (list should be empty), more than the commands issued, and check how many commands acutally registered, after reset.
-
-"set" - without enough values, with too many values (should work) with incorrect values - out of range, digits or negatives, placing same value or 0 on cell and check if filledCells changes.
+"solve" + "edit" - without another input, without an existing file, and with a good file.
 
 "mark errors" - with incorrect value, changing in edit, change in solve, open a diffrent game and check value is still changed.
 
-"hint" - without enough values, with too many values, with values out of range, digits or negatives.
+"set" - without enough values, with too many values (should work) with incorrect values - out of range, digits or negatives, placing same value or 0 on cell and check if filledCells changes.
 
 "validate" - on unsolveable board, on solveable board, on erroneous board.
 
+"generate" - in solve mode, in edit mode without empty board, in edit with empty board, 20 values.
+
+"undo" + "redo" - on beginning of a game (list should be empty), more than the commands issued, and check how many commands acutally registered, after reset.
+
 "save" - in solve and edit mode without a file name, with a file name, with valid and invalid board.
+
+"hint" - without enough values, with too many values, with values out of range, digits or negatives.
+
+"num_solutions" - on invalid board, on valid board with 1 solution, NEED TO FIND BOARD WITH FEW VALUES.
 
 "autofill" - with invalid board, with valid board until completion of puzzle.
 
 "reset" - on file loading, multipile times in a row, after some commands have been made.
-
-"num_solutions" - on invalid board, on valid board with 1 solution, NEED TO FIND BOARD WITH FEW VALUES.
-
-"generate" - in solve mode, in edit mode without empty board, in edit with empty board, 20 values.
 
 --------------------------Remarks
 
