@@ -27,43 +27,44 @@ int checkIsInt(char *input) {/*Get input string and check if all chars are digit
 	return num;
 }
 
-int checkInput(int *values, int col, int row, char *cmd) {
+int checkInput(int *values, gameState *metaBoard, char *cmd) {
 	/*TODO: Fix documentation*/
 	/*Function checks if the input for set and hint has the correct amount of strings and is a valid input for current board
 	 * userCol, userRow and userVal are the user inputs (if he entered any, else they valued at -2)
 	 * col, row are current board size
 	 * cmd is a string representing the command we need to check ,since hint and set have different requirements*/
+	int cols = metaBoard->cols, rows = metaBoard->rows, empty;
 	if (!strcmp(cmd, "set")) {
 		if ((values[0] == -2) || (values[1] == -2) || (values[2] == -1))/*We didn't read three strings after "set"*/
 			invalidError;
 		else {
-			if (((values[0] >= 0) && (values[0] < col * row))/*Make sure input is valid for board*/
-			&& ((values[1] >= 0) && (values[1] < col * row))
-					&& ((values[2] >= 0) && (values[2] <= col * row)))
+			if (((values[0] >= 0) && (values[0] < cols * rows))/*Make sure input is valid for board*/
+			&& ((values[1] >= 0) && (values[1] < cols * rows))
+					&& ((values[2] >= 0) && (values[2] <= cols * rows)))
 				return 1;
 			else
-				printf("Error: value not in range 1-%d\n", row * col);
+				printf("Error: value not in range 1-%d\n", rows * cols);
 		}
 	} else if (!strcmp(cmd, "hint")) {
 		if ((values[0] == -2) || (values[1] == -2))/*We didn't read two strings after "hint"*/
 			invalidError;
 		else {
-			if ((values[0] >= 0) && (values[0] < col * row) && (values[1] >= 0)
-					&& (values[1] < col * row))/*Make sure input is valid for board*/
+			if ((values[0] >= 0) && (values[0] < cols * rows)
+					&& (values[1] >= 0) && (values[1] < cols * rows))/*Make sure input is valid for board*/
 				return 1;
 			else
-				printf("Error: value not in range 1-%d\n", row * col);
+				printf("Error: value not in range 1-%d\n", rows * cols);
 		}
 	} else if (!strcmp(cmd, "generate")) {
 		if ((values[0] == -2) || (values[1] == -2))/*We didn't read two strings after "generate"*/
 			invalidError;
 		else {
-			if ((values[0] >= 0) && (values[0] < col * row * col * row)
-					&& (values[1] >= 0) && (values[1] < col * row * col * row))/*Make sure input is valid for board*/
+			empty = cols * rows * cols * rows - metaBoard->filledCells;
+			if ((values[0] >= 0) && (values[0] <= empty) && (values[1] >= 0)
+					&& (values[1] <= empty))/*Make sure input is valid for board*/
 				return 1;
 			else
-				printf("Error: value not in range 0-%d\n",
-						col * row * col * row);
+				printf("Error: value not in range 0-%d\n", empty);
 		}
 	}
 	return 0;
@@ -114,18 +115,14 @@ void readInput(gameState *metaBoard) {
 							&& (metaBoard->mode != Init)) {
 						printBoard(metaBoard);
 					} else if ((!(strcmp(token, "set")))
-							&& (metaBoard->mode != Init)
-							&& (metaBoard->filledCells
-									!= metaBoard->cols * metaBoard->cols
-											* metaBoard->rows * metaBoard->rows)) {
+							&& (metaBoard->mode != Init)) {
 						for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
 							token = strtok(NULL, delim);
 							if (token)
 								values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
 						}
 						values[2]++;/*Fix value of what the user wants to enter to the cell, unneeded decrement*/
-						if (checkInput(values, metaBoard->cols, metaBoard->rows,
-								"set"))
+						if (checkInput(values, metaBoard, "set"))
 							setBoard(values[0], values[1], values[2], metaBoard,
 									1);
 					} else if (!(strcmp(token, "validate"))
@@ -148,8 +145,7 @@ void readInput(gameState *metaBoard) {
 							if (token)
 								values[i] = checkIsInt(token);
 						}
-						if (checkInput(values, metaBoard->cols, metaBoard->rows,
-								"generate")) {
+						if (checkInput(values, metaBoard, "generate")) {
 							if (metaBoard->filledCells != 0)
 								printf("Error: board is not empty\n");
 							else
@@ -176,8 +172,7 @@ void readInput(gameState *metaBoard) {
 							if (token)
 								values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
 						}
-						if (checkInput(values, metaBoard->cols, metaBoard->rows,
-								"hint")) {
+						if (checkInput(values, metaBoard, "hint")) {
 							if (isErroneous(metaBoard))
 								erroneousError;
 							else

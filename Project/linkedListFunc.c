@@ -20,7 +20,7 @@ node* addNextMove(node *currentMove, int *move, int numOfMoves) {
 	checkInitalize(newMove->change, "malloc");
 	newMove->change[0] = numOfMoves;
 	for (i = 1; i <= numOfMoves * 4; i++) {
-		newMove->change[i] = move[i-1];/*Insert the x y z1 z2 values of the changes to the array of changes in the current move*/
+		newMove->change[i] = move[i - 1];/*Insert the x y z1 z2 values of the changes to the array of changes in the current move*/
 	}
 	newMove->next = NULL;
 	if (currentMove != NULL) {

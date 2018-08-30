@@ -219,7 +219,7 @@ void keepRandom(int keep, gameState *metaBoard, double* sol) {
 	 *INPUT: gameState *metaBoard - a pointer to a gameState with a completely filled solution board and a field filledCells with the user input of the amount of cells they wish to be filled.*/
 	int num, cols = metaBoard->cols, rows = metaBoard->rows, x, y;
 	eraseBoard(metaBoard->gameBoard);
-	while (keep) {/*As long as we need to add more hints*/
+	while (keep) {/*As long as we need to keep more values*/
 		num = rand() % (cols * rows * cols * rows);/*Get an index for next cell to erase*/
 		x = num % (cols * rows);
 		y = (int) (num / (rows * cols));
@@ -290,6 +290,24 @@ int tryFill(int fill, int *values, int *filledCells, gameState *metaBoard) {
 			return 0;/*Can't find value for this cell, clear the board and start again*/
 	}
 	return 1;
+}
+
+void generateList(int keep, gameState *metaBoard){
+	int i, j, filled = 0;
+	int *moves = (int *) malloc(keep * 4 * sizeof(int));
+	checkInitalize(moves, "malloc");
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
+		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
+			if (metaBoard->gameBoard->board[j][i].value != 0){
+				moves[filled * 4] = j;
+				moves[filled * 4 + 1] = i;
+				moves[filled * 4 + 2] = 0;
+				moves[filled * 4 + 3] = metaBoard->gameBoard->board[j][i].value;
+				filled++;
+			}
+		}
+	}
+	metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, moves, keep);
 }
 
 void hintBoard(int x, int y, gameState *metaBoard) {
@@ -397,11 +415,13 @@ void generateBoard(int fill, int keep, gameState *metaBoard) {
 		} else {
 			if (findSol(cols, rows, filledCells, fill, sol) > 0) {
 				keepRandom(keep, metaBoard, sol);
+				generateList(keep, metaBoard);/*Add the moves to undo/redo linked list*/
 				printBoard(metaBoard);
 				free(sol);
 				free(filledCells);
 				free(values);
 				metaBoard->filledCells = keep;
+
 				return;
 			} else
 				eraseBoard(metaBoard->gameBoard);

@@ -20,10 +20,10 @@ void fillBoard(gameState *metaBoard, FILE* ifp) {
 	if (metaBoard->gameBoard->board)
 		freeBoard(metaBoard->gameBoard);
 	checkScan(fscanf(ifp, "%d", &input));/*Read block size*/
-	metaBoard->gameBoard->cols = metaBoard->cols = input;
+	metaBoard->gameBoard->rows = metaBoard->rows = input;
 	filled += input;
 	checkScan(fscanf(ifp, "%d", &input));
-	metaBoard->gameBoard->rows = metaBoard->rows = input;
+	metaBoard->gameBoard->cols = metaBoard->cols = input;
 	filled *= input;
 	filled *= filled; /*Number of possible filled cells is block size squared*/
 	removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
@@ -76,15 +76,16 @@ void saveFile(gameState *metaBoard, char *fileName) {
 		printf("Error: File cannot be created or modified\n");
 		return;
 	}
-	fprintf(ifp, "%d ", metaBoard->gameBoard->cols);
-	fprintf(ifp, "%d\n", metaBoard->gameBoard->rows);
+	fprintf(ifp, "%d ", metaBoard->gameBoard->rows);
+	fprintf(ifp, "%d\n", metaBoard->gameBoard->cols);
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
 			fprintf(ifp, "%d", metaBoard->gameBoard->board[j][i].value);
 			if ((metaBoard->mode == Edit)
 					|| (metaBoard->gameBoard->board[j][i].fixed))
 				fprintf(ifp, "%c", '.');
-			fprintf(ifp, " ");
+			if (j != metaBoard->cols * metaBoard->rows - 1)/*Dont' insert space on last cell in line*/
+				fprintf(ifp, " ");
 		}
 		fprintf(ifp, "\n");
 	}
