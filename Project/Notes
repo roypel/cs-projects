@@ -82,7 +82,7 @@ Exit, Reset - Check with ValGrind, looks cool
 
 (solo tested)"generate" - in solve mode, in edit mode without empty board, in edit with empty board, 20 values.
 
-"undo" + "redo" - on beginning of a game (list should be empty), more than the commands issued, and check how many commands acutally registered, after reset.
+(see todolist for a bug)"undo" + "redo" - on beginning of a game (list should be empty), more than the commands issued,when changing modes, and check how many commands acutally registered, after reset.
 
 "save" - in solve and edit mode without a file name, with a file name, with valid and invalid board.
 
