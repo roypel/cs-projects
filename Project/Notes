@@ -71,17 +71,17 @@ Exit, Reset - Check with ValGrind, looks cool
 
 --------------------------Tests simple tester supposed to check
 
-(ron tested) Any command except solve and edit in Init mode (start of game or puzzle solved) - shouldn't run.(except exit lmao,it is supposed to work)
+(solo tested) Any command except solve and edit in Init mode (start of game or puzzle solved) - shouldn't run.(except exit lmao,it is supposed to work)
 
 "solve" + "edit" - without another input, without an existing file, and with a good file.
 
-(ron tested)"mark errors" - with incorrect value, changing in edit, change in solve, open a diffrent game and check value is still changed.
+(solo tested)"mark errors" - with incorrect value, changing in edit, change in solve, open a diffrent game and check value is still changed.
 
-(ron tested)"set" - without enough values, with too many values (should work) with incorrect values - out of range, digits or negatives, placing same value or 0 on cell and check if filledCells changes.chars instead of digits.
+(solo tested)"set" - without enough values, with too many values (should work) with incorrect values - out of range, digits or negatives, placing same value or 0 on cell and check if filledCells changes.chars instead of digits.
 
-"validate" - on unsolveable board, on solveable board, on erroneous board.
+(solo tested)"validate" - on unsolveable board, on solveable board, on erroneous board.
 
-"generate" - in solve mode, in edit mode without empty board, in edit with empty board, 20 values.
+(solo tested)"generate" - in solve mode, in edit mode without empty board, in edit with empty board, 20 values.
 
 "undo" + "redo" - on beginning of a game (list should be empty), more than the commands issued, and check how many commands acutally registered, after reset.
 
