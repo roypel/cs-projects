@@ -1,17 +1,15 @@
 --------------------------To do list
 
-Add generate to undo/redo list.
+when we do edit with no filename argument(creates 3x3 empty board),make sure we delete the redo-undo list like we do normally
+
+Add generate to undo/redo list.(i think you did this lmao)
 
 Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
-
-Make sure we don't finish game if board erroneous (Probaly did it already).
 
 Make sure we print an error when player sets erroneous value.
 
 Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.
 
-understand why generate fails alot,even on not so big numbers(maybe the subfunctions are not working properly,).maybe it's ok?(for example,we had a 
-fail when only 2 cells were filled,which does not make sense.maybe we are doing the filling of X cells not correctly)
 
 DEBUGGING FOR VSS - check if there are enough contraints of each type and they are as we intended, so we won't miss any case
 
@@ -19,15 +17,16 @@ fix a print as told by mosses in רווח בהדפסת שגיאה בgenerate in 
 
 add the prints in a command what is written in the forum in the  פרויקט תוכנה: שגיאות בקריאה\כתיבה לקובץ subject
 
+
+-------------------------Grandiose Library of Done list
+
+
+
 test the gurobi file(check if the constraints are correct)
 
 Update the value of filledCells properlly in Generate
 
-Learn Gurobi(maybe done??????)
-
-YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET
-
--------------------------Grandiose Library of Done list
+Learn Gurobi
 
 IN AUTOFILL-IF IT DIDNT ADD ANY NEW VALUES,MAKE SURE WE DONT DELETE THE MOVES THAT WERE AFTER IT(REDO SHOULD NOT BE DELETED,SO DONT DO DELETE_ALL_NEXT) - looks good.
 
@@ -91,7 +90,7 @@ Exit, Reset - Check with ValGrind, looks cool
 
 "num_solutions" - on invalid board, on valid board with 1 solution, NEED TO FIND BOARD WITH FEW VALUES.
 
-"autofill" - with invalid board, with valid board until completion of puzzle.
+(solo tested)"autofill" - with invalid board, with valid board until completion of puzzle.
 
 "reset" - on file loading, multipile times in a row, after some commands have been made.
 
