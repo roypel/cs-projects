@@ -109,6 +109,9 @@ void sendToFill(gameState *metaBoard, char *fileName, gameMode mode) {
 		metaBoard->gameBoard->rows = 3;
 		metaBoard->filledCells = 0;
 		initalizeBoard(metaBoard->gameBoard);
+		removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
+		metaBoard->moves->currentMove = metaBoard->moves->firstNode;
+		metaBoard->moves->currentMove->next = NULL;
 		printBoard(metaBoard);
 		return;
 	}
