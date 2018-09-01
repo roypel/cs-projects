@@ -1,15 +1,12 @@
 --------------------------To do list
 
-when we do edit with no filename argument(creates 3x3 empty board),make sure we delete the redo-undo list like we do normally
-
-Add generate to undo/redo list.(i think you did this lmao)
+when we do edit with no filename argument(creates 3x3 empty board),make sure we delete the redo-undo list like we do normally - should work now
 
 Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
 
-Make sure we print an error when player sets erroneous value.
+Make sure we print an error when player sets erroneous value. - Moshe said that we may not need to do it.
 
 Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.
-
 
 DEBUGGING FOR VSS - check if there are enough contraints of each type and they are as we intended, so we won't miss any case
 
@@ -20,7 +17,7 @@ add the prints in a command what is written in the forum in the  פרויקט ת
 
 -------------------------Grandiose Library of Done list
 
-
+Add generate to undo/redo list.(i think you did this lmao)
 
 test the gurobi file(check if the constraints are correct)
 
@@ -65,6 +62,8 @@ save - worked from edit, solve
 autofill - looks really good, I mean REALLY REALLY GOOD!
 
 CheckErroneous - looks fine now
+
+num_solutions - works on 2X2, 3X2, 2X3 as wikipedia states
 
 Exit, Reset - Check with ValGrind, looks cool
 
