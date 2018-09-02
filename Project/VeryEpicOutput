@@ -27,8 +27,6 @@ ERROR: invalid command
 Enter your command:
 ERROR: invalid command
 Enter your command:
-ERROR: invalid command
-Enter your command:
 Error: File doesn't exist or cannot be opened
 Enter your command:
 ----------------------------------------
@@ -140,8 +138,6 @@ Error: board contains erroneous values
 Enter your command:
 ERROR: invalid command
 Enter your command:
-Error: board contains erroneous values
-Enter your command:
 Saved to: badBoard
 Enter your command:
 Error: board contains erroneous values
@@ -165,9 +161,6 @@ Enter your command:
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:
-Number of solutions:1
-This is a good board!
 Enter your command:
 Hint: set cell to 1
 Enter your command:
@@ -257,9 +250,6 @@ Enter your command:
 Enter your command:
 Validation passed: board is solvable
 Enter your command:
-Number of solutions:1
-This is a good board!
-Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -292,8 +282,6 @@ Enter your command:
 |  3   4   5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Puzzle solved successfully
-Enter your command:
-ERROR: invalid command
 Enter your command:
 ERROR: invalid command
 Enter your command:
@@ -1004,8 +992,6 @@ ERROR: invalid command
 Enter your command:
 ERROR: invalid command
 Enter your command:
-ERROR: invalid command
-Enter your command:
 Error: File cannot be opened
 Enter your command:
 ----------------------------------------
@@ -1170,9 +1156,6 @@ Enter your command:
 |        |        |
 -------------------
 Enter your command:
-Number of solutions:288
-The puzzle has more than 1 solution, try to edit further
-Enter your command:
 Validation passed: board is solvable
 Enter your command:
 ERROR: invalid command
@@ -1197,62 +1180,79 @@ ERROR: invalid command
 Enter your command:
 ERROR: invalid command
 Enter your command:
-Error: File cannot be opened
+---------------------------
+|            |            |
+|            |            |
+---------------------------
+|            |            |
+|            |            |
+---------------------------
+|            |            |
+|            |            |
+---------------------------
 Enter your command:
-Error: value not in range 0-15
-Enter your command:
-Number of solutions:72
-The puzzle has more than 1 solution, try to edit further
+Error: value not in range 0-36
 Enter your command:
 Saved to: hope1
 Enter your command:
--------------------
-|        |        |
-|        |        |
--------------------
-|        |        |
-|        |        |
--------------------
-Undo 1,1: from 3 to _
+Error: no moves to undo
 Enter your command:
 Error: no moves to undo
 Enter your command:
--------------------
-|  3.    |        |
-|        |        |
--------------------
-|        |        |
-|        |        |
--------------------
+---------------------------
+|            |            |
+|            |            |
+---------------------------
+|            |            |
+|            |            |
+---------------------------
+|            |            |
+|            |            |
+---------------------------
 Enter your command:
--------------------
-|  3.    |        |
-|        |        |
--------------------
-|        |        |
-|        |        |
--------------------
+---------------------------
+|            |            |
+|            |            |
+---------------------------
+|            |            |
+|            |            |
+---------------------------
+|            |            |
+|            |            |
+---------------------------
 Enter your command:
-Error: File cannot be opened
+----------------------------
+|        |        |        |
+|        |        |        |
+|        |        |        |
+----------------------------
+|        |        |        |
+|        |        |        |
+|        |        |        |
+----------------------------
 Enter your command:
-ERROR: invalid command
+Error: value not in range 0-36
 Enter your command:
 Saved to: hope2
 Enter your command:
--------------------
-|  3.    |        |
-|        |        |
--------------------
-|        |        |
-|        |        |
--------------------
+----------------------------
+|        |        |        |
+|        |        |        |
+|        |        |        |
+----------------------------
+|        |        |        |
+|        |        |        |
+|        |        |        |
+----------------------------
 Enter your command:
--------------------
-|  3.    |        |
-|        |        |
--------------------
-|        |        |
-|        |        |
--------------------
+----------------------------
+|        |        |        |
+|        |        |        |
+|        |        |        |
+----------------------------
+|        |        |        |
+|        |        |        |
+|        |        |        |
+----------------------------
 Enter your command:
 Exiting...
