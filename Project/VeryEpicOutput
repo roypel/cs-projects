@@ -1,36 +1,36 @@
 Sudoku
 ------
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:4198671 filled
+Enter your command:
 Error: File doesn't exist or cannot be opened
-Enter your command:4198671 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2     |
 |  6         |  1   9   5 |      4   8 |
@@ -44,15 +44,15 @@ Enter your command:4198671 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:69 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:69 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:69 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1*|
 |  6         |  1   9   5 |      4   8 |
@@ -66,27 +66,27 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1*|
 |  6         |  1   9   5 |      4   8 |
@@ -100,8 +100,8 @@ Enter your command:70 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2*  8   6 |  1   7   2*|
 ----------------------------------------
-Enter your command:70 filled
-Enter your command:70 filled
+Enter your command:
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1 |
 |  6         |  1   9   5 |      4   8 |
@@ -115,12 +115,12 @@ Enter your command:70 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   2 |
 ----------------------------------------
-Enter your command:70 filled
+Enter your command:
 Error: the value should be 0 or 1
-Enter your command:70 filled
+Enter your command:
 Error: the value should be 0 or 1
-Enter your command:70 filled
-Enter your command:70 filled
+Enter your command:
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1*|
 |  6         |  1   9   5 |      4   8 |
@@ -134,24 +134,24 @@ Enter your command:70 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2*  8   6 |  1   7   2*|
 ----------------------------------------
-Enter your command:70 filled
-Enter your command:70 filled
+Enter your command:
+Enter your command:
 Error: board contains erroneous values
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 Error: board contains erroneous values
-Enter your command:70 filled
+Enter your command:
 Saved to: badBoard
-Enter your command:70 filled
+Enter your command:
 Error: board contains erroneous values
-Enter your command:70 filled
+Enter your command:
 Board reset
-Enter your command:69 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:69 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9         |
 |  6         |  1   9   5 |      4   8 |
@@ -165,12 +165,12 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:68 filled
+Enter your command:
 Number of solutions:1
 This is a good board!
-Enter your command:68 filled
+Enter your command:
 Hint: set cell to 1
-Enter your command:68 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1     |
 |  6         |  1   9   5 |      4   8 |
@@ -184,7 +184,7 @@ Enter your command:68 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1     |
 |  6         |  1   9   5 |      4   8 |
@@ -198,7 +198,7 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1     |
 |  6         |  1   9   5 |      4   8 |
@@ -212,7 +212,7 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1     |
 |  6         |  1   9   5 |      4   8 |
@@ -226,7 +226,7 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1     |
 |  6         |  1   9   5 |      4   8 |
@@ -240,7 +240,7 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1     |
 |  6         |  1   9   5 |      4   8 |
@@ -254,12 +254,12 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 Validation passed: board is solvable
-Enter your command:69 filled
+Enter your command:
 Number of solutions:1
 This is a good board!
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -273,11 +273,11 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:79 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:79 filled
+Enter your command:
 Saved to: check
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -292,31 +292,31 @@ Enter your command:79 filled
 |  3   4   5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Puzzle solved successfully
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -330,13 +330,13 @@ Enter your command:81 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:79 filled
+Enter your command:
 Board reset
-Enter your command:79 filled
+Enter your command:
 Board reset
-Enter your command:79 filled
+Enter your command:
 Board reset
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -350,7 +350,7 @@ Enter your command:79 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -364,7 +364,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -378,7 +378,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -392,7 +392,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -406,7 +406,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -420,7 +420,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -434,7 +434,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -448,7 +448,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -462,21 +462,21 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:78 filled
+Enter your command:
 Hint: set cell to 1
-Enter your command:78 filled
+Enter your command:
 Error: cell already contains a value
-Enter your command:78 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:78 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:78 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:78 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:78 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -490,7 +490,7 @@ Enter your command:78 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -504,7 +504,7 @@ Enter your command:79 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -518,7 +518,7 @@ Enter your command:79 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -532,7 +532,7 @@ Enter your command:79 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:80 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -547,7 +547,7 @@ Enter your command:80 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 3,4: from 9 to _
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -562,7 +562,7 @@ Enter your command:79 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from 1 to 2
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -577,7 +577,7 @@ Enter your command:79 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from 2 to 1
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -592,7 +592,7 @@ Enter your command:79 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from 1 to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -607,7 +607,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -622,7 +622,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -637,7 +637,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -652,7 +652,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -667,7 +667,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -682,7 +682,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -697,7 +697,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -712,7 +712,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -727,25 +727,25 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 8,1: from _ to 1
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -760,7 +760,7 @@ Enter your command:79 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from 1 to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -775,7 +775,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -790,7 +790,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -805,7 +805,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -820,7 +820,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -835,7 +835,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -850,7 +850,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -865,7 +865,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9       2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -880,7 +880,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to _
-Enter your command:78 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -895,7 +895,7 @@ Enter your command:78 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from _ to 1
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -910,7 +910,7 @@ Enter your command:79 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from 1 to 2
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -925,7 +925,7 @@ Enter your command:79 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 8,1: from 2 to 1
-Enter your command:79 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -940,31 +940,31 @@ Enter your command:79 filled
 |  3       5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Redo 3,4: from _ to 9
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:80 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:80 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:80 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:80 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:80 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   1   2 |
 |  6   7   2 |  1   9   5 |  3   4   8 |
@@ -979,33 +979,33 @@ Enter your command:80 filled
 |  3   4   5 |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Puzzle solved successfully
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:81 filled
+Enter your command:
 Error: File cannot be opened
-Enter your command:81 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2     |
 |  6         |  1   9   5 |      4   8 |
@@ -1019,19 +1019,19 @@ Enter your command:81 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:69 filled
+Enter your command:
 Error: no moves to redo
-Enter your command:69 filled
+Enter your command:
 Error: no moves to undo
-Enter your command:69 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:69 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:69 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:69 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:69 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1*|
 |  6         |  1   9   5 |      4   8 |
@@ -1045,27 +1045,27 @@ Enter your command:69 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 Error: value not in range 1-9
-Enter your command:70 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1*|
 |  6         |  1   9   5 |      4   8 |
@@ -1079,9 +1079,9 @@ Enter your command:70 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2*  8   6 |  1   7   2*|
 ----------------------------------------
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1*|
 |  6         |  1   9   5 |      4   8 |
@@ -1095,13 +1095,13 @@ Enter your command:70 filled
 |  2   8   7 |  4   1   9 |  6   3   5 |
 |  3         |  2*  8   6 |  1   7   2*|
 ----------------------------------------
-Enter your command:70 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:70 filled
+Enter your command:
 Error: board contains erroneous values
-Enter your command:70 filled
+Enter your command:
 Error: board contains erroneous values
-Enter your command:70 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2   1*|
 |  6         |  1   9   5 |      4   8 |
@@ -1116,7 +1116,7 @@ Enter your command:70 filled
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 9,9: from 2 to 9
-Enter your command:70 filled
+Enter your command:
 ----------------------------------------
 |  5   3   4 |  6   7   8 |  9   2     |
 |  6         |  1   9   5 |      4   8 |
@@ -1131,15 +1131,15 @@ Enter your command:70 filled
 |  3         |  2   8   6 |  1   7   9 |
 ----------------------------------------
 Undo 9,1: from 1 to _
-Enter your command:69 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:69 filled
+Enter your command:
 Validation failed: board is unsolvable
-Enter your command:69 filled
+Enter your command:
 Error: board validation failed
-Enter your command:69 filled
+Enter your command:
 Number of solutions:0
-Enter your command:69 filled
+Enter your command:
 -------------------
 |        |        |
 |        |        |
@@ -1147,14 +1147,14 @@ Enter your command:69 filled
 |        |        |
 |        |        |
 -------------------
-Enter your command:0 filled
+Enter your command:
 Number of solutions:288
 The puzzle has more than 1 solution, try to edit further
-Enter your command:0 filled
+Enter your command:
 Validation passed: board is solvable
-Enter your command:0 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:0 filled
+Enter your command:
 -------------------
 |  3     |        |
 |        |        |
@@ -1162,17 +1162,17 @@ Enter your command:0 filled
 |        |        |
 |        |        |
 -------------------
-Enter your command:1 filled
+Enter your command:
 Error: value not in range 1-4
-Enter your command:1 filled
+Enter your command:
 Error: value not in range 1-4
-Enter your command:1 filled
+Enter your command:
 Error: value not in range 1-4
-Enter your command:1 filled
+Enter your command:
 Error: value not in range 1-4
-Enter your command:1 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:1 filled
+Enter your command:
 ERROR: invalid command
-Enter your command:1 filled
+Enter your command:
 Exiting...
