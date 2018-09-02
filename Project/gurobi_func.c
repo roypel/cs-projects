@@ -1,9 +1,3 @@
-/* This example formulates and solves the following simple MIP model:
- maximize    x +   y + 2 z
- subject to  x + 2 y + 3 z <= 4
- x +   y       >= 1
- x, y, z binary
- */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,7 +13,8 @@ void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 	free(vtype);
 }
 
-int addConstraints(int cols,int rows,int* ind,double* val){
+int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amountFilled,GRBenv *env,GRBmodel *model,double* obj,char* vtype){
+	int i,j,k,l,a,error;
 	/*only one number per cell constraints*/
 	for (i = 0; i < cols * rows; i++) {
 		for (j = 0; j < cols * rows; j++) {
@@ -117,7 +112,8 @@ int addConstraints(int cols,int rows,int* ind,double* val){
 	return 0;
 }
 
-int addVars(int cols,int rows,int* ind,double* val,double* obj,char* vtype){
+int addVars(int cols,int rows,int* ind,double* val,double* obj,char* vtype,GRBenv *env,GRBmodel *model){
+	int i,j,k,error;
 	/* add variables and set the variables to be binary */
 	for (i = 0; i < cols * rows; i++) {
 		for (j = 0; j < cols * rows; j++) {
@@ -154,13 +150,12 @@ int addVars(int cols,int rows,int* ind,double* val,double* obj,char* vtype){
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
-
+	return 0;
 }
 
 int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure(error),0 on no solution,1 on solution found*/
 	/*also need to return the solution of the filled board,so find how to optimally*/
 	/*sol will hold which cells contain which numbers. We want to return the solution and to free it, so we allocate it outside and free it outside so we can return inside*/
-	int i, j, k, a, l;
 	GRBenv *env = NULL;
 	GRBmodel *model = NULL;
 	int error = 0;
@@ -203,11 +198,11 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
-	if(addVars(cols,rows,ind,val,obj,vtype)==-1)
+	if(addVars(cols,rows,ind,val,obj,vtype,env,model)==-1)
 		return -1;
 	
 	
-	if(addConstraints(cols,rows,ind,val)==-1)
+	if(addConstraints(cols,rows,ind,val,filled,amountFilled,env,model,obj,vtype)==-1)
 		return -1;
 
 	/*  Optimize model - need to call this before calculation  */
