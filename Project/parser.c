@@ -7,7 +7,7 @@
 #include "fileFunc.h"
 #include "solver.h"
 
-#define inputSize 258
+#define inputSize 258 /*We want to check if the line consists 257 characters, and we need to save space for '\0'*/
 #define setValues 3
 #define hintValues 2
 #define maxValues 3
@@ -39,18 +39,16 @@ int checkInput(int *values, gameState *metaBoard, char *cmd) {
 			invalidError;
 		else {
 			if (((values[0] >= 0) && (values[0] < cols * rows))/*Make sure input is valid for board*/
-			&& ((values[1] >= 0) && (values[1] < cols * rows))
-					&& ((values[2] >= 0) && (values[2] <= cols * rows)))
+			&& ((values[1] >= 0) && (values[1] < cols * rows)) && ((values[2] >= 0) && (values[2] <= cols * rows)))
 				return 1;
 			else
-				printf("Error: value not in range 1-%d\n", rows * cols);
+				printf("Error: value not in range 0-%d\n", rows * cols);
 		}
 	} else if (!strcmp(cmd, "hint")) {
 		if ((values[0] == -2) || (values[1] == -2))/*We didn't read two strings after "hint"*/
 			invalidError;
 		else {
-			if ((values[0] >= 0) && (values[0] < cols * rows)
-					&& (values[1] >= 0) && (values[1] < cols * rows))/*Make sure input is valid for board*/
+			if ((values[0] >= 0) && (values[0] < cols * rows) && (values[1] >= 0) && (values[1] < cols * rows))/*Make sure input is valid for board*/
 				return 1;
 			else
 				printf("Error: value not in range 1-%d\n", rows * cols);
@@ -60,14 +58,131 @@ int checkInput(int *values, gameState *metaBoard, char *cmd) {
 			invalidError;
 		else {
 			empty = cols * rows * cols * rows - metaBoard->filledCells;
-			if ((values[0] >= 0) && (values[0] <= empty) && (values[1] >= 0)
-					&& (values[1] <= empty))/*Make sure input is valid for board*/
+			if ((values[0] >= 0) && (values[0] <= empty) && (values[1] >= 0) && (values[1] <= empty))/*Make sure input is valid for board*/
 				return 1;
 			else
 				printf("Error: value not in range 0-%d\n", empty);
 		}
 	}
 	return 0;
+}
+
+void ignoreLine(char *input) {
+	invalidError;
+	while (input[256] != 0) {
+		input[256] = 0;
+		checkInitalize(fgets(input, inputSize, stdin), "fgets");
+	}
+}
+
+void cmdSolve(const char *delim, gameState *metaBoard) {
+	char *token;
+	token = strtok(NULL, delim);
+	if (token) {
+		sendToFill(metaBoard, token, Solve);
+	} else
+		invalidError;
+}
+
+void cmdEdit(const char *delim, gameState *metaBoard) {
+	char *token;
+	token = strtok(NULL, delim);
+	sendToFill(metaBoard, token, Edit);
+}
+
+void cmdMarkErrors(const char *delim, int *values, gameState *metaBoard) {
+	char *token;
+	token = strtok(NULL, delim);
+	if (token) {
+		values[0] = checkIsInt(token);
+		if ((values[0] == 0) || (values[0] == 1))
+			metaBoard->markError = values[0];
+		else
+			printf("Error: the value should be 0 or 1\n");
+	} else
+		invalidError;
+}
+
+void cmdSet(const char *delim, int *values, gameState *metaBoard) {
+	char *token;
+	int i;
+	for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
+		token = strtok(NULL, delim);
+		if (token)
+			values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
+	}
+	values[2]++;/*Fix value of what the user wants to enter to the cell, unneeded decrement*/
+	if (checkInput(values, metaBoard, "set"))
+		setBoard(values[0], values[1], values[2], metaBoard, 1);
+}
+
+void cmdValidate(gameState *metaBoard) {
+	int valid;
+	if (isErroneous(metaBoard))
+		erroneousError;
+	else {
+		valid = validate(metaBoard);
+		if (valid == 1)
+			printf("Validation passed: board is solvable\n");
+		else if (!valid)
+			printf("Validation failed: board is unsolvable\n");
+	}
+}
+
+void cmdGenerate(const char *delim, int *values, gameState *metaBoard) {
+	char *token;
+	int i;
+	for (i = 0; i < generateValues; i++) {/*Reading at least two strings after "generate", else invalid input*/
+		token = strtok(NULL, delim);
+		if (token)
+			values[i] = checkIsInt(token);
+	}
+	if (checkInput(values, metaBoard, "generate")) {
+		if (metaBoard->filledCells != 0)
+			printf("Error: board is not empty\n");
+		else
+			generateBoard(values[0], values[1], metaBoard);
+	}
+}
+
+void cmdSave(const char *delim, gameState *metaBoard) {
+	char *token;
+	token = strtok(NULL, delim);
+	if (token) {
+		saveFile(metaBoard, token);
+	} else
+		invalidError;
+}
+
+void cmdHint(const char *delim, int *values, gameState *metaBoard) {
+	char *token;
+	int i;
+	for (i = 0; i < hintValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
+		token = strtok(NULL, delim);
+		if (token)
+			values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
+	}
+	if (checkInput(values, metaBoard, "hint")) {
+		if (isErroneous(metaBoard))
+			erroneousError;
+		else
+			hintBoard(values[0], values[1], metaBoard);
+	}
+}
+
+void cmdNumSolutions(gameState *metaBoard) {
+	if (isErroneous(metaBoard))
+		erroneousError;
+	else
+		numOfSol(metaBoard->gameBoard);
+}
+
+void cmdAutofill(gameState *metaBoard) {
+	if (isErroneous(metaBoard))
+		erroneousError;
+	else {
+		autoFill(metaBoard);
+	}
 }
 
 void readInput(gameState *metaBoard) {
@@ -83,116 +198,37 @@ void readInput(gameState *metaBoard) {
 		printf("Enter your command:\n");
 		if (fgets(input, inputSize, stdin) != NULL) {
 			if (input[256] != 0) {/*Skip current line, too much characters in input*/
-				invalidError;
-				while (input[256] != 0) {
-					input[256] = 0;
-					checkInitalize(fgets(input, inputSize, stdin), "fgets");
-				}
+				ignoreLine(input);
 			} else {
 				token = strtok(input, delim);
 				if (token != NULL) {
 					if (!strcmp(token, "solve")) {
-						token = strtok(NULL, delim);
-						if (token) {
-							sendToFill(metaBoard, token, Solve);
-						} else
-							invalidError;
+						cmdSolve(delim, metaBoard);
 					} else if (!strcmp(token, "edit")) {
-						token = strtok(NULL, delim);
-						sendToFill(metaBoard, token, Edit);
-					} else if (!(strcmp(token, "mark_errors"))
-							&& (metaBoard->mode == Solve)) {
-						token = strtok(NULL, delim);
-						if (token) {
-							values[0] = checkIsInt(token);
-							if ((values[0] == 0) || (values[0] == 1))
-								metaBoard->markError = values[0];
-							else
-								printf("Error: the value should be 0 or 1\n");
-						} else
-							invalidError;
-					} else if (!(strcmp(token, "print_board"))
-							&& (metaBoard->mode != Init)) {
+						cmdEdit(delim, metaBoard);
+					} else if (!(strcmp(token, "mark_errors")) && (metaBoard->mode == Solve)) {
+						cmdMarkErrors(delim, values, metaBoard);
+					} else if (!(strcmp(token, "print_board")) && (metaBoard->mode != Init)) {
 						printBoard(metaBoard);
-					} else if ((!(strcmp(token, "set")))
-							&& (metaBoard->mode != Init)) {
-						for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
-							token = strtok(NULL, delim);
-							if (token)
-								values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
-						}
-						values[2]++;/*Fix value of what the user wants to enter to the cell, unneeded decrement*/
-						if (checkInput(values, metaBoard, "set"))
-							setBoard(values[0], values[1], values[2], metaBoard,
-									1);
-					} else if (!(strcmp(token, "validate"))
-							&& (metaBoard->mode != Init)) {
-						if (isErroneous(metaBoard))
-							erroneousError;
-						else {
-							i = validate(metaBoard);
-							if (i == 1)
-								printf(
-										"Validation passed: board is solvable\n");
-							else if (!i)
-								printf(
-										"Validation failed: board is unsolvable\n");
-						}
-					} else if (!strcmp(token, "generate")
-							&& (metaBoard->mode == Edit)) {
-						for (i = 0; i < generateValues; i++) {/*Reading at least two strings after "generate", else invalid input*/
-							token = strtok(NULL, delim);
-							if (token)
-								values[i] = checkIsInt(token);
-						}
-						if (checkInput(values, metaBoard, "generate")) {
-							if (metaBoard->filledCells != 0)
-								printf("Error: board is not empty\n");
-							else
-								generateBoard(values[0], values[1], metaBoard);
-						}
-
-					} else if (!strcmp(token, "undo")
-							&& (metaBoard->mode != Init)) {
+					} else if ((!(strcmp(token, "set"))) && (metaBoard->mode != Init)) {
+						cmdSet(delim, values, metaBoard);
+					} else if (!(strcmp(token, "validate")) && (metaBoard->mode != Init)) {
+						cmdValidate(metaBoard);
+					} else if (!strcmp(token, "generate") && (metaBoard->mode == Edit)) {
+						cmdGenerate(delim, values, metaBoard);
+					} else if (!strcmp(token, "undo") && (metaBoard->mode != Init)) {
 						undo(metaBoard);
-					} else if (!strcmp(token, "redo")
-							&& (metaBoard->mode != Init)) {
+					} else if (!strcmp(token, "redo") && (metaBoard->mode != Init)) {
 						redo(metaBoard);
-					} else if (!strcmp(token, "save")
-							&& (metaBoard->mode != Init)) {
-						token = strtok(NULL, delim);
-						if (token) {
-							saveFile(metaBoard, token);
-						} else
-							invalidError;
-					} else if ((strcmp(token, "hint") == 0)
-							&& (metaBoard->mode == Solve)) {
-						for (i = 0; i < hintValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
-							token = strtok(NULL, delim);
-							if (token)
-								values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
-						}
-						if (checkInput(values, metaBoard, "hint")) {
-							if (isErroneous(metaBoard))
-								erroneousError;
-							else
-								hintBoard(values[0], values[1], metaBoard);
-						}
-					} else if (!strcmp(token, "num_solutions")
-							&& (metaBoard->mode != Init)) {
-						if (isErroneous(metaBoard))
-							erroneousError;
-						else
-							numOfSol(metaBoard->gameBoard);
-					} else if (!strcmp(token, "autofill")
-							&& (metaBoard->mode == Solve)) {
-						if (isErroneous(metaBoard))
-							erroneousError;
-						else {
-							autoFill(metaBoard);
-						}
-					} else if (!strcmp(token, "reset")
-							&& (metaBoard->mode != Init)) {
+					} else if (!strcmp(token, "save") && (metaBoard->mode != Init)) {
+						cmdSave(delim, metaBoard);
+					} else if ((strcmp(token, "hint") == 0) && (metaBoard->mode == Solve)) {
+						cmdHint(delim, values, metaBoard);
+					} else if (!strcmp(token, "num_solutions") && (metaBoard->mode != Init)) {
+						cmdNumSolutions(metaBoard);
+					} else if (!strcmp(token, "autofill") && (metaBoard->mode == Solve)) {
+						cmdAutofill(metaBoard);
+					} else if (!strcmp(token, "reset") && (metaBoard->mode != Init)) {
 						resetGame(metaBoard);
 					} else if (!strcmp(token, "exit")) {
 						exitGame(metaBoard);
