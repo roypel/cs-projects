@@ -19,100 +19,7 @@ void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 	free(vtype);
 }
 
-int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure(error),0 on no solution,1 on solution found*/
-	/*also need to return the solution of the filled board,so find how to optimally*/
-	/*sol will hold which cells contain which numbers. We want to return the solution and to free it, so we allocate it outside and free it outside so we can return inside*/
-	int i, j, k, a, l;
-	GRBenv *env = NULL;
-	GRBmodel *model = NULL;
-	int error = 0;
-	int* ind;/*Which variable are used in each constraint*/
-	double* val;/*The coefficients of the constraints*/
-	double *obj = { 0 };
-	char* vtype;/*What type the variable will be (all will be binary)*/
-	int optimstatus;
-	/*	double objval;*/
-	ind = (int*) calloc(cols * rows, sizeof(int));
-	checkInitalize(ind, "calloc");
-	val = (double*) calloc(cols * rows, sizeof(double));
-	checkInitalize(val, "calloc");
-	vtype = (char*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(char));
-	checkInitalize(vtype, "calloc");
-	obj = (double*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(double));
-	checkInitalize(obj, "calloc");
-	/* Create environment - log file is mip1.log */
-	error = GRBloadenv(&env, "mip1.log");
-	if (error) {
-		printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, obj, vtype);
-		return -1;
-	}
-
-	/*not sure which one of the next 2 cancels unneeded prints,check it,probably both are exactly the same*/
-	/*Cancel log being written to console*/
-	error = GRBsetintparam(env, GRB_INT_PAR_LOGTOCONSOLE, 0);
-	if (error) {
-		printf("ERROR %d GRBsetintparam(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, obj, vtype);
-		return -1;
-	}
-	/*This too?*/
-	error = GRBsetintparam(env, "OutputFlag", 0);
-	if (error) {
-		printf("ERROR %d GRBsetintparam(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, obj, vtype);
-		return -1;
-	}
-
-	/* Create an empty model named "mip1" */
-	error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL);
-	if (error) {
-		printf("ERROR %d GRBnewmodel(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, obj, vtype);
-		return -1;
-	}
-
-	/* Add variables */
-
-	/* set the variables to be binary */
-	for (i = 0; i < cols * rows; i++) {
-		for (j = 0; j < cols * rows; j++) {
-			for (k = 0; k < cols * rows; k++) {
-				vtype[i * cols * rows * cols * rows + j * cols * rows + k] =
-				GRB_BINARY;
-			}
-		}
-	}
-
-	/* add variables to model */
-	error = GRBaddvars(model, cols * rows * cols * rows * cols * rows, 0, NULL,
-	NULL, NULL, obj, NULL, NULL, vtype,
-	NULL);
-	if (error) {
-		printf("ERROR %d GRBaddvars(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, obj, vtype);
-		return -1;
-	}
-
-	/* Change objective sense to maximization */
-	error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
-	if (error) {
-		printf("ERROR %d GRBsetintattr(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, obj, vtype);
-		return -1;
-	}
-
-	/* update the model - to integrate new variables */
-
-	error = GRBupdatemodel(model);
-	if (error) {
-		printf("ERROR %d GRBupdatemodel(): %s\n", error, GRBgeterrormsg(env));
-		free_stuffs(ind, val, obj, vtype);
-		return -1;
-	}
-
+int addConstraints(int cols,int rows,int* ind,double* val){
 	/*only one number per cell constraints*/
 	for (i = 0; i < cols * rows; i++) {
 		for (j = 0; j < cols * rows; j++) {
@@ -207,42 +114,101 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 			return -1;
 		}
 	}
-	/*
-	 keeping for reference,this is from the example that was provided
-	 First constraint: x + 2 y + 3 z <= 4
-	 variables x,y,z (0,1,2)
-	 ind[0] = 0;
-	 ind[1] = 1;
-	 ind[2] = 2;
-	 coefficients (according to variables in "ind")
-	 val[0] = 1;
-	 val[1] = 2;
-	 val[2] = 3;
-	 add constraint to model - note size 3 + operator GRB_LESS_EQUAL
-	 -- equation value (4.0) + unique constraint name
-	 error = GRBaddconstr(model, 3, ind, val, GRB_LESS_EQUAL, 4.0, "c0");
-	 if (error) {
-	 printf("ERROR %d 1st GRBaddconstr(): %s\n", error,
-	 GRBgeterrormsg(env));
-	 free_stuffs(ind, val, obj, vtype);
-	 return -1;
-	 }
-	 Second constraint: x + y >= 1
-	 ind[0] = 0;
-	 ind[1] = 1;
-	 val[0] = 1;
-	 val[1] = 1;
-	 add constraint to model - note size 2 + operator GRB_GREATER_EQUAL
-	 -- equation value (1.0) + unique constraint name
-	 error = GRBaddconstr(model, 2, ind, val, GRB_GREATER_EQUAL, 1.0,
-	 "c1");
-	 if (error) {
-	 printf("ERROR %d 2nd GRBaddconstr(): %s\n", error,
-	 GRBgeterrormsg(env));
-	 free_stuffs(ind, val, obj, vtype);
-	 return -1;
-	 }
-	 */
+	return 0;
+}
+
+int addVars(int cols,int rows,int* ind,double* val,double* obj,char* vtype){
+	/* add variables and set the variables to be binary */
+	for (i = 0; i < cols * rows; i++) {
+		for (j = 0; j < cols * rows; j++) {
+			for (k = 0; k < cols * rows; k++) {
+				vtype[i * cols * rows * cols * rows + j * cols * rows + k] =
+				GRB_BINARY;
+			}
+		}
+	}
+
+	/* add variables to model */
+	error = GRBaddvars(model, cols * rows * cols * rows * cols * rows, 0, NULL,
+	NULL, NULL, obj, NULL, NULL, vtype,
+	NULL);
+	if (error) {
+		printf("ERROR %d GRBaddvars(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs(ind, val, obj, vtype);
+		return -1;
+	}
+
+	/* Change objective sense to maximization */
+	error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
+	if (error) {
+		printf("ERROR %d GRBsetintattr(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs(ind, val, obj, vtype);
+		return -1;
+	}
+
+	/* update the model - to integrate new variables */
+
+	error = GRBupdatemodel(model);
+	if (error) {
+		printf("ERROR %d GRBupdatemodel(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs(ind, val, obj, vtype);
+		return -1;
+	}
+
+}
+
+int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure(error),0 on no solution,1 on solution found*/
+	/*also need to return the solution of the filled board,so find how to optimally*/
+	/*sol will hold which cells contain which numbers. We want to return the solution and to free it, so we allocate it outside and free it outside so we can return inside*/
+	int i, j, k, a, l;
+	GRBenv *env = NULL;
+	GRBmodel *model = NULL;
+	int error = 0;
+	int* ind;/*Which variable are used in each constraint*/
+	double* val;/*The coefficients of the constraints*/
+	double *obj = { 0 };
+	char* vtype;/*What type the variable will be (all will be binary)*/
+	int optimstatus;
+	/*	double objval;*/
+	ind = (int*) calloc(cols * rows, sizeof(int));
+	checkInitalize(ind, "calloc");
+	val = (double*) calloc(cols * rows, sizeof(double));
+	checkInitalize(val, "calloc");
+	vtype = (char*) calloc(cols * rows * cols * rows * cols * rows,
+			sizeof(char));
+	checkInitalize(vtype, "calloc");
+	obj = (double*) calloc(cols * rows * cols * rows * cols * rows,
+			sizeof(double));
+	checkInitalize(obj, "calloc");
+	/* Create environment - log file is mip1.log */
+	error = GRBloadenv(&env, "mip1.log");
+	if (error) {
+		printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs(ind, val, obj, vtype);
+		return -1;
+	}
+
+	/*Cancel log being written to console*/
+	error = GRBsetintparam(env, GRB_INT_PAR_LOGTOCONSOLE, 0);
+	if (error) {
+		printf("ERROR %d GRBsetintparam(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs(ind, val, obj, vtype);
+		return -1;
+	}
+
+	/* Create an empty model named "mip1" */
+	error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL);
+	if (error) {
+		printf("ERROR %d GRBnewmodel(): %s\n", error, GRBgeterrormsg(env));
+		free_stuffs(ind, val, obj, vtype);
+		return -1;
+	}
+	if(addVars(cols,rows,ind,val,obj,vtype)==-1)
+		return -1;
+	
+	
+	if(addConstraints(cols,rows,ind,val)==-1)
+		return -1;
 
 	/*  Optimize model - need to call this before calculation  */
 	error = GRBoptimize(model);
@@ -268,24 +234,13 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
-
 	if (optimstatus == GRB_INFEASIBLE) {
 		GRBfreemodel(model);
 		GRBfreeenv(env);
 		free_stuffs(ind, val, obj, vtype);
 		return 0;
 	}
-	/*probably dont need this since we maximize 0 in our shit my dude*/
-	/* get the objective -- the optimal result of the function 
-	 error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &objval);
-	 if (error) {
-	 printf("ERROR %d GRBgettdblattr(): %s\n", error, GRBgeterrormsg(env));
-	 free_stuffs(ind, val, obj, vtype);
-	 return -1;
-	 }*/
-
 	/* get the solution - the assignment to each variable */
-	/* cols*rows*cols*rows*cols*rows-- number of variables, the size of "sol" should match */
 	error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0,
 			cols * rows * cols * rows * cols * rows, sol);
 	if (error) {
@@ -295,28 +250,11 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		return -1;
 	}
 
-	/*TODO: Fill toBeFilled board with solution*/
-	/*probably dont need these since we dont need to print to the user,maybe keep for the tests
-	 print results
-	 printf("\nOptimization complete\n");
-	 solution found
-	 if (optimstatus == GRB_OPTIMAL) {
-	 printf("Optimal objective: %.4e\n", objval);
-	 printf("  x=%.0f, y=%.0f, z=%.0f\n", sol[0], sol[1], sol[2]);
-	 }
-	 no solution found
-	 else if (optimstatus == GRB_INF_OR_UNBD) {
-	 printf("Model is infeasible or unbounded\n");
-	 }
-	 error or calculation stopped
-	 else {
-	 printf("Optimization was stopped early\n");
-	 }
-	 */
+	
 
-	/* IMPORTANT !!! - Free model and environment */
+	/* Free model and environment */
 	GRBfreemodel(model);
 	GRBfreeenv(env);
-	/*	free_stuffs(ind, val, obj, vtype);*/
+	free_stuffs(ind, val, obj, vtype);
 	return 1;/*found solution,and it's stored in sol*/
 }
