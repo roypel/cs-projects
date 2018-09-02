@@ -188,18 +188,14 @@ save
 validate < should be unsolveable
 save notPossible < shouldn't allow, board not valid
 generate 4 5
-edit
-dont generate 35 35
 reset
 redo
 undo
-dont generate 35 35
 undo
 redo
 autofill
 undo
 undo
-dont generate 35 35
 redo
 undo
 edit 22Board
@@ -214,9 +210,7 @@ set 2 0 1
 autofill
 autofill
 edit 23Board
-num_solutions
 generate 37 37
-dont generate 15 15
 num_solutions
 save hope1
 undo
@@ -224,13 +218,8 @@ undo
 solve hope1
 autofill
 edit 32Board
-num_solutions
 generate 37 37
-dont generate 15 15
-num_solutions
 save hope2
 solve hope2
-num_solutions
 autofill
-num_solutions
 exit
