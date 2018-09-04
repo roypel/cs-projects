@@ -98,17 +98,6 @@ int isErroneous(gameState *metaBoard) {
 		}
 	}
 	return 0;
-
-	/*int i, j;
-	 for (i = 0; i < metaBoard->cols; i++) {
-	 for (j = 0; j < metaBoard->rows; j++) {
-	 checkCell(i, j, metaBoard->gameBoard->board[i][j].value,
-	 metaBoard->gameBoard);
-	 if (metaBoard->gameBoard->board[i][j].error == 1)
-	 return 1;
-	 }
-	 }
-	 return 0;*/
 }
 
 void checkWin(gameState *metaBoard) {
@@ -320,7 +309,6 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 		printf("Error: cell is fixed\n");
 	else if (metaBoard->gameBoard->board[x][y].value)
 		printf("Error: cell already contains a value\n");
-	/*TODO: ADD ILP FUNCTION TO RETURN THE HINT PLEASE DONT DISSAPOINT ME FUTURE US, check if free works properly when realloc was in different place*/
 	else {
 		sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
 				sizeof(double));
@@ -333,9 +321,9 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 		} else if (!solved) {
 			printf("Error: board is unsolvable\n");/*solved is 0 here so board is unsolveable*/
 		}/*If we didn't enter the conditions above, we had an error in the Gurobi library and a message was printed*/
-		free(filledCells);
-		free(sol);
 	}
+	free(filledCells);
+	free(sol);
 }
 
 int validate(gameState *metaBoard) {/*We need this for save as well, so we return a value and not print right away*/
@@ -421,7 +409,6 @@ void generateBoard(int fill, int keep, gameState *metaBoard) {
 				free(filledCells);
 				free(values);
 				metaBoard->filledCells = keep;
-
 				return;
 			} else
 				eraseBoard(metaBoard->gameBoard);

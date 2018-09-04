@@ -3,15 +3,12 @@
 #include <string.h>
 #include "gameStructs.h"
 
-void printBoard(gameState *metaBoard) { /*Prints the board for the print_board command*/
+void printBoard(gameState *metaBoard) {
 	int i, j;
 	board *playerBoard = metaBoard->gameBoard;
 	for (i = 0; i < playerBoard->cols * playerBoard->rows; i++) {
 		if (i % playerBoard->rows == 0) {
-			for (j = 0;
-					j
-							< playerBoard->rows * playerBoard->cols * 4
-									+ playerBoard->rows + 1; j++) {
+			for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
 				printf("-");
 			}
 			printf("\n");
@@ -21,15 +18,13 @@ void printBoard(gameState *metaBoard) { /*Prints the board for the print_board c
 				printf("|");
 			}
 			printf(" ");
-			if (playerBoard->board[j][i].value == 0){
+			if (playerBoard->board[j][i].value == 0) {
 				printf("   ");
-			}
-			else {
+			} else {
 				printf("%2d", playerBoard->board[j][i].value);
 				if (playerBoard->board[j][i].fixed)
 					printf(".");
-				else if ((playerBoard->board[j][i].error)
-						&& ((metaBoard->markError) || (metaBoard->mode == Edit)))
+				else if ((playerBoard->board[j][i].error) && ((metaBoard->markError) || (metaBoard->mode == Edit)))
 					printf("*");
 				else
 					printf(" ");
@@ -39,31 +34,26 @@ void printBoard(gameState *metaBoard) { /*Prints the board for the print_board c
 		}
 		printf("\n");
 	}
-	for (j = 0;
-			j
-					< playerBoard->rows * playerBoard->cols * 4
-							+ playerBoard->rows + 1; j++) {
+	for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
 		printf("-");
 	}
 	printf("\n");
 }
 
-void printChanges(int from, int to) { /*Prints the changes that happened for the undo and redo commands*/
-	if (from == 0) /*If we changed from 0 to something*/
+void printChanges(int from, int to) {
+	if (from == 0)
 		printf("_");
 	else
 		printf("%d", from);
 	printf(" to ");
-	if (to == 0) /*If we changed from something to 0*/
+	if (to == 0)
 		printf("_\n");
 	else
 		printf("%d\n", to);
 }
 
-
-
-void checkInitalize(void *pointer, char *cmd){ /*Checks if initialization worked or not,and if not prints accordingly and exits*/
-	if (pointer == NULL){
+void checkInitalize(void *pointer, char *cmd) {
+	if (pointer == NULL) {
 		printf("Error: %s has failed\n", cmd);
 		exit(0);
 	}
