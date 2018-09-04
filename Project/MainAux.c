@@ -3,7 +3,7 @@
 #include <string.h>
 #include "gameStructs.h"
 
-void printBoard(gameState *metaBoard) {
+void printBoard(gameState *metaBoard) { /*Prints the board for the print_board command*/
 	int i, j;
 	board *playerBoard = metaBoard->gameBoard;
 	for (i = 0; i < playerBoard->cols * playerBoard->rows; i++) {
@@ -40,19 +40,19 @@ void printBoard(gameState *metaBoard) {
 	printf("\n");
 }
 
-void printChanges(int from, int to) {
-	if (from == 0)
+void printChanges(int from, int to) { /*Prints the changes for the undo/redo commands*/
+	if (from == 0) /*If you change from 0 to something*/
 		printf("_");
 	else
 		printf("%d", from);
 	printf(" to ");
-	if (to == 0)
+	if (to == 0) /*Ff you change from something to 0*/
 		printf("_\n");
 	else
 		printf("%d\n", to);
 }
 
-void checkInitalize(void *pointer, char *cmd) {
+void checkInitalize(void *pointer, char *cmd) { /*Checks if initialization worked or not,and if not prints accordingly and exits*/
 	if (pointer == NULL) {
 		printf("Error: %s has failed\n", cmd);
 		exit(0);
