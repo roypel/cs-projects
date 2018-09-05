@@ -321,9 +321,9 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 		} else if (!solved) {
 			printf("Error: board is unsolvable\n");/*solved is 0 here so board is unsolveable*/
 		}/*If we didn't enter the conditions above, we had an error in the Gurobi library and a message was printed*/
+		free(filledCells);
+		free(sol);
 	}
-	free(filledCells);
-	free(sol);
 }
 
 int validate(gameState *metaBoard) {/*We need this for save as well, so we return a value and not print right away*/

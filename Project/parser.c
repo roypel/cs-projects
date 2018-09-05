@@ -20,7 +20,7 @@ int checkIsInt(char *input) {/*Get input string and check if all chars are digit
 	int num = 0;
 	for (i = 0; i < strlen(input); i++) {
 		if (!((input[i] >= '0') && (input[i] <= '9')))
-			return -1;
+			return -3;/*We received an input but it wasn't an int, values will hold -3 in this case (or less if we decrement outside)*/
 		num *= 10;
 		num += input[i] - '0';
 	}
@@ -140,7 +140,7 @@ void cmdGenerate(const char *delim, int *values, gameState *metaBoard) {
 	if (checkInput(values, metaBoard, "generate")) {
 		if (metaBoard->filledCells != 0)
 			printf("Error: board is not empty\n");
-		else if(values[1] != 0)/*if Y=0 then the board stays empty and we don't need to add the command to the doubly linked list*/
+		else
 			generateBoard(values[0], values[1], metaBoard);
 	}
 }
@@ -192,7 +192,7 @@ void readInput(gameState *metaBoard) {
 	int values[maxValues], i;/*For the sake of readability we have excess variables*/
 	while (!feof(stdin)) {
 		for (i = 0; i < maxValues; i++) {/*Resets values array to know if new input is valid (for relevant functions)*/
-			values[i] = -2;
+			values[i] = -2;/*If a cell in values contains -2, we know the user didn't enter a value to this cell (we convert the input string to a positive int)*/
 		}
 		fflush(stdin);
 		printf("Enter your command:\n");
