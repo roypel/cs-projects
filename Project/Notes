@@ -4,10 +4,6 @@ Document: parser.c+.h, solver.c+.h, stackFunc.c+.h, MainAux.c+.h, linkedListFunc
 
 Maybe keep consistency of file and function names (MainAux, gurobi_func).
 
-If generate added nothing (Y=0) don't add to undo/redo list.
-
-Fix error messages for input (set set 2 2 should print "value not in range" not "invalid input").
-
 Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
 
 Make sure we print an error when player sets erroneous value. - Moshe said that we may not need to do it.
@@ -25,7 +21,11 @@ add the prints in a command what is written in the forum in the  פרויקט ת
 
 Documented: fileFunc.c+.h
 
-when we do edit with no filename argument(creates 3x3 empty board),make sure we delete the redo-undo list like we do normally - should work now
+If generate added nothing (Y=0) don't add to undo/redo list (if Y=0 we don't do anything).
+
+Fix error messages for input (set set 2 2 should print "value not in range" not "invalid input").
+
+When we do edit with no filename argument(creates 3x3 empty board),make sure we delete the redo-undo list like we do normally - should work now
 
 Add generate to undo/redo list.(i think you did this lmao)
 
