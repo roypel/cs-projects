@@ -3,7 +3,7 @@
 #include "gameStructs.h"
 #include "MainAux.h"
 
-item pop(stackPointer *stack) {
+item pop(stackPointer *stack) {/*Pop an item from the stack and reduce the size of the stack if necessary*/
 	item top = *(stack->stack + stack->size - 1);
 	if (stack->size <= stack->maxSize * 0.25) {/*Resize the stack to half size to save space*/
 		stack->maxSize /= 2;
@@ -15,7 +15,7 @@ item pop(stackPointer *stack) {
 	return top;
 }
 
-void push(item newItem, stackPointer *stack) {
+void push(item newItem, stackPointer *stack) {/*Insert an item to the stack and increase the size of the stack if necessary*/
 	item *top;/*Will save the address of new space (top of stack)*/
 	if (stack->size == stack->maxSize) {
 		stack->maxSize *= 2;
