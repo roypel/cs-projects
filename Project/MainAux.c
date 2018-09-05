@@ -46,7 +46,7 @@ void printChanges(int from, int to) { /*Prints the changes for the undo/redo com
 	else
 		printf("%d", from);
 	printf(" to ");
-	if (to == 0) /*Ff you change from something to 0*/
+	if (to == 0) /*If you change from something to 0*/
 		printf("_\n");
 	else
 		printf("%d\n", to);
