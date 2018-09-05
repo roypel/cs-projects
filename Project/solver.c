@@ -23,7 +23,16 @@ int nextEmptyCell(int index, board *checkBoard) {
 	return nextEmptyCell(index + 1, checkBoard);
 }
 
-int solver(board *gameBoard) {
+int solver(board *gameBoard) {/*The function for the num_solutions command.We count how many solutions are for the current board and print
+	accordingly.We each time try to find the next empty cell.If we don't find any,it means that we reached the end of the board and
+	found a solution,so we increase the "solutions" counter.If we do,we try to fill it with a number.If it was filled,we add it to
+	the stack as a cell that was filled with that number so that when we return to it later we know from what value to start trying
+	to fill it next.If we didn't find a value to fill it with,then it means we can't fill the board in it's current state,so we have
+	to go back a cell(that we filled) and try to fill it with other values,starting from the value of the cell that it is currently
+	holding,which is stored in the stack as the cell index and the value that is currently in the cell,and we try to fill that cell with
+	other values(bigger than the value stored since we inductionally tried smaller values already).We finish when we extract the first cell
+	that was empty from the stack and we try to fill it with a value bigger than it can be filled with(if it's a 3x3 block board
+	then when we try to fill it with the value 10),after which we return the value of the counter specified above.*/
 	int x = 0, y = 0, i = 1, index = 0;
 	int solutions = 0, rows = gameBoard->rows, cols = gameBoard->cols;
 	int found = 1;
