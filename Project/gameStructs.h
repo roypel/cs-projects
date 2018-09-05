@@ -31,7 +31,6 @@ typedef struct linkedList{
 typedef struct item{
 	int col;
 	int row;
-	int val;
 }item;
 
 typedef struct stackPointer{
