@@ -1,5 +1,8 @@
 --------------------------To do list
 
+in solver command(which does num_solutions)check if we should change what we store in the stack from storing both the cell index
+and value to only the cell index and extracting the value from the board when we get the index
+
 Document: parser.c+.h, solver.c+.h, stackFunc.c+.h, MainAux.c+.h, linkedListFunc.c+.h, gurobi_func.c+.h, game.c+.h, gameStructs.h.
 
 Maybe keep consistency of file and function names (MainAux, gurobi_func).
