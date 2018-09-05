@@ -140,7 +140,7 @@ void cmdGenerate(const char *delim, int *values, gameState *metaBoard) {
 	if (checkInput(values, metaBoard, "generate")) {
 		if (metaBoard->filledCells != 0)
 			printf("Error: board is not empty\n");
-		else
+		else if(values[1] != 0)/*if Y=0 then the board stays empty and we don't need to add the command to the doubly linked list*/
 			generateBoard(values[0], values[1], metaBoard);
 	}
 }
