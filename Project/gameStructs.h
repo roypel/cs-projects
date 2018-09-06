@@ -35,7 +35,6 @@ typedef struct item{
 
 typedef struct stackPointer{
 	item *stack;
-	item bottom;/*QUESTIONABLE IMPLEMENTATION*/
 	int size;
 	int maxSize;
 }stackPointer;
