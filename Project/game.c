@@ -8,8 +8,6 @@
 #include "gurobi_func.h"
 
 void freeBoard(board *freeBird) {
-	/*The function frees the memory allocated for the board in the input, starting from each row and then frees the board itself.
-	 *INPUT: board *freeBird - a pointer to an allocated board which can be free to reduce the needed resources of the program.*/
 	int i;
 	for (i = 0; i < freeBird->rows * freeBird->cols; i++) {
 		free((freeBird->board)[i]);
@@ -18,6 +16,8 @@ void freeBoard(board *freeBird) {
 }
 
 void eraseBoard(board *toErase) {
+	/*The function resets all the values and other properties of the input board to 0, making it a clean board.
+	 * INPUT: board *toErase - A pointer to an allocated board that needs to be wiped from any previous information.*/
 	int i, j;
 	for (i = 0; i < toErase->cols * toErase->rows; i++) {
 		for (j = 0; j < toErase->cols * toErase->rows; j++) {
@@ -39,18 +39,6 @@ void initalizeBoard(board *newBoard) {
 		checkInitalize(newBoard->board[i], "calloc");
 	}
 	eraseBoard(newBoard);
-}
-
-void copyBoard(board *srcBoard, board *trgtBoard) {
-	/*The function copies the values of the given board srcBoard to the board trgtBoard.
-	 *INPUT: board *srcBoard - a pointer to a valid board filled with values ranging from 0 to the board length, while 0 represents an empty cell, that all it's values will be copied to trgtBoard.
-	 *		 board *trgtBoard - a pointer to a preallocated board with the same sizes as srcBoard, which will have the same values in each cell as srcBoard at the end of the function.*/
-	int i, j;
-	for (i = 0; i < srcBoard->cols * srcBoard->rows; i++) {
-		for (j = 0; j < srcBoard->rows * srcBoard->cols; j++) {
-			trgtBoard->board[i][j].value = srcBoard->board[i][j].value;
-		}
-	}
 }
 
 void checkCell(int x, int y, int z, int change, board *check) {
@@ -89,7 +77,6 @@ void checkCell(int x, int y, int z, int change, board *check) {
 }
 
 int isErroneous(gameState *metaBoard) {
-	/*Checks if the whole board contains erroneous values for various functions*/
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
@@ -113,7 +100,9 @@ void checkWin(gameState *metaBoard) {
 }
 
 void checkErroneous(gameState *metaBoard, int x, int y) {
-	/*The function checks the column, row and block of cell x,y to check if any erroneous values are now fixed*/
+	/*The function checks the column, row and block of cell x,y to check if any erroneous values are now fixed.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with allocated board and valid values in it, where each erroneous cell is marked by the error property of the cell.
+	 *        int x,y - Integers representing the column and row of the cell that was changed by <x,y>.*/
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
 		if (i != x)
@@ -173,7 +162,11 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boo
 		printf("Error: cell is fixed\n");
 	}
 }
-int* findFilled(gameState *metaBoard, int* amountFilled) {
+int* findFilled(gameState *metaBoard, int *amountFilled) {
+	/*The function finds all the filled cells in the game board and return them in an array such that every cells take 3 spaces, x,y, and the value in this cell.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with allocated board and with valid values.
+	 *        int *amountFilled - A pointer to an integer that will be updated with the amount of filled cells the function have found.
+	 * OUTPUT: An int array with all the filled cells found in the game board, each cell uses 3 spaces in the format x,y, and the current value inside the cell.*/
 	int *filled = { 0 };
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
@@ -193,7 +186,12 @@ int* findFilled(gameState *metaBoard, int* amountFilled) {
 	return filled;
 }
 
-int findval(double* sol, int x, int y, int cols, int rows) {
+int findval(double *sol, int x, int y, int cols, int rows) {
+	/*The function extract the value that should be in the cell <x,y> according to the solution found with the ILP module that is contained in sol.
+	 * INPUT: double *sol - A double array in the size of (cols * rows)^3, where the solution found by the ILP is stored. Function should run only if the solution is valid.
+	 *        int x,y - Integers representing the column and row of the cell we want to know it's value according to the solution sol.
+	 *        int cols, rows - Integers representing the amount of columns and rows in each block of the game board.
+	 * OUTPUT: An integer which should be in the cell <x,y> according to the solution sol.*/
 	int i;
 	for (i = 0; i < cols * rows; i++) {
 		if (sol[x * cols * rows + y * cols * rows * cols * rows + i])/*If the location has 1 then the value in the cell in the valid board is the location-1*/
@@ -202,10 +200,11 @@ int findval(double* sol, int x, int y, int cols, int rows) {
 	return -1;/*Value not found, there was no valid solution, shouldn't happen since the function runs only if a valid solution was found*/
 }
 
-void keepRandom(int keep, gameState *metaBoard, double* sol) {
-	/*The function randomly chooses cells (first column then row) which will be fixed for the current game, by the value the user entered on the beginning of the game.
-	 *The function updates the solution board of the gameState metaBoard with the correct cells to be fixed, while the rest of the cells remains unfixed, and no value is being changed on the board.
-	 *INPUT: gameState *metaBoard - a pointer to a gameState with a completely filled solution board and a field filledCells with the user input of the amount of cells they wish to be filled.*/
+void keepRandom(int keep, gameState *metaBoard, double *sol) {
+	/*The function randomly chooses cells to fill according to the board solution, sol. Fills a total of keep values.
+	 *INPUT: int keep - An integer representing how many cells we need to randomly choose to keep with values.
+	 *       gameState *metaBoard - A pointer to a gameState with allocated board and with valid values (if any at all), by the end of the function, the board will have keep values in it according to the solution sol.
+	 *       double *sol - A double array in the size of (cols * rows)^3, where the solution found by the ILP is stored. Function should run only if the solution is valid.*/
 	int num, cols = metaBoard->cols, rows = metaBoard->rows, x, y;
 	eraseBoard(metaBoard->gameBoard);
 	while (keep) {/*As long as we need to keep more values*/
@@ -221,6 +220,10 @@ void keepRandom(int keep, gameState *metaBoard, double* sol) {
 }
 
 int randEmptyCell(int *x, int *y, gameState *metaBoard) {
+	/*The function tries to randomly find an index in the game board without any value.
+	 * INPUT: int *x,*y - Pointers to integers representing the <x,y> cell, will be updated according to the index the function randomly chose.
+	 *        gameState *metaBoard - A pointer to a gameState with allocated board with valid values.
+	 * OUTPUT: The function returns (1) if the randomly chosen cell is empty, and (0) if it's not empty.*/
 	int num, cols = metaBoard->cols, rows = metaBoard->rows;
 	num = rand() % (cols * rows * cols * rows);/*Get an index for next cell to enter*/
 	*x = num % (cols * rows);
@@ -231,6 +234,10 @@ int randEmptyCell(int *x, int *y, gameState *metaBoard) {
 }
 
 int checkRemainingValues(int cols, int rows, int *values) {
+	/*The function checks if there are any values we still didn't try to enter to a cell, where the information of previous attempts stored in values.
+	 * INPUT: - int cols, rows - Integers representing the amount of columns and rows in each block of the game board.
+	 *          int *values - An integer array where the i cell is 0 if we hadn't tried the i value yet, or 1 if we already tried it.
+	 * OUTPUT: The function return (1) if it found a value we still havn't tried to enter to the cell, or (0) if no value was found.*/
 	int i;
 	for (i = 0; i < cols * rows; i++) {/*Check if there are values we didn't use yet*/
 		if (!values[i])
@@ -241,6 +248,13 @@ int checkRemainingValues(int cols, int rows, int *values) {
 
 int tryRandValue(int x, int y, int amountFilled, int *values, int *filledCells,
 		gameState *metaBoard) {
+	/*The function randomly chooses a value to enter to the <x,y> cell. If it's a legal value, updates parameters accordingly, or revert the changes if it's not legal.
+	 * INPUT: int x,y - Integers representing the cell <x,y> we try to fill with a random value. The cell should be empty.
+	 *        int amountFilled - Integer representing the amount of cells we already filled in the board, used to calculate the next cell to update in the filledVells array.
+	 *        int *values - Integer array representing the values we already tried to fill in the <x,y> cell, 0 in the i cell indicates we haven't tried the i value yet, 1 indicates we already tried.
+	 *        int *filledCells - An array holding the information of all the cells we filled, each cell takes 3 spaces, holding x, y and the value we entered.
+	 *        gameState *metaBoard - A pointer to a gameState with allocated board with valid values we are trying to randomly fill.
+	 * OUTPUT: The function return (1) if it found a legal value to enter to the <x,y> cell, and (0) if the randomly chosen value wasn't legal.*/
 	int num = rand() % (metaBoard->cols * metaBoard->rows);/*Get a value to try to enter the x,y cell*/
 	if (values[num] == 0) {/*We haven't tried this value yet*/
 		values[num++]++;
