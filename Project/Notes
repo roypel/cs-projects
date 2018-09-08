@@ -1,9 +1,6 @@
 --------------------------To do list
 
-in solver command(which does num_solutions)check if we should change what we store in the stack from storing both the cell index
-and value to only the cell index and extracting the value from the board when we get the index
-
-Document: solver.c+.h, gurobi_func.c+.h, gameStructs.h.
+Document: solver.c+.h, gameStructs.h.
 
 Annoying names: keep and fill in game.c, solver in solver.c
 
