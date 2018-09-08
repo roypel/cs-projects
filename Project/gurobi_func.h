@@ -1,17 +1,11 @@
-/*
- * gurobi_func.h
- *
- *  Created on: Aug 6, 2018
- *      Author: Lenovo
- */
 
 #ifndef GUROBI_FUNC_H_
 #define GUROBI_FUNC_H_
 
 int findSol(int cols, int rows, int* filled, int amountFilled, double* sol);
-/*fills the board for ILP functions which need it.filled is the cells that are already filled in the board,will be empty if we use a
- function that only works on empty board(generate,etc.) and might not be empty on functions that can work on boards that are not empty
- (hint,etc.).doesnt revert the board back to the original state,so the boards need to be reverted back to it's original state if the
- the command that requested it is hint,etc and not reverted back if that command is generate.*/
+/*Fills the board for ILP functions that need it.filled array contains the cells that are already filled in the board.amountFilled contains 
+the amount of these cells.The values of the cells in the solution will be stored in sol.For every cell there will be rows*cols spaces
+in the array allocated to it.The value of the cell in the solution will be its index from the rows*cols options.function returns 1 if 
+there was a solution to the board,0 if there wasn't and -1 if an error occured*/
 
 #endif /* GUROBI_FUNC_H_ */
