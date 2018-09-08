@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include "parser.h"
-#include "MainAux.h"
 #include "gameStructs.h"
+#include "mainAux.h"
 #include "SPBufferset.h"
 
 int main() {
@@ -20,9 +20,8 @@ int main() {
 	checkInitalize(metaBoard.moves->currentMove, "malloc");
 	metaBoard.moves->currentMove->change = (int *) malloc(sizeof(int));
 	checkInitalize(metaBoard.moves->currentMove->change, "malloc");
-	metaBoard.moves->currentMove->change[0] = -1;/*Will indicate the beginning of the linked list*/
-	metaBoard.moves->currentMove->next = NULL;
-	metaBoard.moves->firstNode = metaBoard.moves->currentMove;
+	metaBoard.moves->currentMove->prev = metaBoard.moves->currentMove->next = NULL;
+	metaBoard.moves->firstNode = metaBoard.moves->currentMove;/*Will indicate the beginning of the list, as a sentinel*/
 	metaBoard.markError = 1;
 	readInput(&metaBoard);
 	return 0;

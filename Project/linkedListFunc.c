@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gameStructs.h"
-#include "MainAux.h"
+#include "mainAux.h"
 
-void removeAllNext(node *head) {/*Removes the moves after this move from the undo/redo list*/
+void removeAllNext(node *head) {
 	if (head != NULL) {
 		removeAllNext(head->next);
 		head->next = NULL;
@@ -12,8 +12,7 @@ void removeAllNext(node *head) {/*Removes the moves after this move from the und
 	}
 }
 
-node* addNextMove(node *currentMove, int *move, int numOfMoves) { /*Adds the new move to the undo/redo list and deletes the moves
-	that come after the current move in the undo/redo list if needed(if they exist)*/
+node* addNextMove(node *currentMove, int *move, int numOfMoves) {
 	int i;
 	node *newMove = (node*) malloc(sizeof(node));
 	checkInitalize(newMove, "malloc");
@@ -24,8 +23,8 @@ node* addNextMove(node *currentMove, int *move, int numOfMoves) { /*Adds the new
 		newMove->change[i] = move[i - 1];/*Insert the x y z1 z2 values of the changes to the array of changes in the current move*/
 	}
 	newMove->next = NULL;
-	if (currentMove != NULL) {/*Is the undo/redo list not empty?*/
-		if (currentMove->next != NULL)/*Is there a next move?*/
+	if (currentMove != NULL) {
+		if (currentMove->next != NULL)
 			removeAllNext(currentMove->next);
 		newMove->prev = currentMove;
 		currentMove->next = newMove;

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "game.h"
 #include "gameStructs.h"
-#include "MainAux.h"
 #include "fileFunc.h"
+#include "mainAux.h"
 #include "solver.h"
 
 #define inputSize 258 /*We want to check if the line consists 257 characters, and we need to save space for '\0'*/
@@ -95,7 +95,7 @@ void cmdMarkErrors(const char *delim, int *values, gameState *metaBoard) {
 	token = strtok(NULL, delim);
 	if (token) {
 		values[0] = checkIsInt(token);
-		if ((values[0] == 0) || (values[0] == 1)) /*Check if the value is 0 or 1*/
+		if ((values[0] == 0) || (values[0] == 1))
 			metaBoard->markError = values[0];
 		else
 			printf("Error: the value should be 0 or 1\n");
@@ -123,10 +123,10 @@ void cmdValidate(gameState *metaBoard) {
 	else {
 		valid = validate(metaBoard);
 		if (valid == 1)
-			printf("Validation passed: board is solvable\n"); /*Return value is 1==valid*/
+			printf("Validation passed: board is solvable\n");
 		else if (!valid)
-			printf("Validation failed: board is unsolvable\n");/*Return value is 0==invalid*/
-	}/*Return value is not 0 or 1 == it is -1==something went wrong inside validate and printed accordingly in there*/
+			printf("Validation failed: board is unsolvable\n");
+	}
 }
 
 void cmdGenerate(const char *delim, int *values, gameState *metaBoard) {
@@ -140,7 +140,7 @@ void cmdGenerate(const char *delim, int *values, gameState *metaBoard) {
 	if (checkInput(values, metaBoard, "generate")) {
 		if (metaBoard->filledCells != 0)
 			printf("Error: board is not empty\n");
-		else if (values[1] != 0)/*If Y=0 then the board stays empty and we don't need to add the command to the doubly linked list*/
+		else if (values[1] != 0)
 			generateBoard(values[0], values[1], metaBoard);
 	}
 }

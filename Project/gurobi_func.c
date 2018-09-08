@@ -9,8 +9,8 @@
 #include <stdio.h>
 
 #include "gameStructs.h"
-#include "MainAux.h"
 #include "gurobi_c.h"
+#include "mainAux.h"
 
 void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 	free(ind);
@@ -20,7 +20,6 @@ void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 }
 
 int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amountFilled,GRBenv *env,GRBmodel *model,double* obj,char* vtype){
-	/*Adds the constraints to the model*/
 	int i,j,k,l,a,error;
 	/*only one number per cell constraints*/
 	for (i = 0; i < cols * rows; i++) {
@@ -120,8 +119,8 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 }
 
 int addVars(int cols,int rows,int* ind,double* val,double* obj,char* vtype,GRBenv *env,GRBmodel *model){
-	/* add variables and set the variables to be binary */
 	int i,j,k,error;
+	/* add variables and set the variables to be binary */
 	for (i = 0; i < cols * rows; i++) {
 		for (j = 0; j < cols * rows; j++) {
 			for (k = 0; k < cols * rows; k++) {
@@ -207,8 +206,8 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	}
 	if(addVars(cols,rows,ind,val,obj,vtype,env,model)==-1)
 		return -1;
-	
-	
+
+
 	if(addConstraints(cols,rows,ind,val,filled,amountFilled,env,model,obj,vtype)==-1)
 		return -1;
 
@@ -252,7 +251,7 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		return -1;
 	}
 
-	
+
 
 	/* Free model and environment */
 	GRBfreemodel(model);

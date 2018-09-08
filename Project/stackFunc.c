@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "gameStructs.h"
-#include "MainAux.h"
+#include "mainAux.h"
 
 item pop(stackPointer *stack) {
 	item top = *(stack->stack + stack->size - 1);

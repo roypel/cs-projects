@@ -41,11 +41,11 @@ int validate(gameState *metaBoard);
 void numOfSol(board *gameBoard);
 /*The function finds all the possible solutions to the game board using an exhaustive backtracking algorithm, and prints an appropriate message.
  * INPUT: board *gameBoard - A pointer to an allocated board with valid values we try to fill in every possible way using exhaustive backtracking and find all possible solutions.*/
-void generateBoard(int X, int Y, gameState *metaBoard);
-/*The function generates a valid board for the current game by randomly filling X cells in the board, trying to solve it using ILP, and then keeping only Y values in it.
+void generateBoard(int toFill, int toKeep, gameState *metaBoard);
+/*The function generates a valid board for the current game by randomly filling toFill cells in the board, trying to solve it using ILP, and then keeping only toKeep values in it.
  * If there were 1000 failed generating attempts (couldn't find a legal value for a cell or no solution was found), the function prints an error message and empties the board.
- *INPUT: int X - The number of cells the function will try to randomly fill in the board.
- *       int Y - The number of filled cells the function will keep from the solved board.
+ *INPUT: int toFill - The number of cells the function will try to randomly fill in the board.
+ *       int toKeep - The number of filled cells the function will keep from the solved board.
  *       gameState *metaBoard - A pointer to a valid gameState with boards solution and gameBoard with allocated memory, and without any values (all cells are 0), or else the function won't generate a board.*/
 void undo(gameState *metaBoard);
 /*The function changes the board one move backward in the undo/redo linked list (if a move exists), reverting and printing any changes made in the last move, and moves the curentMove backwards.

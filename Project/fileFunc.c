@@ -4,7 +4,7 @@
 #include "gameStructs.h"
 #include "linkedListFunc.h"
 #include "game.h"
-#include "MainAux.h"
+#include "mainAux.h"
 
 void checkScan(int scan) {
 	/* The function checks if the input "scan" is a valid input from the function fscanf, or we got an error / reached EOF.
