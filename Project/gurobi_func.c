@@ -14,7 +14,9 @@ void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 }
 
 int addConstraints(int cols, int rows, int* ind, double* val, int* filled, int amountFilled, GRBenv *env, GRBmodel *model, double* obj, char* vtype) {
-	/*Add the constraints of the ILP model to the model*/
+	/*Add the constraints of the ILP model to the model
+	INPUT-Information and arrays needed to create the constraints
+	OUTPUT- -1 on error,0 on success*/
 	int i, j, k, l, a, error;
 	/*only one number per cell constraints*/
 	for (i = 0; i < cols * rows; i++) {
@@ -105,7 +107,9 @@ int addConstraints(int cols, int rows, int* ind, double* val, int* filled, int a
 }
 
 int addVars(int cols, int rows, int* ind, double* val, double* obj, char* vtype, GRBenv *env, GRBmodel *model) {
-	/* Adds variables to the model and set the variables to be binary */
+	/* Adds variables to the model and set the variables to be binary
+	INPUT-Information and arrays needed to set the variables
+	OUTPUT- -1 on error,0 on success*/
 	int i, j, k, error;
 	/*set the variables to be binary*/
 	for (i = 0; i < cols * rows; i++) {
@@ -146,10 +150,7 @@ int addVars(int cols, int rows, int* ind, double* val, double* obj, char* vtype,
 	return 0;
 }
 
-int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*return -1 on failure(error),0 on no solution,1 on solution found
-	Tries to fill the board by using ILP,provided by the gurobi optimization library.The solution of the board will be stored
-	in the sol double* array,which is stored as rows^2*cols^2 sets(one for each cell) of rows*cols length(for the possible values),
-	in which the number that is in the cell as part of the solution will be in that position of the cell*/
+int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {
 	GRBenv *env = NULL;
 	GRBmodel *model = NULL;
 	int error = 0;
