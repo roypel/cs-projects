@@ -1,6 +1,8 @@
 --------------------------To do list
 
-Document: solver.c+.h, gameStructs.h.
+in generate if Y=0 make sure that we print the board and not skip everything
+
+Document: check that they are ok
 
 Annoying names: keep and fill in game.c, solver in solver.c
 
@@ -21,7 +23,7 @@ add the prints in a command what is written in the forum in the  פרויקט ת
 
 -------------------------Grandiose Library of Done list
 
-Documented: fileFunc.c+.h, linkedListFunc.c+.h, stackFunc.c+.h, game.c+.h, parser.c+.h, mainAux.c+.h.
+Documented: fileFunc.c+.h, linkedListFunc.c+.h, stackFunc.c+.h, game.c+.h, parser.c+.h, mainAux.c+.h.solver.c+.h, gameStructs.h.
 
 If generate added nothing (Y=0) don't add to undo/redo list (if Y=0 we don't do anything).
 
