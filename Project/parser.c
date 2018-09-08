@@ -108,7 +108,7 @@ void cmdMarkErrors(int *values, gameState *metaBoard) {
 	token = strtok(NULL, delimiter);
 	if (token) {
 		values[0] = checkIsInt(token);
-		if ((values[0] == 0) || (values[0] == 1))
+		if ((values[0] == 0) || (values[0] == 1))/*Check if the value is 0 or 1*/
 			metaBoard->markError = values[0];
 		else
 			printf("Error: the value should be 0 or 1\n");
@@ -125,7 +125,7 @@ void cmdSet(int *values, gameState *metaBoard) {
 	for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
 		token = strtok(NULL, delimiter);
 		if (token)
-			values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
+			values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0.*/
 	}
 	values[2]++;/*Fix the value of what the user wants to enter to the cell, it had unneeded decrement*/
 	if (checkInput(values, metaBoard, "set"))
@@ -140,11 +140,11 @@ void cmdValidate(gameState *metaBoard) {
 		erroneousError;
 	else {
 		valid = validate(metaBoard);
-		if (valid == 1)
+		if (valid == 1)/*Return value is 1==valid*/
 			printf("Validation passed: board is solvable\n");
-		else if (!valid)
+		else if (!valid)/*Return value is 0==invalid*/
 			printf("Validation failed: board is unsolvable\n");
-	}
+	}/*Return value is not 0 or 1 == it is -1==something went wrong inside validate and printed accordingly in there*/
 }
 
 void cmdGenerate(int *values, gameState *metaBoard) {
@@ -161,7 +161,7 @@ void cmdGenerate(int *values, gameState *metaBoard) {
 	if (checkInput(values, metaBoard, "generate")) {
 		if (metaBoard->filledCells != 0)
 			printf("Error: board is not empty\n");
-		else if (values[1] != 0)
+		else if (values[1] != 0)/*If Y=0 then the board stays empty and we don't need to add the command to the doubly linked list*/
 			generateBoard(values[0], values[1], metaBoard);
 	}
 }

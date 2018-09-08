@@ -303,32 +303,6 @@ void generateList(int toKeep, gameState *metaBoard) {
 	metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, moves, toKeep);
 }
 
-void hintBoard(int x, int y, gameState *metaBoard) {
-	int rows = metaBoard->rows, cols = metaBoard->cols;
-	double *sol;
-	int* filledCells;
-	int amountFilled = 0;
-	int val, solved;
-	if (metaBoard->gameBoard->board[x][y].fixed)
-		printf("Error: cell is fixed\n");
-	else if (metaBoard->gameBoard->board[x][y].value)
-		printf("Error: cell already contains a value\n");
-	else {
-		sol = (double*) calloc(cols * rows * cols * rows * cols * rows, sizeof(double));
-		checkInitalize(sol, "calloc");
-		filledCells = findFilled(metaBoard, &amountFilled);/*Get the already filled cells from the board*/
-		solved = findSol(cols, rows, filledCells, amountFilled, sol);
-		if (solved > 0) {/*Solution was found, we can give a hint*/
-			val = findval(sol, x, y, cols, rows);
-			printf("Hint: set cell to %d\n", val);
-		} else if (!solved) {
-			printf("Error: board is unsolvable\n");/*solved is 0 here so board is unsolveable*/
-		}/*If we didn't enter the conditions above, we had an error in the Gurobi library and a message was printed*/
-		free(filledCells);
-		free(sol);
-	}
-}
-
 int validate(gameState *metaBoard) {
 	int rows = metaBoard->gameBoard->rows;
 	int cols = metaBoard->gameBoard->cols;
@@ -341,15 +315,6 @@ int validate(gameState *metaBoard) {
 	free(filled);
 	free(sol);
 	return solved;/*Solved will return -1 on Gurobi failure, 0 on unsolvable board and 1 if a solution was found*/
-}
-
-void numOfSol(board *gameBoard) {
-	int solutions = solver(gameBoard);
-	printf("Number of solutions:%d\n", solutions);
-	if (solutions == 1)
-		printf("This is a good board!\n");
-	else if (solutions != 0)
-		printf("The puzzle has more than 1 solution, try to edit further\n");
 }
 
 void generateBoard(int toFill, int toKeep, gameState *metaBoard) {
@@ -388,8 +353,8 @@ void generateBoard(int toFill, int toKeep, gameState *metaBoard) {
 
 void undo(gameState *metaBoard) {
 	int i;
-	int * moves = metaBoard->moves->currentMove->change;
-	if (moves[0] != -1) {
+	int *moves = metaBoard->moves->currentMove->change;
+	if (metaBoard->moves->currentMove != metaBoard->moves->firstNode) {
 		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
 			setBoard(moves[i], moves[i + 1], moves[i + 2], metaBoard, 0);
 		}
@@ -405,7 +370,7 @@ void undo(gameState *metaBoard) {
 
 void redo(gameState *metaBoard) {
 	int i;
-	int * moves;
+	int *moves;
 	if (metaBoard->moves->currentMove->next != NULL) {
 		moves = metaBoard->moves->currentMove->next->change;
 		for (i = 1; i < (moves[0] * 4 + 1); i += 4) {
@@ -421,8 +386,34 @@ void redo(gameState *metaBoard) {
 		printf("Error: no moves to redo\n");
 }
 
+void hintBoard(int x, int y, gameState *metaBoard) {
+	int rows = metaBoard->rows, cols = metaBoard->cols;
+	double *sol;
+	int* filledCells;
+	int amountFilled = 0;
+	int val, solved;
+	if (metaBoard->gameBoard->board[x][y].fixed)
+		printf("Error: cell is fixed\n");
+	else if (metaBoard->gameBoard->board[x][y].value)
+		printf("Error: cell already contains a value\n");
+	else {
+		sol = (double*) calloc(cols * rows * cols * rows * cols * rows, sizeof(double));
+		checkInitalize(sol, "calloc");
+		filledCells = findFilled(metaBoard, &amountFilled);/*Get the already filled cells from the board*/
+		solved = findSol(cols, rows, filledCells, amountFilled, sol);
+		if (solved > 0) {/*Solution was found, we can give a hint*/
+			val = findval(sol, x, y, cols, rows);
+			printf("Hint: set cell to %d\n", val);
+		} else if (!solved) {
+			printf("Error: board is unsolvable\n");/*solved is 0 here so board is unsolveable*/
+		}/*If we didn't enter the conditions above, we had an error in the Gurobi library and a message was printed*/
+		free(filledCells);
+		free(sol);
+	}
+}
+
 void resetGame(gameState *metaBoard) {
-	int* move;
+	int *move;
 	int i, j, counter;
 	while (metaBoard->moves->currentMove != metaBoard->moves->firstNode) {
 		move = metaBoard->moves->currentMove->change;
@@ -445,6 +436,15 @@ void resetGame(gameState *metaBoard) {
 	metaBoard->moves->currentMove = metaBoard->moves->firstNode;
 	metaBoard->moves->currentMove->next = NULL;
 	printf("Board reset\n");
+}
+
+void numOfSol(board *gameBoard) {
+	int solutions = solver(gameBoard);
+	printf("Number of solutions:%d\n", solutions);
+	if (solutions == 1)
+		printf("This is a good board!\n");
+	else if (solutions != 0)
+		printf("The puzzle has more than 1 solution, try to edit further\n");
 }
 
 void exitGame(gameState *metaBoard) {

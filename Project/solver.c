@@ -23,6 +23,16 @@ int nextEmptyCell(int index, board *checkBoard) {
 }
 
 int solver(board *gameBoard) {
+	/*The function for the num_solutions command.We count how many solutions are for the current board and print
+	accordingly.We each time try to find the next empty cell.If we don't find any,it means that we reached the end of the board and
+	found a solution,so we increase the "solutions" counter.If we do,we try to fill it with a number.If it was filled,we add it to
+	the stack as a cell that was filled with that number so that when we return to it later we know from what value to start trying
+	to fill it next.If we didn't find a value to fill it with,then it means we can't fill the board in it's current state,so we have
+	to go back a cell(that we filled) and try to fill it with other values,starting from the value of the cell that it is currently
+	holding,which is stored in the stack as the cell index and the value that is currently in the cell,and we try to fill that cell with
+	other values(bigger than the value stored since we inductionally tried smaller values already).We finish when we extract the first cell
+	that was empty from the stack and we try to fill it with a value bigger than it can be filled with(if it's a 3x3 block board
+	then when we try to fill it with the value 10),after which we return the value of the counter specified above.*/
 	int x = 0, y = 0, i = 1, index = 0;
 	int solutions = 0, rows = gameBoard->rows, cols = gameBoard->cols;
 	int found = 1;
@@ -39,8 +49,8 @@ int solver(board *gameBoard) {
 				solutions++;
 				temp = pop(&backStack);/*Pop the last cell that we have filled*/
 				i = gameBoard->board[x][y].value + 1;/*Try bigger values for this cell*/
-				x = temp.col;
-				y = temp.row;
+				x = temp.index % (cols * rows);
+				y = temp.index / (rows * cols);
 			} else {
 				x = index % (cols * rows);/*Extract the column of the cell by index*/
 				y = index / (rows * cols);/*Extract the row of the cell by index*/
@@ -54,8 +64,7 @@ int solver(board *gameBoard) {
 			checkCell(x, y, i, 0, gameBoard);
 			if (!gameBoard->board[x][y].error) {
 				gameBoard->board[x][y].value = i;
-				temp.col = x;
-				temp.row = y;
+				temp.index = x + y * rows * cols;
 				push(temp, &backStack);
 				found = 1;
 				temp = *(backStack.stack + backStack.size - 1);
@@ -67,10 +76,10 @@ int solver(board *gameBoard) {
 			gameBoard->board[x][y].error = 0;
 			if (backStack.size > 0) {
 				temp = pop(&backStack);
-				x = temp.col;/*We backtrack so we try bigger values for the last cell we entered*/
-				y = temp.row;
+				index = temp.index;/*We backtrack so we try bigger values for the last cell we entered*/
+				x = index % (cols * rows);
+				y = index / (rows * cols);
 				i = gameBoard->board[x][y].value + 1;/*Try bigger values for this cell*/
-				index = temp.col + temp.row * rows * cols;
 			}
 		}
 	} while ((backStack.size > 0) || (i < (cols * rows) + 1));
@@ -80,6 +89,7 @@ int solver(board *gameBoard) {
 	return solutions;
 }
 int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
+	/*Checks if a value appears in a row/column/block of a cell*/
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
 		if (metaBoard->gameBoard->board[i][y].value == z) {
@@ -102,6 +112,9 @@ int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
 }
 
 void autoFill(gameState *metaBoard) {
+	/*Function that is called for the autofill command.Tries to find cells that only have a single value
+	available to add to them that isn't erroneous,and if such a value exists,sets the value of the cell to that value,and adds
+	the change to the undo/redomove array that appears in the undo/redo list*/
 	int i, j, k, counter = 0, posValues;
 	int *moves = (int *) malloc(0);
 	checkInitalize(moves, "malloc");
@@ -120,13 +133,13 @@ void autoFill(gameState *metaBoard) {
 					}
 				}
 			}
-			if (posValues == 0)/*Didn't found a single value to enter*/
+			if (posValues == 0)/*Couldn't find a value to put in the cell or we had more than one value to put in the cell*/
 				continue;
-			else {
+			else {/*This cell only had a single value that we could enter it, so we add it to the moves array!*/
 				counter++;
 				moves = realloc(moves, sizeof(int) * counter * 4);/*Reallocate extra space*/
 				checkInitalize(moves, "realloc");
-				moves[(counter - 1) * 4] = j;
+				moves[(counter - 1) * 4] = j;/*Adds the change to the new move array*/
 				moves[(counter - 1) * 4 + 1] = i;
 				moves[(counter - 1) * 4 + 2] = 0;
 				moves[(counter - 1) * 4 + 3] = posValues;

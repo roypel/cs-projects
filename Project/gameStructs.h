@@ -29,8 +29,7 @@ typedef struct linkedList {
 } linkedList;
 
 typedef struct item {
-	int col;
-	int row;
+	int index;
 } item;
 
 typedef struct stackPointer {
