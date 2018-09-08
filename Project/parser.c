@@ -163,6 +163,8 @@ void cmdGenerate(int *values, gameState *metaBoard) {
 			printf("Error: board is not empty\n");
 		else if (values[1] != 0)/*If Y=0 then the board stays empty and we don't need to add the command to the doubly linked list*/
 			generateBoard(values[0], values[1], metaBoard);
+		else
+			printBoard(metaBoard);/*We still want to print the board if Y is equal to 0*/
 	}
 }
 
