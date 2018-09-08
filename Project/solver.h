@@ -10,5 +10,6 @@ int solver(board *gameBoard);
 void autoFill(gameState *metaBoard);
 /*Function that is called for the autofill command.Tries to find cells that only has a single value
 available to add to them,and if such a value exists,sets the value of the cell to that value,and adds the change to the undo/redo
-move array that appears in the undo/redo list*/
+move array that appears in the undo/redo list
+INPUT-gameState *metaBoard the struct that contains the board that we want to autofill*/
 #endif /* SOLVER_H_ */
