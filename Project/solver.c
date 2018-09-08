@@ -17,8 +17,7 @@ int nextEmptyCell(int index, board *checkBoard) {
 	if (index == rows * rows * cols * cols) {/*We reached to the end of the board*/
 		return -1;
 	}
-	if (checkBoard->board[index % (cols * rows)][(int) (index / (rows * cols))].value
-			== 0)/*Cell index is empty*/
+	if (checkBoard->board[index % (cols * rows)][(int) (index / (rows * cols))].value == 0)/*Cell index is empty*/
 		return index;
 	return nextEmptyCell(index + 1, checkBoard);
 }
@@ -92,13 +91,8 @@ int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
 			return 0;
 		}
 	}
-	for (i = (x / metaBoard->cols) * metaBoard->cols;
-			i < (int) (x / metaBoard->cols) * metaBoard->cols + metaBoard->cols;
-			i++) {
-		for (j = (y / metaBoard->rows) * metaBoard->rows;
-				j
-						< (int) (y / metaBoard->rows) * metaBoard->rows
-								+ metaBoard->rows; j++) {
+	for (i = (x / metaBoard->cols) * metaBoard->cols; i < (int) (x / metaBoard->cols) * metaBoard->cols + metaBoard->cols; i++) {
+		for (j = (y / metaBoard->rows) * metaBoard->rows; j < (int) (y / metaBoard->rows) * metaBoard->rows + metaBoard->rows; j++) {
 			if (metaBoard->gameBoard->board[i][j].value == z) {
 				return 0;
 			}
@@ -140,13 +134,10 @@ void autoFill(gameState *metaBoard) {
 		}
 	}
 	if (counter)/*Update the list only if any changes were made*/
-		metaBoard->moves->currentMove = addNextMove(
-				metaBoard->moves->currentMove, moves, counter);/*Update linked list of moves*/
+		metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, moves, counter);/*Update linked list of moves*/
 	for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
-		metaBoard->gameBoard->board[moves[i * 4]][moves[i * 4 + 1]].value =
-				moves[i * 4 + 3];
-		checkCell(moves[i * 4], moves[i * 4 + 1], moves[i * 4 + 3], 1,
-				metaBoard->gameBoard);
+		metaBoard->gameBoard->board[moves[i * 4]][moves[i * 4 + 1]].value = moves[i * 4 + 3];
+		checkCell(moves[i * 4], moves[i * 4 + 1], moves[i * 4 + 3], 1, metaBoard->gameBoard);
 	}
 	metaBoard->filledCells += counter; /*Update amount of cells filled*/
 	free(moves);

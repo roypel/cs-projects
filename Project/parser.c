@@ -14,8 +14,12 @@
 #define generateValues 2
 #define invalidError printf("ERROR: invalid command\n")
 #define erroneousError printf("Error: board contains erroneous values\n")
+#define delimiter " \t\r\n"
 
-int checkIsInt(char *input) {/*Get input string and check if all chars are digits, return the int or -1 if not positive integer*/
+int checkIsInt(char *input) {
+	/*The function checks if all the characters in the input string are digits, and if so returns the number they represent.
+	 * INPUT: char *input - The input the user has entered. We don't assume anything about it.
+	 * OUTPUT: An integer representing the number the user entered as input if it was a valid int, or (-3) if it's not a valid integer.*/
 	unsigned int i;
 	int num = 0;
 	for (i = 0; i < strlen(input); i++) {
@@ -28,11 +32,11 @@ int checkIsInt(char *input) {/*Get input string and check if all chars are digit
 }
 
 int checkInput(int *values, gameState *metaBoard, char *cmd) {
-	/*TODO: Fix documentation*/
-	/*Function checks if the input for set and hint has the correct amount of strings and is a valid input for current board
-	 * userCol, userRow and userVal are the user inputs (if he entered any, else they valued at -2)
-	 * col, row are current board size
-	 * cmd is a string representing the command we need to check ,since hint and set have different requirements*/
+	/*The function checks if the input for the command cmd has the correct amount of strings and is a valid input for current board.
+	 * INPUT: int *values - Array that holds the first user inputs (if he entered any, or else their value is -2) in the order he entered it.
+	 *        gameState *metaBoard - A valid gameState pointer with preallocated board gameBoard with valid values.
+	 *        char *cmd  - A string representing the command we need to check, since set, hint and generate have different requirements.
+	 * OUTPUT: The function returns 1 if the values are valid for the command, or 0 if they are not valid, and an error message is printed accordingly.*/
 	int cols = metaBoard->cols, rows = metaBoard->rows, empty;
 	if (!strcmp(cmd, "set")) {
 		if ((values[0] == -2) || (values[1] == -2) || (values[2] == -1))/*We didn't read three strings after "set"*/
@@ -68,6 +72,8 @@ int checkInput(int *values, gameState *metaBoard, char *cmd) {
 }
 
 void ignoreLine(char *input) {
+	/*The function is used to skip a line of input if it has more than 256 characters, and print an error message.
+	 * INPUT: char *input - The input the user has entered, supposed to have more than 256 characters.*/
 	invalidError;
 	while (input[256] != 0) {
 		input[256] = 0;
@@ -75,24 +81,31 @@ void ignoreLine(char *input) {
 	}
 }
 
-void cmdSolve(const char *delim, gameState *metaBoard) {
+void cmdSolve(gameState *metaBoard) {
+	/*The function is an envelope function for the command "solve", it is issued if the user entered "solve" as a command, and checks the requirements to issue the command.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
-	token = strtok(NULL, delim);
+	token = strtok(NULL, delimiter);
 	if (token) {
 		sendToFill(metaBoard, token, Solve);
 	} else
 		invalidError;
 }
 
-void cmdEdit(const char *delim, gameState *metaBoard) {
+void cmdEdit(gameState *metaBoard) {
+	/*The function is an envelope function for the command "edit", it is issued if the user entered "edit" as a command, and checks the requirements to issue the command.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
-	token = strtok(NULL, delim);
+	token = strtok(NULL, delimiter);
 	sendToFill(metaBoard, token, Edit);
 }
 
-void cmdMarkErrors(const char *delim, int *values, gameState *metaBoard) {
+void cmdMarkErrors(int *values, gameState *metaBoard) {
+	/*The function is an envelope function for the command "mark_errors", it is issued if the user entered "mark_errors" as a command, and checks the requirements to issue the command.
+	 * INPUT: int *values - An array that will hold the additional values the user will input that will be checked for the command.
+	 *        gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
-	token = strtok(NULL, delim);
+	token = strtok(NULL, delimiter);
 	if (token) {
 		values[0] = checkIsInt(token);
 		if ((values[0] == 0) || (values[0] == 1))
@@ -103,20 +116,25 @@ void cmdMarkErrors(const char *delim, int *values, gameState *metaBoard) {
 		invalidError;
 }
 
-void cmdSet(const char *delim, int *values, gameState *metaBoard) {
+void cmdSet(int *values, gameState *metaBoard) {
+	/*The function is an envelope function for the command "set", it is issued if the user entered "set" as a command, and checks the requirements to issue the command.
+	 * INPUT: int *values - An array that will hold the additional values the user will input that will be checked for the command.
+	 *        gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
 	int i;
 	for (i = 0; i < setValues; i++) {/*Reading at least three strings after "set", else invalid input*/
-		token = strtok(NULL, delim);
+		token = strtok(NULL, delimiter);
 		if (token)
 			values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
 	}
-	values[2]++;/*Fix value of what the user wants to enter to the cell, unneeded decrement*/
+	values[2]++;/*Fix the value of what the user wants to enter to the cell, it had unneeded decrement*/
 	if (checkInput(values, metaBoard, "set"))
 		setBoard(values[0], values[1], values[2], metaBoard, 1);
 }
 
 void cmdValidate(gameState *metaBoard) {
+	/*The function is an envelope function for the command "validate", it is issued if the user entered "validate" as a command, and checks the requirements to issue the command.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	int valid;
 	if (isErroneous(metaBoard))
 		erroneousError;
@@ -129,11 +147,14 @@ void cmdValidate(gameState *metaBoard) {
 	}
 }
 
-void cmdGenerate(const char *delim, int *values, gameState *metaBoard) {
+void cmdGenerate(int *values, gameState *metaBoard) {
+	/*The function is an envelope function for the command "generate", it is issued if the user entered "generate" as a command, and checks the requirements to issue the command.
+	 * INPUT: int *values - An array that will hold the additional values the user will input that will be checked for the command.
+	 *        gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
 	int i;
 	for (i = 0; i < generateValues; i++) {/*Reading at least two strings after "generate", else invalid input*/
-		token = strtok(NULL, delim);
+		token = strtok(NULL, delimiter);
 		if (token)
 			values[i] = checkIsInt(token);
 	}
@@ -145,20 +166,25 @@ void cmdGenerate(const char *delim, int *values, gameState *metaBoard) {
 	}
 }
 
-void cmdSave(const char *delim, gameState *metaBoard) {
+void cmdSave(gameState *metaBoard) {
+	/*The function is an envelope function for the command "save", it is issued if the user entered "save" as a command, and checks the requirements to issue the command.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
-	token = strtok(NULL, delim);
+	token = strtok(NULL, delimiter);
 	if (token) {
 		saveFile(metaBoard, token);
 	} else
 		invalidError;
 }
 
-void cmdHint(const char *delim, int *values, gameState *metaBoard) {
+void cmdHint(int *values, gameState *metaBoard) {
+	/*The function is an envelope function for the command "hint", it is issued if the user entered "hint" as a command, and checks the requirements to issue the command.
+	 * INPUT: int *values - An array that will hold the additional values the user will input that will be checked for the command.
+	 *        gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
 	int i;
 	for (i = 0; i < hintValues; i++) {/*Reading at least two strings after "hint", else invalid input*/
-		token = strtok(NULL, delim);
+		token = strtok(NULL, delimiter);
 		if (token)
 			values[i] = checkIsInt(token) - 1;/*We decrement 1 so the values will fit array places that starts with 0*/
 	}
@@ -171,6 +197,8 @@ void cmdHint(const char *delim, int *values, gameState *metaBoard) {
 }
 
 void cmdNumSolutions(gameState *metaBoard) {
+	/*The function is an envelope function for the command "num_solutions", it is issued if the user entered "num_solutions" as a command, and checks the requirements to issue the command.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	if (isErroneous(metaBoard))
 		erroneousError;
 	else
@@ -178,6 +206,8 @@ void cmdNumSolutions(gameState *metaBoard) {
 }
 
 void cmdAutofill(gameState *metaBoard) {
+	/*The function is an envelope function for the command "autofill", it is issued if the user entered "autofill" as a command, and checks the requirements to issue the command.
+	 * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	if (isErroneous(metaBoard))
 		erroneousError;
 	else {
@@ -186,7 +216,6 @@ void cmdAutofill(gameState *metaBoard) {
 }
 
 void readInput(gameState *metaBoard) {
-	const char delim[5] = " \t\r\n";
 	char input[inputSize] = { 0 };
 	char *token;/*Separates input to tokens*/
 	int values[maxValues], i;/*For the sake of readability we have excess variables*/
@@ -200,30 +229,30 @@ void readInput(gameState *metaBoard) {
 			if (input[256] != 0) {/*Skip current line, too much characters in input*/
 				ignoreLine(input);
 			} else {
-				token = strtok(input, delim);
+				token = strtok(input, delimiter);
 				if (token != NULL) {
 					if (!strcmp(token, "solve")) {
-						cmdSolve(delim, metaBoard);
+						cmdSolve(metaBoard);
 					} else if (!strcmp(token, "edit")) {
-						cmdEdit(delim, metaBoard);
+						cmdEdit(metaBoard);
 					} else if (!(strcmp(token, "mark_errors")) && (metaBoard->mode == Solve)) {
-						cmdMarkErrors(delim, values, metaBoard);
+						cmdMarkErrors(values, metaBoard);
 					} else if (!(strcmp(token, "print_board")) && (metaBoard->mode != Init)) {
 						printBoard(metaBoard);
 					} else if ((!(strcmp(token, "set"))) && (metaBoard->mode != Init)) {
-						cmdSet(delim, values, metaBoard);
+						cmdSet(values, metaBoard);
 					} else if (!(strcmp(token, "validate")) && (metaBoard->mode != Init)) {
 						cmdValidate(metaBoard);
 					} else if (!strcmp(token, "generate") && (metaBoard->mode == Edit)) {
-						cmdGenerate(delim, values, metaBoard);
+						cmdGenerate(values, metaBoard);
 					} else if (!strcmp(token, "undo") && (metaBoard->mode != Init)) {
 						undo(metaBoard);
 					} else if (!strcmp(token, "redo") && (metaBoard->mode != Init)) {
 						redo(metaBoard);
 					} else if (!strcmp(token, "save") && (metaBoard->mode != Init)) {
-						cmdSave(delim, metaBoard);
+						cmdSave(metaBoard);
 					} else if ((strcmp(token, "hint") == 0) && (metaBoard->mode == Solve)) {
-						cmdHint(delim, values, metaBoard);
+						cmdHint(values, metaBoard);
 					} else if (!strcmp(token, "num_solutions") && (metaBoard->mode != Init)) {
 						cmdNumSolutions(metaBoard);
 					} else if (!strcmp(token, "autofill") && (metaBoard->mode == Solve)) {
@@ -237,7 +266,6 @@ void readInput(gameState *metaBoard) {
 					}
 				}
 			}
-
 		} else if (feof(stdin)) {
 			exitGame(metaBoard);
 		} else {

@@ -30,12 +30,10 @@ void eraseBoard(board *toErase) {
 
 void initalizeBoard(board *newBoard) {
 	int i;
-	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols,
-			sizeof(cell *));
+	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols, sizeof(cell *));
 	checkInitalize(newBoard->board, "calloc");
 	for (i = 0; i < newBoard->rows * newBoard->cols; i++) {
-		newBoard->board[i] = (cell*) calloc(newBoard->rows * newBoard->cols,
-				sizeof(cell));
+		newBoard->board[i] = (cell*) calloc(newBoard->rows * newBoard->cols, sizeof(cell));
 		checkInitalize(newBoard->board[i], "calloc");
 	}
 	eraseBoard(newBoard);
@@ -58,11 +56,8 @@ void checkCell(int x, int y, int z, int change, board *check) {
 				erroneous = 1;
 			}
 		}
-		for (i = (x / check->cols) * check->cols;
-				i < (int) (x / check->cols) * check->cols + check->cols; i++) {
-			for (j = (y / check->rows) * check->rows;
-					j < (int) (y / check->rows) * check->rows + check->rows;
-					j++) {/*Check block*/
+		for (i = (x / check->cols) * check->cols; i < (int) (x / check->cols) * check->cols + check->cols; i++) {
+			for (j = (y / check->rows) * check->rows; j < (int) (y / check->rows) * check->rows + check->rows; j++) {/*Check block*/
 				if (!((i == x) && (j == y))) {
 					if (check->board[i][j].value == z) {
 						if (!check->board[i][j].fixed)
@@ -106,24 +101,16 @@ void checkErroneous(gameState *metaBoard, int x, int y) {
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
 		if (i != x)
-			checkCell(i, y, metaBoard->gameBoard->board[i][y].value, 1,
-					metaBoard->gameBoard);
+			checkCell(i, y, metaBoard->gameBoard->board[i][y].value, 1, metaBoard->gameBoard);
 	}
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check column*/
 		if (i != y)
-			checkCell(x, i, metaBoard->gameBoard->board[x][i].value, 1,
-					metaBoard->gameBoard);
+			checkCell(x, i, metaBoard->gameBoard->board[x][i].value, 1, metaBoard->gameBoard);
 	}
-	for (i = (x / metaBoard->cols) * metaBoard->cols;
-			i < (int) (x / metaBoard->cols) * metaBoard->cols + metaBoard->cols;
-			i++) {
-		for (j = (y / metaBoard->rows) * metaBoard->rows;
-				j
-						< (int) (y / metaBoard->rows) * metaBoard->rows
-								+ metaBoard->rows; j++) {/*Check block*/
+	for (i = (x / metaBoard->cols) * metaBoard->cols; i < (int) (x / metaBoard->cols) * metaBoard->cols + metaBoard->cols; i++) {
+		for (j = (y / metaBoard->rows) * metaBoard->rows; j < (int) (y / metaBoard->rows) * metaBoard->rows + metaBoard->rows; j++) {/*Check block*/
 			if (!((i == x) && (j == y))) {
-				checkCell(i, j, metaBoard->gameBoard->board[i][j].value, 1,
-						metaBoard->gameBoard);
+				checkCell(i, j, metaBoard->gameBoard->board[i][j].value, 1, metaBoard->gameBoard);
 			}
 		}
 	}
@@ -137,8 +124,7 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boo
 	newMove[3] = z;
 	if (!metaBoard->gameBoard->board[x][y].fixed) {
 		if (set)
-			metaBoard->moves->currentMove = addNextMove(
-					metaBoard->moves->currentMove, newMove, 1);
+			metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, newMove, 1);
 		if (z == 0) {/*User tries to erase a value on the board*/
 			if (metaBoard->gameBoard->board[x][y].value > 0) {/*Check if we erase a value on the board or cell is already empty*/
 				metaBoard->gameBoard->board[x][y].value = 0;
@@ -172,13 +158,11 @@ int* findFilled(gameState *metaBoard, int *amountFilled) {
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
 			if (metaBoard->gameBoard->board[j][i].value != 0) {
-				filled = (int*) realloc(filled,
-						((*amountFilled) + 1) * 3 * sizeof(int));
+				filled = (int*) realloc(filled, ((*amountFilled) + 1) * 3 * sizeof(int));
 				checkInitalize(filled, "realloc");
 				filled[(*amountFilled) * 3] = j;
 				filled[(*amountFilled) * 3 + 1] = i;
-				filled[(*amountFilled) * 3 + 2] =
-						metaBoard->gameBoard->board[j][i].value;
+				filled[(*amountFilled) * 3 + 2] = metaBoard->gameBoard->board[j][i].value;
 				(*amountFilled)++;
 			}
 		}
@@ -212,8 +196,7 @@ void keepRandom(int toKeep, gameState *metaBoard, double *sol) {
 		x = num % (cols * rows);
 		y = (int) (num / (rows * cols));
 		if (metaBoard->gameBoard->board[x][y].value == 0) {
-			metaBoard->gameBoard->board[x][y].value = findval(sol, x, y, cols,
-					rows);
+			metaBoard->gameBoard->board[x][y].value = findval(sol, x, y, cols, rows);
 			toKeep--;
 		}
 	}
@@ -246,8 +229,7 @@ int checkRemainingValues(int cols, int rows, int *values) {
 	return 0;
 }
 
-int tryRandValue(int x, int y, int amountFilled, int *values, int *filledCells,
-		gameState *metaBoard) {
+int tryRandValue(int x, int y, int amountFilled, int *values, int *filledCells, gameState *metaBoard) {
 	/*The function randomly chooses a value to enter to the <x,y> cell. If it's a legal value, updates parameters accordingly, or revert the changes if it's not legal.
 	 * INPUT: int x,y - Integers representing the cell <x,y> we try to fill with a random value. The cell should be empty.
 	 *        int amountFilled - Integer representing the amount of cells we already filled in the board, used to calculate the next cell to update in the filledVells array.
@@ -284,25 +266,23 @@ int tryFill(int toFill, int *values, int *filledCells, gameState *metaBoard) {
 	int cols = metaBoard->cols, rows = metaBoard->rows;
 	while (amountFilled < toFill) {
 		for (i = 0; i < cols * rows; i++) {
- 			values[i] = 0;
+			values[i] = 0;
 		}
 		while (!randEmptyCell(&x, &y, metaBoard))
 			;/*Find empty cell in the board using random generator*/
 		while (checkRemainingValues(cols, rows, values)) {
-			if (tryRandValue(x, y, amountFilled, values, filledCells,
-					metaBoard)) {
+			if (tryRandValue(x, y, amountFilled, values, filledCells, metaBoard)) {
 				amountFilled++;
 				break;
 			}
 		}
-		if (!checkRemainingValues(cols, rows, values)
-				&& (!metaBoard->gameBoard->board[x][y].value))
+		if (!checkRemainingValues(cols, rows, values) && (!metaBoard->gameBoard->board[x][y].value))
 			return 0;/*Can't find value for this cell, clear the board and start again*/
 	}
 	return 1;
 }
 
-void generateList(int toKeep, gameState *metaBoard){
+void generateList(int toKeep, gameState *metaBoard) {
 	/*The function generates and adds a move for the undo/redo list by looking at all the values added to the board, assuming the board was empty in the first place.
 	 * INPUT: - int toKeep - The amount of cells that should be currently filled in the board, thus the number of changes happened in this move.
 	 *          gameState *metaBoard - A pointer to a gameState with allocated board with valid values, we assume it was empty before the values were added.*/
@@ -311,7 +291,7 @@ void generateList(int toKeep, gameState *metaBoard){
 	checkInitalize(moves, "malloc");
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			if (metaBoard->gameBoard->board[j][i].value != 0){
+			if (metaBoard->gameBoard->board[j][i].value != 0) {
 				moves[filled * 4] = j;
 				moves[filled * 4 + 1] = i;
 				moves[filled * 4 + 2] = 0;
@@ -334,8 +314,7 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 	else if (metaBoard->gameBoard->board[x][y].value)
 		printf("Error: cell already contains a value\n");
 	else {
-		sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
-				sizeof(double));
+		sol = (double*) calloc(cols * rows * cols * rows * cols * rows, sizeof(double));
 		checkInitalize(sol, "calloc");
 		filledCells = findFilled(metaBoard, &amountFilled);/*Get the already filled cells from the board*/
 		solved = findSol(cols, rows, filledCells, amountFilled, sol);
@@ -355,8 +334,7 @@ int validate(gameState *metaBoard) {
 	int cols = metaBoard->gameBoard->cols;
 	int solved, amountFilled = 0;
 	int* filled;
-	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(double));
+	double *sol = (double*) calloc(cols * rows * cols * rows * cols * rows, sizeof(double));
 	checkInitalize(sol, "calloc");
 	filled = findFilled(metaBoard, &amountFilled);
 	solved = findSol(cols, rows, filled, amountFilled, sol);
@@ -378,8 +356,7 @@ void generateBoard(int toFill, int toKeep, gameState *metaBoard) {
 	int i, *filledCells, *values;
 	int cols = metaBoard->cols, rows = metaBoard->rows;
 	double *sol;
-	sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(double));
+	sol = (double*) calloc(cols * rows * cols * rows * cols * rows, sizeof(double));
 	checkInitalize(sol, "calloc");
 	filledCells = (int *) malloc(sizeof(int) * toFill * 3);
 	checkInitalize(filledCells, "malloc");
@@ -451,8 +428,7 @@ void resetGame(gameState *metaBoard) {
 		move = metaBoard->moves->currentMove->change;
 		counter = move[0];/*The amount of changes in the move*/
 		for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
-			metaBoard->gameBoard->board[move[i * 4 + 1]][move[i * 4 + 2]].value =
-					move[i * 4 + 3];
+			metaBoard->gameBoard->board[move[i * 4 + 1]][move[i * 4 + 2]].value = move[i * 4 + 3];
 		}
 		metaBoard->moves->currentMove = metaBoard->moves->currentMove->prev;
 	}
@@ -461,8 +437,7 @@ void resetGame(gameState *metaBoard) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
 			if (metaBoard->gameBoard->board[j][i].value > 0)
 				counter++;
-			checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1,
-					metaBoard->gameBoard);
+			checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1, metaBoard->gameBoard);
 		}
 	}
 	metaBoard->filledCells = counter;

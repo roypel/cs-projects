@@ -1,45 +1,45 @@
 #ifndef GAMESTRUCTS_H_
 #define GAMESTRUCTS_H_
 
-typedef struct cell{
+typedef struct cell {
 	int value;
 	int fixed;
 	int error;
 } cell;
 
-typedef struct board{
+typedef struct board {
 	cell **board;
 	int cols;
 	int rows;
 } board;
 
-typedef enum gameMode{
+typedef enum gameMode {
 	Init, Solve, Edit
-}gameMode;
+} gameMode;
 
-typedef struct node{
+typedef struct node {
 	int *change;
 	struct node *next;
 	struct node *prev;
-}node;
+} node;
 
-typedef struct linkedList{
+typedef struct linkedList {
 	node *firstNode;
 	node *currentMove;
-}linkedList;
+} linkedList;
 
-typedef struct item{
+typedef struct item {
 	int col;
 	int row;
-}item;
+} item;
 
-typedef struct stackPointer{
+typedef struct stackPointer {
 	item *stack;
 	int size;
 	int maxSize;
-}stackPointer;
+} stackPointer;
 
-typedef struct gameState{
+typedef struct gameState {
 	board *gameBoard;
 	gameMode mode;
 	int markError;

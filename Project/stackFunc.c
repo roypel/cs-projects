@@ -7,8 +7,7 @@ item pop(stackPointer *stack) {
 	item top = *(stack->stack + stack->size - 1);
 	if (stack->size <= stack->maxSize * 0.25) {/*Resize the stack to half size to save space*/
 		stack->maxSize /= 2;
-		stack->stack = (item*) realloc(stack->stack,
-				stack->maxSize * sizeof(item));/*Resize the stack*/
+		stack->stack = (item*) realloc(stack->stack, stack->maxSize * sizeof(item));/*Resize the stack*/
 		checkInitalize(stack->stack, "realloc");
 	}
 	stack->size--;

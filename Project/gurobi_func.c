@@ -19,8 +19,8 @@ void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 	free(vtype);
 }
 
-int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amountFilled,GRBenv *env,GRBmodel *model,double* obj,char* vtype){
-	int i,j,k,l,a,error;
+int addConstraints(int cols, int rows, int* ind, double* val, int* filled, int amountFilled, GRBenv *env, GRBmodel *model, double* obj, char* vtype) {
+	int i, j, k, l, a, error;
 	/*only one number per cell constraints*/
 	for (i = 0; i < cols * rows; i++) {
 		for (j = 0; j < cols * rows; j++) {
@@ -32,8 +32,7 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 			NULL);/*constraint name is defaulted because we dont
 			 care what it's name is*/
 			if (error) {
-				printf("ERROR %d in cell constraints GRBaddconstr(): %s\n",
-						error, GRBgeterrormsg(env));
+				printf("ERROR %d in cell constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 				free_stuffs(ind, val, obj, vtype);
 				return -1;
 			}
@@ -50,8 +49,7 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 			NULL);/*constraint name is defaulted because we dont
 			 care what it's name is*/
 			if (error) {
-				printf("ERROR %d in row constraints GRBaddconstr(): %s\n",
-						error, GRBgeterrormsg(env));
+				printf("ERROR %d in row constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 				free_stuffs(ind, val, obj, vtype);
 				return -1;
 			}
@@ -68,8 +66,7 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 			NULL);/*constraint name is defaulted because we dont
 			 care what it's name is*/
 			if (error) {
-				printf("ERROR %d in col constraints GRBaddconstr(): %s\n",
-						error, GRBgeterrormsg(env));
+				printf("ERROR %d in col constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 				free_stuffs(ind, val, obj, vtype);
 				return -1;
 			}
@@ -81,17 +78,14 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 			for (k = 0; k < rows * cols; k++) {/*cell number index*/
 				for (l = 0; l < rows; l++) {/*cell row index*/
 					for (a = 0; a < cols; a++) {/*cell col index*/
-						ind[l * cols + a] = (i * rows + l) * cols * rows * cols
-								* rows + (j * cols + a) * cols * rows + k;
+						ind[l * cols + a] = (i * rows + l) * cols * rows * cols * rows + (j * cols + a) * cols * rows + k;
 						val[l * cols + a] = 1;
 					}
 				}
-				error = GRBaddconstr(model, cols * rows, ind, val, GRB_EQUAL,
-						1.0, NULL);/*constraint name is defaulted because we dont
-						 care what it's name is*/
+				error = GRBaddconstr(model, cols * rows, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
+				 care what it's name is*/
 				if (error) {
-					printf("ERROR %d in block constraints GRBaddconstr(): %s\n",
-							error, GRBgeterrormsg(env));
+					printf("ERROR %d in block constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 					free_stuffs(ind, val, obj, vtype);
 					return -1;
 				}
@@ -102,15 +96,12 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 	/*cells already filled constraints*/
 
 	for (i = 0; i < amountFilled; i++) {/*data is in col row val triplets*/
-		ind[0] = filled[i * 3] * cols * rows
-				+ filled[(i * 3) + 1] * cols * rows * cols * rows
-				+ filled[(i * 3) + 2] - 1;/*+0 is the col,+1 is the row,+2 is the value, we do -1 since indexing start from 0 and the value starts from 1*/
+		ind[0] = filled[i * 3] * cols * rows + filled[(i * 3) + 1] * cols * rows * cols * rows + filled[(i * 3) + 2] - 1;/*+0 is the col,+1 is the row,+2 is the value, we do -1 since indexing start from 0 and the value starts from 1*/
 		val[0] = 1;
 		error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, NULL);/*constraint name is defaulted because we dont
 		 care what it's name is*/
 		if (error) {
-			printf("ERROR %d in filled constraints GRBaddconstr(): %s\n", error,
-					GRBgeterrormsg(env));
+			printf("ERROR %d in filled constraints GRBaddconstr(): %s\n", error, GRBgeterrormsg(env));
 			free_stuffs(ind, val, obj, vtype);
 			return -1;
 		}
@@ -118,8 +109,8 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 	return 0;
 }
 
-int addVars(int cols,int rows,int* ind,double* val,double* obj,char* vtype,GRBenv *env,GRBmodel *model){
-	int i,j,k,error;
+int addVars(int cols, int rows, int* ind, double* val, double* obj, char* vtype, GRBenv *env, GRBmodel *model) {
+	int i, j, k, error;
 	/* add variables and set the variables to be binary */
 	for (i = 0; i < cols * rows; i++) {
 		for (j = 0; j < cols * rows; j++) {
@@ -175,11 +166,9 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 	checkInitalize(ind, "calloc");
 	val = (double*) calloc(cols * rows, sizeof(double));
 	checkInitalize(val, "calloc");
-	vtype = (char*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(char));
+	vtype = (char*) calloc(cols * rows * cols * rows * cols * rows, sizeof(char));
 	checkInitalize(vtype, "calloc");
-	obj = (double*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(double));
+	obj = (double*) calloc(cols * rows * cols * rows * cols * rows, sizeof(double));
 	checkInitalize(obj, "calloc");
 	/* Create environment - log file is mip1.log */
 	error = GRBloadenv(&env, "mip1.log");
@@ -204,11 +193,10 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
-	if(addVars(cols,rows,ind,val,obj,vtype,env,model)==-1)
+	if (addVars(cols, rows, ind, val, obj, vtype, env, model) == -1)
 		return -1;
 
-
-	if(addConstraints(cols,rows,ind,val,filled,amountFilled,env,model,obj,vtype)==-1)
+	if (addConstraints(cols, rows, ind, val, filled, amountFilled, env, model, obj, vtype) == -1)
 		return -1;
 
 	/*  Optimize model - need to call this before calculation  */
@@ -242,16 +230,12 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {/*r
 		return 0;
 	}
 	/* get the solution - the assignment to each variable */
-	error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0,
-			cols * rows * cols * rows * cols * rows, sol);
+	error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, cols * rows * cols * rows * cols * rows, sol);
 	if (error) {
-		printf("ERROR %d GRBgetdblattrarray(): %s\n", error,
-				GRBgeterrormsg(env));
+		printf("ERROR %d GRBgetdblattrarray(): %s\n", error, GRBgeterrormsg(env));
 		free_stuffs(ind, val, obj, vtype);
 		return -1;
 	}
-
-
 
 	/* Free model and environment */
 	GRBfreemodel(model);
