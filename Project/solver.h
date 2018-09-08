@@ -10,5 +10,7 @@ int solver(board *gameBoard);
  *		 int index - the cell we start the filling from, can be between 0 and board length squared.
  *OUTPUT: int representing if we failed to build a valid board (0) or succeed and found a valid solution (1)*/
 void autoFill(gameState *metaBoard);
-
+/*Function that is called for the autofill command.Tries to find cells that only has a single value
+	available to add to them,and if such a value exists,sets the value of the cell to that value,and adds the change to the undo/redo
+	move array that appears in the undo/redo list*/
 #endif /* SOLVER_H_ */
