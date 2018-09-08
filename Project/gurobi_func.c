@@ -20,6 +20,7 @@ void free_stuffs(int* ind, double* val, double* obj, char* vtype) {
 }
 
 int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amountFilled,GRBenv *env,GRBmodel *model,double* obj,char* vtype){
+	/*Adds the constraints to the model*/
 	int i,j,k,l,a,error;
 	/*only one number per cell constraints*/
 	for (i = 0; i < cols * rows; i++) {
@@ -119,8 +120,8 @@ int addConstraints(int cols,int rows,int* ind,double* val,int* filled,int amount
 }
 
 int addVars(int cols,int rows,int* ind,double* val,double* obj,char* vtype,GRBenv *env,GRBmodel *model){
-	int i,j,k,error;
 	/* add variables and set the variables to be binary */
+	int i,j,k,error;
 	for (i = 0; i < cols * rows; i++) {
 		for (j = 0; j < cols * rows; j++) {
 			for (k = 0; k < cols * rows; k++) {
