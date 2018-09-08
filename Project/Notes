@@ -3,7 +3,7 @@
 in solver command(which does num_solutions)check if we should change what we store in the stack from storing both the cell index
 and value to only the cell index and extracting the value from the board when we get the index
 
-Document: parser.c+.h, solver.c+.h, gurobi_func.c+.h, gameStructs.h.
+Document: solver.c+.h, gurobi_func.c+.h, gameStructs.h.
 
 Annoying names: keep and fill in game.c, solver in solver.c
 
@@ -24,7 +24,7 @@ add the prints in a command what is written in the forum in the  פרויקט ת
 
 -------------------------Grandiose Library of Done list
 
-Documented: fileFunc.c+.h, linkedListFunc.c+.h, stackFunc.c+.h, game.c+.h, mainAux.c+.h.
+Documented: fileFunc.c+.h, linkedListFunc.c+.h, stackFunc.c+.h, game.c+.h, parser.c+.h, mainAux.c+.h.
 
 If generate added nothing (Y=0) don't add to undo/redo list (if Y=0 we don't do anything).
 
