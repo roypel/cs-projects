@@ -20,7 +20,7 @@ int main() {
 	checkInitalize(metaBoard.moves->currentMove, "malloc");
 	metaBoard.moves->currentMove->change = (int *) malloc(sizeof(int));
 	checkInitalize(metaBoard.moves->currentMove->change, "malloc");
-	metaBoard.moves->currentMove->change[0] = -1;
+	metaBoard.moves->currentMove->change[0] = -1;/*Will indicate the beginning of the linked list*/
 	metaBoard.moves->currentMove->next = NULL;
 	metaBoard.moves->firstNode = metaBoard.moves->currentMove;
 	metaBoard.markError = 1;

@@ -273,11 +273,18 @@ int tryRandValue(int x, int y, int amountFilled, int *values, int *filledCells,
 }
 
 int tryFill(int fill, int *values, int *filledCells, gameState *metaBoard) {
+	/*The function tries to randomly fill into the game board fill legal cells, while updating the already filled cells in the filledCells array
+	 * INPUT: int fill - The amount of cells the function tries to randomly fill into the board, should not surpass the number of total cells in the game board ((cols*rows)^2)
+	 *        int *values - An array that track the values we tried to fill into each cell, 0 in the i cell means we didn't tried the value yet, 1 indicates we already tried it.
+	 *                      If the array is filled with 1, we couldn't find a legal value to the cell, and we failed in the filling. Allocated outside so we can recycle the same space.
+	 *        int *filledCells - An array that keeps track of what cells we filled and with what values, each cell takes 3 spaces in the array, x, y, and the value we entered.
+	 *        gameState *metaBoard - A pointer to a gameState with allocated board with valid values we are trying to randomly fill.
+	 * OUTPUT: The function returns (1) if it could randomly fill fill cells into the game board, and (0) if we couldn't find a legal value to one of the cells.*/
 	int amountFilled = 0, x = 0, y = 0, i;
-	int cols = metaBoard->cols, rows = metaBoard->rows;/*CONTINUE HERE, make fill board good and send from generate to here, run 1000 iterations and try again if no solution or a cell has no values*/
+	int cols = metaBoard->cols, rows = metaBoard->rows;
 	while (amountFilled < fill) {
 		for (i = 0; i < cols * rows; i++) {
-			values[i] = 0;
+ 			values[i] = 0;
 		}
 		while (!randEmptyCell(&x, &y, metaBoard))
 			;/*Find empty cell in the board using random generator*/
@@ -296,6 +303,9 @@ int tryFill(int fill, int *values, int *filledCells, gameState *metaBoard) {
 }
 
 void generateList(int keep, gameState *metaBoard){
+	/*The function generates and adds a move for the undo/redo list by looking at all the values added to the board, assuming the board was empty in the first place.
+	 * INPUT: - int keep - The amount of cells that should be currently filled in the board, thus the number of changes happened in this move.
+	 *          gameState *metaBoard - A pointer to a gameState with allocated board with valid values, we assume it was empty before te values were added.*/
 	int i, j, filled = 0;
 	int *moves = (int *) malloc(keep * 4 * sizeof(int));
 	checkInitalize(moves, "malloc");
@@ -340,7 +350,7 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 	}
 }
 
-int validate(gameState *metaBoard) {/*We need this for save as well, so we return a value and not print right away*/
+int validate(gameState *metaBoard) {
 	int rows = metaBoard->gameBoard->rows;
 	int cols = metaBoard->gameBoard->cols;
 	int solved, amountFilled = 0;
@@ -353,7 +363,6 @@ int validate(gameState *metaBoard) {/*We need this for save as well, so we retur
 	free(filled);
 	free(sol);
 	return solved;/*Solved will return -1 on Gurobi failure, 0 on unsolvable board and 1 if a solution was found*/
-
 }
 
 void numOfSol(board *gameBoard) {
@@ -363,6 +372,41 @@ void numOfSol(board *gameBoard) {
 		printf("This is a good board!\n");
 	else if (solutions != 0)
 		printf("The puzzle has more than 1 solution, try to edit further\n");
+}
+
+void generateBoard(int fill, int keep, gameState *metaBoard) {
+	int i, *filledCells, *values;
+	int cols = metaBoard->cols, rows = metaBoard->rows;
+	double *sol;
+	sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
+			sizeof(double));
+	checkInitalize(sol, "calloc");
+	filledCells = (int *) malloc(sizeof(int) * fill * 3);
+	checkInitalize(filledCells, "malloc");
+	values = (int *) malloc(sizeof(int) * cols * rows);
+	checkInitalize(values, "malloc");
+	for (i = 0; i < 1000; i++) {
+		if (!tryFill(fill, values, filledCells, metaBoard)) {/**/
+			eraseBoard(metaBoard->gameBoard);
+		} else {
+			if (findSol(cols, rows, filledCells, fill, sol) > 0) {
+				keepRandom(keep, metaBoard, sol);
+				generateList(keep, metaBoard);/*Add the moves to undo/redo linked list*/
+				printBoard(metaBoard);
+				free(sol);
+				free(filledCells);
+				free(values);
+				metaBoard->filledCells = keep;
+				return;
+			} else
+				eraseBoard(metaBoard->gameBoard);
+		}
+	}
+	eraseBoard(metaBoard->gameBoard);
+	free(sol);
+	free(filledCells);
+	free(values);
+	printf("Error: puzzle generator failed\n");
 }
 
 void undo(gameState *metaBoard) {
@@ -400,47 +444,12 @@ void redo(gameState *metaBoard) {
 		printf("Error: no moves to redo\n");
 }
 
-void generateBoard(int fill, int keep, gameState *metaBoard) {
-	int i, *filledCells, *values;
-	int cols = metaBoard->cols, rows = metaBoard->rows;
-	double *sol;
-	sol = (double*) calloc(cols * rows * cols * rows * cols * rows,
-			sizeof(double));
-	checkInitalize(sol, "calloc");
-	filledCells = (int *) malloc(sizeof(int) * fill * 3);
-	checkInitalize(filledCells, "malloc");
-	values = (int *) malloc(sizeof(int) * cols * rows);
-	checkInitalize(values, "malloc");
-	for (i = 0; i < 1000; i++) {
-		if (!tryFill(fill, values, filledCells, metaBoard)) {/*couldn't fill X cells in the board,so we try again,doesn't count for the 1000 tries*/
-			eraseBoard(metaBoard->gameBoard);
-		} else {
-			if (findSol(cols, rows, filledCells, fill, sol) > 0) {
-				keepRandom(keep, metaBoard, sol);
-				generateList(keep, metaBoard);/*Add the moves to undo/redo linked list*/
-				printBoard(metaBoard);
-				free(sol);
-				free(filledCells);
-				free(values);
-				metaBoard->filledCells = keep;
-				return;
-			} else
-				eraseBoard(metaBoard->gameBoard);
-		}
-	}
-	eraseBoard(metaBoard->gameBoard);
-	free(sol);
-	free(filledCells);
-	free(values);
-	printf("Error: puzzle generator failed\n");
-}
-
 void resetGame(gameState *metaBoard) {
 	int* move;
 	int i, j, counter;
 	while (metaBoard->moves->currentMove->change[0] != -1) {
 		move = metaBoard->moves->currentMove->change;
-		counter = move[0];
+		counter = move[0];/*The amount of changes in the move*/
 		for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
 			metaBoard->gameBoard->board[move[i * 4 + 1]][move[i * 4 + 2]].value =
 					move[i * 4 + 3];

@@ -7,7 +7,7 @@ void freeBoard(board *freeBird);
  *INPUT: board *freeBird - A pointer to an allocated board which can be freed to reduce the needed resources of the program.*/
 void initalizeBoard(board *newBoard);
 /*The function allocates the memory needed for the board newBoard according to the values in it's rows and cols fields, as a 2-D array of type cell.
- *INPUT: board *newBoard - a pointer to a board that has values in it's rows and cols fields, and haven't had any memory allocated to it yet.*/
+ *INPUT: board *newBoard - A pointer to a board that has values in it's rows and cols fields, and haven't had any memory allocated to it yet.*/
 void checkCell(int x, int y, int z, int change, board *check);
 /*The function checks if the value z is a valid value in cell <x,y> of board check, which means it hasn't appeared in the row, column or block yet.
  *INPUT: int x,y - Integers representing the column and row of the cell to check by <x,y>.
@@ -28,29 +28,36 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set);
  *The function updates erroneous cells, undo/redo list, and gameMode in case the user is in solve mode and filled the puzzle successfully.
  *INPUT: int x,y - Integers representing the column and row of the cell the user wish to change by <x,y>.
  *		 int z - The value which we want to insert to the given cell, ranging from 0 (erase cell) to board length.
- *		 gameState *metaBoard - a pointer to a valid gameState with board gameBoard filled with numbers 0 to board length which we try to insert value z to in cell <x,y>.
+ *		 gameState *metaBoard - A pointer to a valid gameState with board gameBoard filled with numbers 0 to board length which we try to insert value z to in cell <x,y>.
  *		 int set - A boolean parameter used in order to indicate if we want to advance the undo/redo list (1) or not (0) when not needed eg. while doing undo/redo*/
-int hintBoard(int x, int y, gameState *metaBoard);
-/*The function returns a hint of a possible value to the given cell <x,y>, by using board sol as a valid solution to the board.
- *The hint may be not relevant, as sol is the last solution computed by the game initialization or the last validate command given.
- *INPUT: int x,y - Integers representing the column and row of the cell the user want hint by <x,y>.
- *		 board *sol - A pointer to a valid solution of the board, filled with integers ranging from 1 to board length.
- *OUTPUT: An integer between 1 and board length, equals to the value in cell <x,y> of the board sol.*/
+void hintBoard(int x, int y, gameState *metaBoard);
+/*The function prints a hint of a possible value to the given cell <x,y>, by using ILP to find a board solution.
+ *INPUT: int x,y - Integers representing the column and row of the cell the user want hint by <x,y>. Should not be fixed, or a hint won't be given and an appropriate message will be shown.
+ *       gameState *metaBoard - A pointer to a gameState with allocated board with valid values, should not contain erroneous values or a hint won't be given and an appropriate message will be shown.*/
 int validate(gameState *metaBoard);
-/*The function verifies the current gameBoard of gameState metaBoard is a valid board that can be completed by using brute-force algorithm to solve it, and prints an appropriate message accordingly.
- *INPUT: gameState *metaBoard - A pointer to a valid gameState with board gameBoard filled with numbers 0 to board length which we try to solve by brute-force.*/
+/*The function verifies the current gameBoard of gameState metaBoard is a valid board that can be completed by using ILP to solve it, and return a value accordingly.
+ *INPUT: gameState *metaBoard - A pointer to a valid gameState with board gameBoard filled with valid values which we try to solve by using ILP.
+ *OUTPUT: The function returns (-1) if the ILP (Gurobi) has failed, (0) on an unsolvable board, and (1) if a solution was found and the board is valid.*/
 void numOfSol(board *gameBoard);
-void undo(gameState *metaBoard);
-void redo(gameState *metaBoard);
+/*The function finds all the possible solutions to the game board using an exhaustive backtracking algorithm, and prints an appropriate message.
+ * INPUT: board *gameBoard - A pointer to an allocated board with valid values we try to fill in every possible way using exhaustive backtracking and find all possible solutions.*/
 void generateBoard(int X, int Y, gameState *metaBoard);
-/*The function generates a valid board for the current game with the size and number of filled cells the user has given as input.
- *The function updates the boards solution and gameBoard of gameState metaBoard accordingly.
- *INPUT: gameState *metaBoard - A pointer to a valid gameState with boards solution and gameBoard with allocated memory, and without any values (all cells are 0).*/
+/*The function generates a valid board for the current game by randomly filling X cells in the board, trying to solve it using ILP, and then keeping only Y values in it.
+ * If there were 1000 failed generating attempts (couldn't find a legal value for a cell or no solution was found), the function prints an error message and empties the board.
+ *INPUT: int X - The number of cells the function will try to randomly fill in the board.
+ *       int Y - The number of filled cells the function will keep from the solved board.
+ *       gameState *metaBoard - A pointer to a valid gameState with boards solution and gameBoard with allocated memory, and without any values (all cells are 0), or else the function won't generate a board.*/
+void undo(gameState *metaBoard);
+/*The function changes the board one move backward in the undo/redo linked list (if a move exists), reverting and printing any changes made in the last move, and moves the curentMove backwards.
+ * INPUT: gameState *metaBoard - A pointer to a gameState with allocated undo/redo linked list and board with valid values in it.*/
+void redo(gameState *metaBoard);
+/*The function changes the board one move forward in the undo/redo linked list (if a move exists), reverting back and printing any changes made in the last undo, and moves the curentMove forward.
+ * INPUT: gameState *metaBoard - A pointer to a gameState with allocated undo/redo linked list and board with valid values in it.*/
 void resetGame(gameState *metaBoard);
-/*The function resets the game by freeing metaBoard boards solution and gameBoard memory and making them ready for a new allocation without wasting resources.
- *INPUT: gameState *metaBoard - A pointer to a gameState with allocated memory for boards solution and gameBoard that needs to be freed.*/
+/*The function resets the game board in metaBoard to be the original board the user loaded, by reverting all the changes made using undo, and then clearing the undo/redo list.
+ *INPUT: gameState *metaBoard - A pointer to a gameState with allocated undo/redo linked list and board with valid values in it.*/
 void exitGame(gameState *metaBoard);
-/*The function exits the game by freeing all memory that still haven't been freed from gameState metaBoard, and terminates the program.
- *INPUT: gameState *metaBoard - A pointer to a gameState with allocated memory for boards solution and gameBoard and their cells that needs to be freed.*/
+/*The function exits the game by freeing all the memory that still haven't been freed from gameState metaBoard, and terminates the program.
+ *INPUT: gameState *metaBoard - A pointer to a gameState with allocated memory for linked list, board and cells that needs to be freed.*/
 
 #endif /* GAME_H_ */
