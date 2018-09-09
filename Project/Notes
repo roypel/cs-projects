@@ -1,21 +1,14 @@
 --------------------------To do list
 
+Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.
 
 Document: check that they are ok
 
 Annoying names: keep and fill in game.c, solver in solver.c
 
-Maybe keep consistency of file and function names (MainAux, gurobi_func).
+(MAYBE DELETE)Maybe keep consistency of file and function names (MainAux, gurobi_func).
 
-Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
-
-Make sure we print an error when player sets erroneous value. - Moshe said that we may not need to do it.
-
-Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.
-
-DEBUGGING FOR VSS - check if there are enough contraints of each type and they are as we intended, so we won't miss any case
-
-fix a print as told by mosses in רווח בהדפסת שגיאה בgenerate in the forum
+(PROBABLY DELETE)Make sure we print after every move that changes the board and on opening of new file, follow forum and instructions to make sure.
 
 add the prints in a command what is written in the forum in the  פרויקט תוכנה: שגיאות בקריאה\כתיבה לקובץ subject
 
