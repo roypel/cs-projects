@@ -1,5 +1,9 @@
 --------------------------To do list
 
+in the generate command,after the move is done and we want to add it to the undo/redo list,we did not put free in the end of the
+generateList command for the array that stored the changes in each cell(which the free does appear in the autofill command with the same
+objective).HANSOLO has added free in the end of the function,so we need to check if that free has fixed the leakage.
+
 Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.(why did we put 4 spaces in string and not 3?)
 
 Document: check that they are ok
