@@ -192,11 +192,11 @@ int findSol(int cols, int rows, int* filled, int amountFilled, double* sol) {
 		return -1;
 	}
 	/*sets the variables to be binary type*/
-	if (addVars(cols, rows, ind, val, obj, vtype, env, model) == -1)
+	if (addVars(cols, rows, ind, val, obj, vtype, env, model))
 		return -1;
 	
 	/*adds the constraints of the model*/
-	if (addConstraints(cols, rows, ind, val, filled, amountFilled, env, model, obj, vtype) == -1)
+	if (addConstraints(cols, rows, ind, val, filled, amountFilled, env, model, obj, vtype))
 		return -1;
 
 	/*  Optimize model - need to call this before calculation  */
