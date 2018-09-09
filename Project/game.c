@@ -301,6 +301,7 @@ void generateList(int toKeep, gameState *metaBoard) {
 		}
 	}
 	metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, moves, toKeep);
+	free(moves);
 }
 
 int validate(gameState *metaBoard) {
