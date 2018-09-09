@@ -16,6 +16,20 @@ void checkScan(int scan) {
 	}
 }
 
+int checkSize(int cols, int rows) {
+	/*The function calculates the maximum possible size of a string holding information for a cell in the board.
+	 * Calculated by maximum amount of digits + 1 for '.' or '*' + 1 for '\0'.
+	 * INPUT: int cols, rows - The */
+	int size = 0, num = cols * rows;
+	while (num != 0) {
+		num /= 10;
+		size++;
+	}
+	size += 2;/*For '.' or '*' and '\0'.*/
+	printf("%d\n", size);
+	return size;
+}
+
 void fillBoard(gameState *metaBoard, FILE *ifp) {
 	/* The function receives a pointer to an open file ifp, assuming it's a valid and correctly formatted sudoku board, and a pointer to the current
 	 * gameState metaBoard, and fills the current game board according to the file format: first number is the number of rows in a block, second number
@@ -24,8 +38,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	 * new gameBoard with values from the board in the file, an empty undo/redo list, and any information needed to keep the new gameState.
 	 *        FILE *ifp - An open file, containing information of a valid sudoku game board.*/
 	int input, i, j, k, filled = 0;
-	char *c, string[4] = { 0 };/*TODO: USING THE 5*5 LIMITATION, MAYBE USE CALLOC WITH log_10 instead*/
-	/*c used to check each char in a cell, string used to read a cell (number + fixed + \0)*/
+	char *cell = {0};
 	if (metaBoard->gameBoard->board)/*Free memory from previous game board, if it exists*/
 		freeBoard(metaBoard->gameBoard);
 	checkScan(fscanf(ifp, "%d", &input));/*Read block size*/
@@ -39,23 +52,23 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	metaBoard->moves->currentMove = metaBoard->moves->firstNode;
 	metaBoard->moves->currentMove->next = NULL;
 	initalizeBoard(metaBoard->gameBoard);
+	cell = (char *) calloc(checkSize(metaBoard->cols, metaBoard->rows), sizeof(char));
+	checkInitalize(cell, "calloc");
 	for (i = 0; i < metaBoard->rows * metaBoard->cols; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			checkScan(fscanf(ifp, "%s", string)); /*Read next cell*/
-			c = string; /*Questionable implementation, maybe can replace string with c*/
-			if (*c == '0') {/*Cell is empty, filled decrease and not fixed (default 0)*/
+			checkScan(fscanf(ifp, "%s", cell)); /*Read next cell*/
+			if (*cell == '0') {/*Cell is empty, filled decrease and not fixed (default 0)*/
 				filled--;
 				metaBoard->gameBoard->board[j][i].error = 0;
 				metaBoard->gameBoard->board[j][i].fixed = 0;
 			} else {
-				for (k = 0; k < (int) strlen(c); k++) {
-					/*while (c != '\0') {Read until end of cell*/
-					if (c[k] == '.') {
+				for (k = 0; k < (int) strlen(cell); k++) {
+					if (cell[k] == '.') {
 						if (metaBoard->mode == Solve) /*Cell is fixed in Solve mode (in edit everything is unfixed)*/
 							metaBoard->gameBoard->board[j][i].fixed = 1;
 					} else {
 						metaBoard->gameBoard->board[j][i].value *= 10;/*Insert another digit*/
-						metaBoard->gameBoard->board[j][i].value += (c[k] - '0');
+						metaBoard->gameBoard->board[j][i].value += (cell[k] - '0');
 					}
 				}
 				checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1, metaBoard->gameBoard);
@@ -63,6 +76,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 		}
 	}
 	metaBoard->filledCells = filled;
+	free(cell);
 	fclose(ifp);
 	printBoard(metaBoard);
 }
