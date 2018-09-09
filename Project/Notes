@@ -1,6 +1,6 @@
 --------------------------To do list
 
-Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.
+Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.(why did we put 4 spaces in string and not 3?)
 
 Document: check that they are ok
 
