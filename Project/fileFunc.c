@@ -26,7 +26,6 @@ int checkSize(int cols, int rows) {
 		size++;
 	}
 	size += 2;/*For '.' or '*' and '\0'.*/
-	printf("%d\n", size);
 	return size;
 }
 
