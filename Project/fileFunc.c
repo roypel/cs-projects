@@ -25,7 +25,7 @@ int checkSize(int cols, int rows) {
 		num /= 10;
 		size++;
 	}
-	size += 2;/*For '.' or '*' and '\0'.*/
+	size += 3;/*For '.' or '*' and '\0'.*/
 	return size;
 }
 
