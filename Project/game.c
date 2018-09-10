@@ -414,7 +414,7 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 }
 
 void numOfSol(board *gameBoard) {
-	int solutions = solver(gameBoard);
+	int solutions = findNumSols(gameBoard);
 	printf("Number of solutions:%d\n", solutions);
 	if (solutions == 1)
 		printf("This is a good board!\n");

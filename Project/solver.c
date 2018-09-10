@@ -22,7 +22,7 @@ int nextEmptyCell(int index, board *checkBoard) {
 	return nextEmptyCell(index + 1, checkBoard);
 }
 
-int solver(board *gameBoard) {
+int findNumSols(board *gameBoard) {
 	int x = 0, y = 0, i = 1, index = 0;
 	int solutions = 0, rows = gameBoard->rows, cols = gameBoard->cols;
 	int found = 1;
@@ -133,6 +133,7 @@ void autoFill(gameState *metaBoard) {
 				moves[(counter - 1) * 4 + 1] = i;
 				moves[(counter - 1) * 4 + 2] = 0;
 				moves[(counter - 1) * 4 + 3] = posValues;
+				printf("Cell <%d,%d> set to %d/n", j, i, posValues);
 			}
 		}
 	}
@@ -141,6 +142,7 @@ void autoFill(gameState *metaBoard) {
 	for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
 		metaBoard->gameBoard->board[moves[i * 4]][moves[i * 4 + 1]].value = moves[i * 4 + 3];
 		checkCell(moves[i * 4], moves[i * 4 + 1], moves[i * 4 + 3], 1, metaBoard->gameBoard);
+
 	}
 	metaBoard->filledCells += counter; /*Update amount of cells filled*/
 	free(moves);

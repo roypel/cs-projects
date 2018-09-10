@@ -2,14 +2,14 @@
 #define SOLVER_H_
 #include "gameStructs.h"
 
-int solver(board *gameBoard);
-/*The function recursively tries to find a valid solution to the board by using brute-force method (trying all possible values in every empty cell from left to right, up to down).
+int findNumSols(board *gameBoard);
+/*The function tries to find all the valid solutions to the board by using brute-force method with exhaustive backtracking (trying all possible values in every empty cell from left to right, top to bottom).
  *The function starts to fill from the first empty cell, and tries each possible value and send the board another step until it's filled or we ran out of options and need to backtrack without changing anything.
- *INPUT: board *gameBoard - a pointer to the game board
- *OUTPUT: int representing if we failed to build a valid board (0) or succeed and found a valid solution (1)*/
+ *The function keeps the information needed for backtracking using a stack.
+ *INPUT: board *gameBoard - A pointer to an allocated gameBoard with valid values.
+ *OUTPUT: int representing the amount of solutions the function found.*/
 void autoFill(gameState *metaBoard);
-/*Function that is called for the autofill command.Tries to find cells that only has a single value
-available to add to them,and if such a value exists,sets the value of the cell to that value,and adds the change to the undo/redo
-move array that appears in the undo/redo list
-INPUT-gameState *metaBoard the struct that contains the board that we want to autofill*/
+/*The function tries to find cells that only has a single value available to add to them, and if such a value exists,
+ * sets the value of the cell to that value, prints an appropriate message and adds all the changes to the undo/redo list. May result in an erroneous board!
+ * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated game board with valid values that the function will try to fill "obvious" values to.*/
 #endif /* SOLVER_H_ */
