@@ -79,10 +79,11 @@ int findNumSols(board *gameBoard) {
 	return solutions;
 }
 int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
-	/*Checks if a value appears in a row/column/block of a cell
-	INPUT-ints x and y the cell that we want to check the value int z on
-	gamestate *metaBoard pointer to the struct containing the board we want to try to fill.
-	OUTPUT-int indicating we could fill it(1) or we could not(0)*/
+	/*Checks if a value appears in a row/column/block of a cell.
+	 INPUT: int x, y - The column and row of the cell that we want to check the value z on.
+	        int z - The value we want to check in the <x,y> cell.
+	        gameState *metaBoard - A valid gameState pointer with an allocated gameBoard with valid values.
+	 OUTPUT: int indicating we could fill the cell with z (1) or we can't (0).*/
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
 		if (metaBoard->gameBoard->board[i][y].value == z) {

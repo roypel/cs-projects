@@ -39,7 +39,7 @@ typedef struct stackPointer {/*A pointer for the stack of items with the necessa
 } stackPointer;
 
 typedef struct gameState {/*Struct that contains the necessary information for the game-the board,the current mode,should we mark
-	errors or not,the moves linkedlist,the amount of filledCells and the cols and rows in each block*/
+ errors or not,the moves linkedlist,the amount of filledCells and the cols and rows in each block*/
 	board *gameBoard;
 	gameMode mode;
 	int markError;

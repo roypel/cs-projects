@@ -3,8 +3,8 @@
 #include "parser.h"
 #include "solver.h"
 #include "gameStructs.h"
+#include "gurobiFunc.h"
 #include "linkedListFunc.h"
-#include "gurobi_func.h"
 #include "mainAux.h"
 
 void freeBoard(board *freeBird) {

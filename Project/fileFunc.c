@@ -37,7 +37,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	 * new gameBoard with values from the board in the file, an empty undo/redo list, and any information needed to keep the new gameState.
 	 *        FILE *ifp - An open file, containing information of a valid sudoku game board.*/
 	int input, i, j, filled = 0, size;
-	char *cell = {0};
+	char *cell;
 	if (metaBoard->gameBoard->board)/*Free memory from previous game board, if it exists*/
 		freeBoard(metaBoard->gameBoard);
 	checkScan(fscanf(ifp, "%d", &input));/*Read block size*/
@@ -62,7 +62,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 				metaBoard->gameBoard->board[j][i].error = 0;
 				metaBoard->gameBoard->board[j][i].fixed = 0;
 			} else {
-				while (*cell != '\0'){
+				while (*cell != '\0') {
 					size++;
 					if (*cell == '.') {
 						if (metaBoard->mode == Solve) /*Cell is fixed in Solve mode (in edit everything is unfixed)*/
