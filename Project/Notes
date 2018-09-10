@@ -1,14 +1,8 @@
 --------------------------To do list
 
-in the generate command,after the move is done and we want to add it to the undo/redo list,we did not put free in the end of the
-generateList command for the array that stored the changes in each cell(which the free does appear in the autofill command with the same
-objective).HANSOLO has added free in the end of the function,so we need to check if that free has fixed the leakage.
-
-Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.(why did we put 4 spaces in string and not 3?)
-
 Document: check that they are ok
 
-Annoying names: keep and fill in game.c, solver in solver.c
+Annoying names: Waiting for more examples.
 
 (MAYBE DELETE)Maybe keep consistency of file and function names (MainAux, gurobi_func).
 
@@ -18,6 +12,14 @@ add the prints in a command what is written in the forum in the  פרויקט ת
 
 
 -------------------------Grandiose Library of Done list
+
+in the generate command,after the move is done and we want to add it to the undo/redo list,we did not put free in the end of the
+generateList command for the array that stored the changes in each cell(which the free does appear in the autofill command with the same
+objective).HANSOLO has added free in the end of the function,so we need to check if that free has fixed the leakage.
+
+keep and fill in game.c, solver in solver.c -- names have been changed.
+
+Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.(why did we put 4 spaces in string and not 3?) - DONE! Calloc and only one variable.
 
 Documented: fileFunc.c+.h, linkedListFunc.c+.h, stackFunc.c+.h, game.c+.h, parser.c+.h, mainAux.c+.h.solver.c+.h, gameStructs.h.
 
