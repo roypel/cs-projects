@@ -25,7 +25,7 @@ int checkSize(int cols, int rows) {
 		num /= 10;
 		size++;
 	}
-	size += 3;/*For '.' or '*' and '\0'.*/
+	size += 2;/*For '.' or '*', and '\0'.*/
 	return size;
 }
 
@@ -36,7 +36,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	 * INPUT: gameState *metaBoard - A valid gameState pointer that keeps information for the current game. Will be initialized and filled with a
 	 * new gameBoard with values from the board in the file, an empty undo/redo list, and any information needed to keep the new gameState.
 	 *        FILE *ifp - An open file, containing information of a valid sudoku game board.*/
-	int input, i, j, k, filled = 0;
+	int input, i, j, filled = 0, size;
 	char *cell = {0};
 	if (metaBoard->gameBoard->board)/*Free memory from previous game board, if it exists*/
 		freeBoard(metaBoard->gameBoard);
@@ -56,20 +56,24 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	for (i = 0; i < metaBoard->rows * metaBoard->cols; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
 			checkScan(fscanf(ifp, "%s", cell)); /*Read next cell*/
+			size = 0;/*Will keep amount of characters in cell*/
 			if (*cell == '0') {/*Cell is empty, filled decrease and not fixed (default 0)*/
 				filled--;
 				metaBoard->gameBoard->board[j][i].error = 0;
 				metaBoard->gameBoard->board[j][i].fixed = 0;
 			} else {
-				for (k = 0; k < (int) strlen(cell); k++) {
-					if (cell[k] == '.') {
+				while (*cell != '\0'){
+					size++;
+					if (*cell == '.') {
 						if (metaBoard->mode == Solve) /*Cell is fixed in Solve mode (in edit everything is unfixed)*/
 							metaBoard->gameBoard->board[j][i].fixed = 1;
 					} else {
 						metaBoard->gameBoard->board[j][i].value *= 10;/*Insert another digit*/
-						metaBoard->gameBoard->board[j][i].value += (cell[k] - '0');
+						metaBoard->gameBoard->board[j][i].value += (*cell - '0');
 					}
+					cell++;
 				}
+				cell -= size;/*Reset pointer back to the beginning*/
 				checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1, metaBoard->gameBoard);
 			}
 		}

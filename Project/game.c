@@ -413,6 +413,15 @@ void hintBoard(int x, int y, gameState *metaBoard) {
 	}
 }
 
+void numOfSol(board *gameBoard) {
+	int solutions = solver(gameBoard);
+	printf("Number of solutions:%d\n", solutions);
+	if (solutions == 1)
+		printf("This is a good board!\n");
+	else if (solutions != 0)
+		printf("The puzzle has more than 1 solution, try to edit further\n");
+}
+
 void resetGame(gameState *metaBoard) {
 	int *move;
 	int i, j, counter;
@@ -437,15 +446,6 @@ void resetGame(gameState *metaBoard) {
 	metaBoard->moves->currentMove = metaBoard->moves->firstNode;
 	metaBoard->moves->currentMove->next = NULL;
 	printf("Board reset\n");
-}
-
-void numOfSol(board *gameBoard) {
-	int solutions = solver(gameBoard);
-	printf("Number of solutions:%d\n", solutions);
-	if (solutions == 1)
-		printf("This is a good board!\n");
-	else if (solutions != 0)
-		printf("The puzzle has more than 1 solution, try to edit further\n");
 }
 
 void exitGame(gameState *metaBoard) {
