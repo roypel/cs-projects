@@ -134,7 +134,7 @@ void autoFill(gameState *metaBoard) {
 				moves[(counter - 1) * 4 + 1] = i;
 				moves[(counter - 1) * 4 + 2] = 0;
 				moves[(counter - 1) * 4 + 3] = posValues;
-				printf("Cell <%d,%d> set to %d/n", j, i, posValues);
+				printf("Cell <%d,%d> set to %d\n", j, i, posValues);
 			}
 		}
 	}
