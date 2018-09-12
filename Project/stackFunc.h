@@ -1,3 +1,6 @@
+/*Header file which contains the functions that we use in order to operate the stack struct for the num_solutions command*/
+
+
 #ifndef STACKFUNC_H_
 #define STACKFUNC_H_
 
