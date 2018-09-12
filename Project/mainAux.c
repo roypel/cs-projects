@@ -13,15 +13,15 @@ void freeBoard(board *freeBird) {
 	free(freeBird->board);
 }
 
-void initalizeBoard(board *newBoard) {
-	int i;
-	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols, sizeof(cell *));
-	checkInitalize(newBoard->board, "calloc");
-	for (i = 0; i < newBoard->rows * newBoard->cols; i++) {
-		newBoard->board[i] = (cell*) calloc(newBoard->rows * newBoard->cols, sizeof(cell));
-		checkInitalize(newBoard->board[i], "calloc");
+void eraseBoard(board *toErase) {
+	int i, j;
+	for (i = 0; i < toErase->cols * toErase->rows; i++) {
+		for (j = 0; j < toErase->cols * toErase->rows; j++) {
+			toErase->board[i][j].value = 0;
+			toErase->board[i][j].error = 0;
+			toErase->board[i][j].fixed = 0;
+		}
 	}
-	eraseBoard(newBoard);
 }
 
 void checkCell(int x, int y, int z, int change, board *check) {
@@ -65,18 +65,6 @@ int isErroneous(gameState *metaBoard) {
 		}
 	}
 	return 0;
-}
-
-void checkWin(gameState *metaBoard) {
-	int cols = metaBoard->gameBoard->cols;
-	int rows = metaBoard->gameBoard->rows;
-	if (metaBoard->filledCells == cols * cols * rows * rows) {
-		if (!isErroneous(metaBoard)) {
-			printf("Puzzle solved successfully\n");
-			metaBoard->mode = Init;
-		} else
-			printf("Puzzle solution erroneous\n");
-	}
 }
 
 void checkInitalize(void *pointer, char *cmd) {

@@ -23,9 +23,8 @@ game.o: game.c game.h parser.h mainAux.h solver.h gameStructs.h linkedListFunc.h
 solver.o: solver.c solver.h game.h gameStructs.h linkedListFunc.h stackFunc.h mainAux.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
-fileFunc.o: fileFunc.c fileFunc.h gameStructs.h linkedListFunc.h game.h
+fileFunc.o: fileFunc.c fileFunc.h gameStructs.h linkedListFunc.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
-
 
 linkedListFunc.o: linkedListFunc.c linkedListFunc.h gameStructs.h mainAux.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c

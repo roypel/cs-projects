@@ -213,7 +213,7 @@ void cmdAutofill(gameState *metaBoard) {
 	if (isErroneous(metaBoard))
 		erroneousError;
 	else {
-		autoFill(metaBoard);
+		fillSingleValues(metaBoard);
 	}
 }
 

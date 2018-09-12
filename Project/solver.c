@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "game.h"
 #include "gameStructs.h"
 #include "linkedListFunc.h"
 #include "mainAux.h"
@@ -20,6 +19,77 @@ int nextEmptyCell(int index, board *checkBoard) {
 	if (checkBoard->board[index % (cols * rows)][(int) (index / (rows * cols))].value == 0)/*Cell index is empty*/
 		return index;
 	return nextEmptyCell(index + 1, checkBoard);
+}
+
+int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
+	/*Checks if a value appears in a row/column/block of a cell.
+	 INPUT: int x, y - The column and row of the cell that we want to check the value z on.
+	        int z - The value we want to check in the <x,y> cell.
+	        gameState *metaBoard - A valid gameState pointer with an allocated gameBoard with valid values.
+	 OUTPUT: int indicating we could fill the cell with z (1) or we can't (0).*/
+	int i, j;
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
+		if (metaBoard->gameBoard->board[i][y].value == z) {
+			return 0;
+		}
+	}
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check column*/
+		if (metaBoard->gameBoard->board[x][i].value == z) {
+			return 0;
+		}
+	}
+	for (i = (x / metaBoard->cols) * metaBoard->cols; i < (int) (x / metaBoard->cols) * metaBoard->cols + metaBoard->cols; i++) {
+		for (j = (y / metaBoard->rows) * metaBoard->rows; j < (int) (y / metaBoard->rows) * metaBoard->rows + metaBoard->rows; j++) {
+			if (metaBoard->gameBoard->board[i][j].value == z) {
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+
+int fillSingleValues(gameState *metaBoard) {
+	int i, j, k, counter = 0, posValues;
+	int *moves = (int *) malloc(0);
+	checkInitalize(moves, "malloc");
+	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
+		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
+			if (metaBoard->gameBoard->board[j][i].value != 0)
+				continue;
+			posValues = 0;
+			for (k = 1; k <= metaBoard->rows * metaBoard->cols; k++) {/*Check the possible values to insert to the <i,j> cell*/
+				if (checkSingleValue(j, i, k, metaBoard)) {
+					if (posValues == 0)
+						posValues = k;
+					else {
+						posValues = 0;
+						break;
+					}
+				}
+			}
+			if (posValues == 0)/*Couldn't find a value to put in the cell or we had more than one value to put in the cell*/
+				continue;
+			else {/*This cell only had a single value that we could enter it, so we add it to the moves array!*/
+				counter++;
+				moves = realloc(moves, sizeof(int) * counter * 4);/*Reallocate extra space*/
+				checkInitalize(moves, "realloc");
+				moves[(counter - 1) * 4] = j;/*Adds the change to the new move array*/
+				moves[(counter - 1) * 4 + 1] = i;
+				moves[(counter - 1) * 4 + 2] = 0;
+				moves[(counter - 1) * 4 + 3] = posValues;
+				printf("Cell <%d,%d> set to %d\n", j + 1, i + 1, posValues);
+			}
+		}
+	}
+	if (counter)/*Update the list only if any changes were made*/
+		metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, moves, counter);/*Update linked list of moves*/
+	for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
+		metaBoard->gameBoard->board[moves[i * 4]][moves[i * 4 + 1]].value = moves[i * 4 + 3];
+		checkCell(moves[i * 4], moves[i * 4 + 1], moves[i * 4 + 3], 1, metaBoard->gameBoard);
+
+	}
+	free(moves);
+	return counter;
 }
 
 int findNumSols(board *gameBoard) {
@@ -77,76 +147,4 @@ int findNumSols(board *gameBoard) {
 	gameBoard->board[x][y].error = 0;
 	free(backStack.stack);
 	return solutions;
-}
-int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
-	/*Checks if a value appears in a row/column/block of a cell.
-	 INPUT: int x, y - The column and row of the cell that we want to check the value z on.
-	        int z - The value we want to check in the <x,y> cell.
-	        gameState *metaBoard - A valid gameState pointer with an allocated gameBoard with valid values.
-	 OUTPUT: int indicating we could fill the cell with z (1) or we can't (0).*/
-	int i, j;
-	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
-		if (metaBoard->gameBoard->board[i][y].value == z) {
-			return 0;
-		}
-	}
-	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check column*/
-		if (metaBoard->gameBoard->board[x][i].value == z) {
-			return 0;
-		}
-	}
-	for (i = (x / metaBoard->cols) * metaBoard->cols; i < (int) (x / metaBoard->cols) * metaBoard->cols + metaBoard->cols; i++) {
-		for (j = (y / metaBoard->rows) * metaBoard->rows; j < (int) (y / metaBoard->rows) * metaBoard->rows + metaBoard->rows; j++) {
-			if (metaBoard->gameBoard->board[i][j].value == z) {
-				return 0;
-			}
-		}
-	}
-	return 1;
-}
-
-void autoFill(gameState *metaBoard) {
-	int i, j, k, counter = 0, posValues;
-	int *moves = (int *) malloc(0);
-	checkInitalize(moves, "malloc");
-	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
-		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			if (metaBoard->gameBoard->board[j][i].value != 0)
-				continue;
-			posValues = 0;
-			for (k = 1; k <= metaBoard->rows * metaBoard->cols; k++) {/*Check the possible values to insert to the <i,j> cell*/
-				if (checkSingleValue(j, i, k, metaBoard)) {
-					if (posValues == 0)
-						posValues = k;
-					else {
-						posValues = 0;
-						break;
-					}
-				}
-			}
-			if (posValues == 0)/*Couldn't find a value to put in the cell or we had more than one value to put in the cell*/
-				continue;
-			else {/*This cell only had a single value that we could enter it, so we add it to the moves array!*/
-				counter++;
-				moves = realloc(moves, sizeof(int) * counter * 4);/*Reallocate extra space*/
-				checkInitalize(moves, "realloc");
-				moves[(counter - 1) * 4] = j;/*Adds the change to the new move array*/
-				moves[(counter - 1) * 4 + 1] = i;
-				moves[(counter - 1) * 4 + 2] = 0;
-				moves[(counter - 1) * 4 + 3] = posValues;
-				printf("Cell <%d,%d> set to %d\n", j+1, i+1, posValues);
-			}
-		}
-	}
-	if (counter)/*Update the list only if any changes were made*/
-		metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, moves, counter);/*Update linked list of moves*/
-	for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
-		metaBoard->gameBoard->board[moves[i * 4]][moves[i * 4 + 1]].value = moves[i * 4 + 3];
-		checkCell(moves[i * 4], moves[i * 4 + 1], moves[i * 4 + 3], 1, metaBoard->gameBoard);
-
-	}
-	metaBoard->filledCells += counter; /*Update amount of cells filled*/
-	free(moves);
-	printBoard(metaBoard);
-	checkWin(metaBoard);
 }

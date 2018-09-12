@@ -9,19 +9,6 @@
 #include "linkedListFunc.h"
 #include "mainAux.h"
 
-void eraseBoard(board *toErase) {
-	/*The function resets all the values and other properties of the input board to 0, making it a clean board.
-	 * INPUT: board *toErase - A pointer to an allocated board that needs to be wiped from any previous information.*/
-	int i, j;
-	for (i = 0; i < toErase->cols * toErase->rows; i++) {
-		for (j = 0; j < toErase->cols * toErase->rows; j++) {
-			toErase->board[i][j].value = 0;
-			toErase->board[i][j].error = 0;
-			toErase->board[i][j].fixed = 0;
-		}
-	}
-}
-
 void checkErroneous(gameState *metaBoard, int x, int y) {
 	/*The function checks the column, row and block of cell x,y to check if any erroneous values are now fixed.
 	 * INPUT: gameState *metaBoard - A pointer to a gameState with allocated board and valid values in it, where each erroneous cell is marked by the error property of the cell.
@@ -44,75 +31,6 @@ void checkErroneous(gameState *metaBoard, int x, int y) {
 	}
 }
 
-void printBoard(gameState *metaBoard) {
-	int i, j;
-	board *playerBoard = metaBoard->gameBoard;
-	for (i = 0; i < playerBoard->cols * playerBoard->rows; i++) {
-		if (i % playerBoard->rows == 0) {
-			for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
-				printf("-");
-			}
-			printf("\n");
-		}
-		for (j = 0; j < playerBoard->rows * playerBoard->cols; j++) {
-			if (j == 0) {
-				printf("|");
-			}
-			printf(" ");
-			if (playerBoard->board[j][i].value == 0) {
-				printf("   ");
-			} else {
-				printf("%2d", playerBoard->board[j][i].value);
-				if (playerBoard->board[j][i].fixed)
-					printf(".");
-				else if ((playerBoard->board[j][i].error) && ((metaBoard->markError) || (metaBoard->mode == Edit)))
-					printf("*");
-				else
-					printf(" ");
-			}
-			if (j % playerBoard->cols == playerBoard->cols - 1)
-				printf("|");
-		}
-		printf("\n");
-	}
-	for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
-		printf("-");
-	}
-	printf("\n");
-}
-
-void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boolean parameter is used in order to not advance the undo/redo list when not needed eg. undo/redo*/
-	int newMove[4];
-	newMove[0] = x;
-	newMove[1] = y;
-	newMove[2] = metaBoard->gameBoard->board[x][y].value;
-	newMove[3] = z;
-	if (!metaBoard->gameBoard->board[x][y].fixed) {
-		if (set)
-			metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, newMove, 1);
-		if (z == 0) {/*User tries to erase a value on the board*/
-			if (metaBoard->gameBoard->board[x][y].value > 0) {/*Check if we erase a value on the board or cell is already empty*/
-				metaBoard->gameBoard->board[x][y].value = 0;
-				metaBoard->gameBoard->board[x][y].error = 0;
-				metaBoard->filledCells--;
-				checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
-			}
-		} else if (z != metaBoard->gameBoard->board[x][y].value) {/*We don't re-enter the same value, so changes should be made*/
-			if (metaBoard->gameBoard->board[x][y].value == 0) {
-				metaBoard->filledCells++;
-			}
-			metaBoard->gameBoard->board[x][y].value = z;
-			checkCell(x, y, z, 1, metaBoard->gameBoard);
-			checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
-		}
-		if (set)
-			printBoard(metaBoard);
-		if (metaBoard->mode == Solve)
-			checkWin(metaBoard);
-	} else {
-		printf("Error: cell is fixed\n");
-	}
-}
 int* findFilled(gameState *metaBoard, int *amountFilled) {
 	/*The function finds all the filled cells in the game board and return them in an array such that every cells take 3 spaces, x,y, and the value in this cell.
 	 * INPUT: gameState *metaBoard - A pointer to a gameState with allocated board and with valid values.
@@ -247,6 +165,20 @@ int tryFill(int toFill, int *values, int *filledCells, gameState *metaBoard) {
 	return 1;
 }
 
+void checkWin(gameState *metaBoard) {
+	/*The function checks if the board is completely filled correctly, and prints an according message and change the gameMode to Init if needed.
+	 *INPUT: gameState *metaBoard - A pointer to a gameState with field filledCells that represents the amount of cells already filled in the game board of the current game.*/
+	int cols = metaBoard->gameBoard->cols;
+	int rows = metaBoard->gameBoard->rows;
+	if (metaBoard->filledCells == cols * cols * rows * rows) {
+		if (!isErroneous(metaBoard)) {
+			printf("Puzzle solved successfully\n");
+			metaBoard->mode = Init;
+		} else
+			printf("Puzzle solution erroneous\n");
+	}
+}
+
 void printChanges(int from, int to) {
 	/*The function prints the changes made in the board by changing a cell from the value from to the value to.
 	 * INPUT: int from - The previous value that was in the cell.
@@ -282,6 +214,76 @@ void generateList(int toKeep, gameState *metaBoard) {
 	}
 	metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, moves, toKeep);
 	free(moves);
+}
+
+void printBoard(gameState *metaBoard) {
+	int i, j;
+	board *playerBoard = metaBoard->gameBoard;
+	for (i = 0; i < playerBoard->cols * playerBoard->rows; i++) {
+		if (i % playerBoard->rows == 0) {
+			for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
+				printf("-");
+			}
+			printf("\n");
+		}
+		for (j = 0; j < playerBoard->rows * playerBoard->cols; j++) {
+			if (j == 0) {
+				printf("|");
+			}
+			printf(" ");
+			if (playerBoard->board[j][i].value == 0) {
+				printf("   ");
+			} else {
+				printf("%2d", playerBoard->board[j][i].value);
+				if (playerBoard->board[j][i].fixed)
+					printf(".");
+				else if ((playerBoard->board[j][i].error) && ((metaBoard->markError) || (metaBoard->mode == Edit)))
+					printf("*");
+				else
+					printf(" ");
+			}
+			if (j % playerBoard->cols == playerBoard->cols - 1)
+				printf("|");
+		}
+		printf("\n");
+	}
+	for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
+		printf("-");
+	}
+	printf("\n");
+}
+
+void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boolean parameter is used in order to not advance the undo/redo list when not needed eg. undo/redo*/
+	int newMove[4];
+	newMove[0] = x;
+	newMove[1] = y;
+	newMove[2] = metaBoard->gameBoard->board[x][y].value;
+	newMove[3] = z;
+	if (!metaBoard->gameBoard->board[x][y].fixed) {
+		if (set)
+			metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, newMove, 1);
+		if (z == 0) {/*User tries to erase a value on the board*/
+			if (metaBoard->gameBoard->board[x][y].value > 0) {/*Check if we erase a value on the board or cell is already empty*/
+				metaBoard->gameBoard->board[x][y].value = 0;
+				metaBoard->gameBoard->board[x][y].error = 0;
+				metaBoard->filledCells--;
+				checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
+			}
+		} else if (z != metaBoard->gameBoard->board[x][y].value) {/*We don't re-enter the same value, so changes should be made*/
+			if (metaBoard->gameBoard->board[x][y].value == 0) {
+				metaBoard->filledCells++;
+			}
+			metaBoard->gameBoard->board[x][y].value = z;
+			checkCell(x, y, z, 1, metaBoard->gameBoard);
+			checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
+		}
+		if (set)
+			printBoard(metaBoard);
+		if (metaBoard->mode == Solve)
+			checkWin(metaBoard);
+	} else {
+		printf("Error: cell is fixed\n");
+	}
 }
 
 int validate(gameState *metaBoard) {
@@ -400,6 +402,12 @@ void numOfSol(board *gameBoard) {
 		printf("This is a good board!\n");
 	else if (solutions != 0)
 		printf("The puzzle has more than 1 solution, try to edit further\n");
+}
+
+void autofill(gameState *metaBoard){
+	metaBoard->filledCells += fillSingleValues(metaBoard); /*Update amount of cells filled*/
+	printBoard(metaBoard);
+	checkWin(metaBoard);
 }
 
 void resetGame(gameState *metaBoard) {

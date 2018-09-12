@@ -5,7 +5,6 @@
 #include <string.h>
 #include "gameStructs.h"
 #include "linkedListFunc.h"
-#include "game.h"
 #include "mainAux.h"
 
 void checkScan(int scan) {
@@ -29,6 +28,19 @@ int checkSize(int cols, int rows) {
 	}
 	size += 2;/*For '.' or '*', and '\0'.*/
 	return size;
+}
+
+void initalizeBoard(board *newBoard) {
+	/*The function allocates the memory needed for the board newBoard according to the values in it's rows and cols fields, as a 2-D array of type cell.
+	 *INPUT: board *newBoard - A pointer to a board that has values in it's rows and cols fields, and haven't had any memory allocated to it yet.*/
+	int i;
+	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols, sizeof(cell *));
+	checkInitalize(newBoard->board, "calloc");
+	for (i = 0; i < newBoard->rows * newBoard->cols; i++) {
+		newBoard->board[i] = (cell*) calloc(newBoard->rows * newBoard->cols, sizeof(cell));
+		checkInitalize(newBoard->board[i], "calloc");
+	}
+	eraseBoard(newBoard);
 }
 
 void fillBoard(gameState *metaBoard, FILE *ifp) {
@@ -73,7 +85,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 						metaBoard->gameBoard->board[j][i].value *= 10;/*Insert another digit*/
 						metaBoard->gameBoard->board[j][i].value += (*cell - '0');
 					}
-					cell++;
+					cell++;/*Move to next character*/
 				}
 				cell -= size;/*Reset pointer back to the beginning*/
 				checkCell(j, i, metaBoard->gameBoard->board[j][i].value, 1, metaBoard->gameBoard);
