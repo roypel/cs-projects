@@ -1,3 +1,5 @@
+/*Source file which contains functions that are used in order to open files containing boards or creating new files containing boards*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
