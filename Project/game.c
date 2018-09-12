@@ -44,6 +44,43 @@ void checkErroneous(gameState *metaBoard, int x, int y) {
 	}
 }
 
+void printBoard(gameState *metaBoard) {
+	int i, j;
+	board *playerBoard = metaBoard->gameBoard;
+	for (i = 0; i < playerBoard->cols * playerBoard->rows; i++) {
+		if (i % playerBoard->rows == 0) {
+			for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
+				printf("-");
+			}
+			printf("\n");
+		}
+		for (j = 0; j < playerBoard->rows * playerBoard->cols; j++) {
+			if (j == 0) {
+				printf("|");
+			}
+			printf(" ");
+			if (playerBoard->board[j][i].value == 0) {
+				printf("   ");
+			} else {
+				printf("%2d", playerBoard->board[j][i].value);
+				if (playerBoard->board[j][i].fixed)
+					printf(".");
+				else if ((playerBoard->board[j][i].error) && ((metaBoard->markError) || (metaBoard->mode == Edit)))
+					printf("*");
+				else
+					printf(" ");
+			}
+			if (j % playerBoard->cols == playerBoard->cols - 1)
+				printf("|");
+		}
+		printf("\n");
+	}
+	for (j = 0; j < playerBoard->rows * playerBoard->cols * 4 + playerBoard->rows + 1; j++) {
+		printf("-");
+	}
+	printf("\n");
+}
+
 void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boolean parameter is used in order to not advance the undo/redo list when not needed eg. undo/redo*/
 	int newMove[4];
 	newMove[0] = x;
@@ -208,6 +245,21 @@ int tryFill(int toFill, int *values, int *filledCells, gameState *metaBoard) {
 			return 0;/*Can't find value for this cell, clear the board and start again*/
 	}
 	return 1;
+}
+
+void printChanges(int from, int to) {
+	/*The function prints the changes made in the board by changing a cell from the value from to the value to.
+	 * INPUT: int from - The previous value that was in the cell.
+	 *        int to - the new value that is currently in the cell.*/
+	if (from == 0)
+		printf("_");
+	else
+		printf("%d", from);
+	printf(" to ");
+	if (to == 0)
+		printf("_\n");
+	else
+		printf("%d\n", to);
 }
 
 void generateList(int toKeep, gameState *metaBoard) {

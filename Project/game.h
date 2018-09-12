@@ -4,6 +4,10 @@
 #define GAME_H_
 #include "gameStructs.h"
 
+void printBoard(gameState *metaBoard);
+/*The function prints the input board with frame for each block, each cell that is filled is written,
+ * with fixed cells marked with a dot before their value, erroneous cells marked with an asterisk and an empty cell is marked with four spaces.
+ *INPUT: gameState *metaBoard - A pointer to a gameState with allocated board and valid values in it, and erroneous and fixed properties of each cell are correctly maintained.*/
 void setBoard(int x, int y, int z, gameState *metaBoard, int set);
 /*The function tries to set the value z in the cell <x,y> in the game board of the gameState metaBoard.
  *Value 0 erases the cell, fixed cells can't be changed, field filledCells of metaBoard updates accordingly, and the game board is printed after a successful move or an appropriate message if the move failed.
