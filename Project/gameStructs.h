@@ -1,3 +1,5 @@
+/*Header file which contains the structs that are defined and used in this program*/
+
 #ifndef GAMESTRUCTS_H_
 #define GAMESTRUCTS_H_
 
