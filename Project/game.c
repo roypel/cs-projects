@@ -1,3 +1,5 @@
+/*Source file which contains the functions that we use in order to execute the different commands of the game that don't involve the use of files*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
@@ -6,14 +8,6 @@
 #include "gurobiFunc.h"
 #include "linkedListFunc.h"
 #include "mainAux.h"
-
-void freeBoard(board *freeBird) {
-	int i;
-	for (i = 0; i < freeBird->rows * freeBird->cols; i++) {
-		free((freeBird->board)[i]);
-	}
-	free(freeBird->board);
-}
 
 void eraseBoard(board *toErase) {
 	/*The function resets all the values and other properties of the input board to 0, making it a clean board.
@@ -25,72 +19,6 @@ void eraseBoard(board *toErase) {
 			toErase->board[i][j].error = 0;
 			toErase->board[i][j].fixed = 0;
 		}
-	}
-}
-
-void initalizeBoard(board *newBoard) {
-	int i;
-	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols, sizeof(cell *));
-	checkInitalize(newBoard->board, "calloc");
-	for (i = 0; i < newBoard->rows * newBoard->cols; i++) {
-		newBoard->board[i] = (cell*) calloc(newBoard->rows * newBoard->cols, sizeof(cell));
-		checkInitalize(newBoard->board[i], "calloc");
-	}
-	eraseBoard(newBoard);
-}
-
-void checkCell(int x, int y, int z, int change, board *check) {
-	int i, j, erroneous = 0;
-	if (z != 0) {
-		for (i = 0; i < check->cols * check->rows; i++) {/*Check row*/
-			if ((check->board[i][y].value == z) && (i != x)) {
-				if (!check->board[i][y].fixed)
-					check->board[i][y].error = 1 * change;
-				erroneous = 1;
-			}
-		}
-		for (i = 0; i < check->cols * check->rows; i++) {/*Check column*/
-			if ((check->board[x][i].value == z) && (i != y)) {
-				if (!check->board[x][i].fixed)
-					check->board[x][i].error = 1 * change;
-				erroneous = 1;
-			}
-		}
-		for (i = (x / check->cols) * check->cols; i < (int) (x / check->cols) * check->cols + check->cols; i++) {
-			for (j = (y / check->rows) * check->rows; j < (int) (y / check->rows) * check->rows + check->rows; j++) {/*Check block*/
-				if (!((i == x) && (j == y))) {
-					if (check->board[i][j].value == z) {
-						if (!check->board[i][j].fixed)
-							check->board[i][j].error = 1 * change;
-						erroneous = 1;
-					}
-				}
-			}
-		}
-	}
-	check->board[x][y].error = erroneous;
-}
-
-int isErroneous(gameState *metaBoard) {
-	int i, j;
-	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
-		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			if (metaBoard->gameBoard->board[i][j].error == 1)
-				return 1;
-		}
-	}
-	return 0;
-}
-
-void checkWin(gameState *metaBoard) {
-	int cols = metaBoard->gameBoard->cols;
-	int rows = metaBoard->gameBoard->rows;
-	if (metaBoard->filledCells == cols * cols * rows * rows) {
-		if (!isErroneous(metaBoard)) {
-			printf("Puzzle solved successfully\n");
-			metaBoard->mode = Init;
-		} else
-			printf("Puzzle solution erroneous\n");
 	}
 }
 
@@ -329,7 +257,7 @@ void generateBoard(int toFill, int toKeep, gameState *metaBoard) {
 	values = (int *) malloc(sizeof(int) * cols * rows);
 	checkInitalize(values, "malloc");
 	for (i = 0; i < 1000; i++) {
-		if (!tryFill(toFill, values, filledCells, metaBoard)) {/**/
+		if (!tryFill(toFill, values, filledCells, metaBoard)) {
 			eraseBoard(metaBoard->gameBoard);
 		} else {
 			if (findSol(cols, rows, filledCells, toFill, sol) > 0) {
