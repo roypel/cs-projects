@@ -86,7 +86,6 @@ int fillSingleValues(gameState *metaBoard) {
 	for (i = 0; i < counter; i++) {/*Enter values to board and check the cell for erroneous conflicts*/
 		metaBoard->gameBoard->board[moves[i * 4]][moves[i * 4 + 1]].value = moves[i * 4 + 3];
 		checkCell(moves[i * 4], moves[i * 4 + 1], moves[i * 4 + 3], 1, metaBoard->gameBoard);
-
 	}
 	free(moves);
 	return counter;

@@ -30,19 +30,6 @@ int checkSize(int cols, int rows) {
 	return size;
 }
 
-void initalizeBoard(board *newBoard) {
-	/*The function allocates the memory needed for the board newBoard according to the values in it's rows and cols fields, as a 2-D array of type cell.
-	 *INPUT: board *newBoard - A pointer to a board that has values in it's rows and cols fields, and haven't had any memory allocated to it yet.*/
-	int i;
-	newBoard->board = (cell**) calloc(newBoard->rows * newBoard->cols, sizeof(cell *));
-	checkInitalize(newBoard->board, "calloc");
-	for (i = 0; i < newBoard->rows * newBoard->cols; i++) {
-		newBoard->board[i] = (cell*) calloc(newBoard->rows * newBoard->cols, sizeof(cell));
-		checkInitalize(newBoard->board[i], "calloc");
-	}
-	eraseBoard(newBoard);
-}
-
 void fillBoard(gameState *metaBoard, FILE *ifp) {
 	/* The function receives a pointer to an open file ifp, assuming it's a valid and correctly formatted sudoku board, and a pointer to the current
 	 * gameState metaBoard, and fills the current game board according to the file format: first number is the number of rows in a block, second number
@@ -98,18 +85,9 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	printBoard(metaBoard);
 }
 
-void saveFile(gameState *metaBoard, char *fileName) {
+void saveToFile(gameState *metaBoard, char *fileName) {
 	FILE *ifp;
 	int i, j;
-	if (metaBoard->mode == Edit) {
-		if (isErroneous(metaBoard)) {
-			printf("Error: board contains erroneous values\n");
-			return;
-		} else if (!validate(metaBoard)) {
-			printf("Error: board validation failed\n");
-			return;
-		}
-	}
 	ifp = fopen(fileName, "w");
 	if (!ifp) {
 		printf("Error: File cannot be created or modified\n");
@@ -133,19 +111,6 @@ void saveFile(gameState *metaBoard, char *fileName) {
 
 void sendToFill(gameState *metaBoard, char *fileName, gameMode mode) {
 	FILE *ifp;
-	if ((mode == Edit) && (!fileName)) {/*Edit mode and file name wasn't provided*/
-		freeBoard(metaBoard->gameBoard);
-		metaBoard->mode = Edit;
-		metaBoard->cols = metaBoard->gameBoard->cols = 3;
-		metaBoard->rows = metaBoard->gameBoard->rows = 3;
-		metaBoard->filledCells = 0;
-		initalizeBoard(metaBoard->gameBoard);
-		removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
-		metaBoard->moves->currentMove = metaBoard->moves->firstNode;
-		metaBoard->moves->currentMove->next = NULL;
-		printBoard(metaBoard);
-		return;
-	}
 	ifp = fopen(fileName, "r");
 	if (!ifp) {
 		if (mode == Solve) {/*Solve mode and file can't be opened or doesn't exist*/

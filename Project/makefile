@@ -14,13 +14,13 @@ main.o: main.c parser.h mainAux.h gameStructs.h SPBufferset.h
 mainAux.o: mainAux.c mainAux.h gameStructs.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
-parser.o: parser.c parser.h game.h gameStructs.h mainAux.h fileFunc.h solver.h
+parser.o: parser.c parser.h game.h gameStructs.h mainAux.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
-game.o: game.c game.h parser.h mainAux.h solver.h gameStructs.h linkedListFunc.h gurobiFunc.h
+game.o: game.c game.h mainAux.h solver.h gameStructs.h linkedListFunc.h gurobiFunc.h fileFunc.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
-solver.o: solver.c solver.h game.h gameStructs.h linkedListFunc.h stackFunc.h mainAux.h
+solver.o: solver.c solver.h gameStructs.h linkedListFunc.h stackFunc.h mainAux.h
 	gcc $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
 
 fileFunc.o: fileFunc.c fileFunc.h gameStructs.h linkedListFunc.h

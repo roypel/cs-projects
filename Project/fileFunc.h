@@ -3,9 +3,8 @@
 #ifndef FILEFUNC_H_
 #define FILEFUNC_H_
 
-void saveFile(gameState *metaBoard, char *fileName);
-/* The function tries to save the current board in metaBoard to the file fileName. If the file can't be created or modified,
- * or we are in edit mode, and the board is erroneous or invalid, the file won't be saved.
+void saveToFile(gameState *metaBoard, char *fileName);
+/* The function tries to save the current board in metaBoard to the file fileName. If the file can't be created or modified, the file won't be saved.
  * INPUT: gameState *metaBoard - A valid gameState pointer that keeps information for the current game.
  *        char *fileName - An input string from the user, should contain a valid file name or path that the sudoku board will be saved to.*/
 void sendToFill(gameState *metaBoard, char *fileName, gameMode mode);

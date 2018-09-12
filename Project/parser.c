@@ -3,9 +3,7 @@
 #include <stdlib.h>
 #include "game.h"
 #include "gameStructs.h"
-#include "fileFunc.h"
 #include "mainAux.h"
-#include "solver.h"
 
 #define inputSize 258 /*We want to check if the line consists 257 characters, and we need to save space for '\0'*/
 #define setValues 3
@@ -87,7 +85,7 @@ void cmdSolve(gameState *metaBoard) {
 	char *token;
 	token = strtok(NULL, delimiter);
 	if (token) {
-		sendToFill(metaBoard, token, Solve);
+		startPuzzle(metaBoard, token, Solve);
 	} else
 		invalidError;
 }
@@ -97,7 +95,7 @@ void cmdEdit(gameState *metaBoard) {
 	 * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated board and valid values in it.*/
 	char *token;
 	token = strtok(NULL, delimiter);
-	sendToFill(metaBoard, token, Edit);
+	startPuzzle(metaBoard, token, Edit);
 }
 
 void cmdMarkErrors(int *values, gameState *metaBoard) {
@@ -174,7 +172,7 @@ void cmdSave(gameState *metaBoard) {
 	char *token;
 	token = strtok(NULL, delimiter);
 	if (token) {
-		saveFile(metaBoard, token);
+		saveBoard(metaBoard, token);
 	} else
 		invalidError;
 }
@@ -213,7 +211,7 @@ void cmdAutofill(gameState *metaBoard) {
 	if (isErroneous(metaBoard))
 		erroneousError;
 	else {
-		fillSingleValues(metaBoard);
+		autofill(metaBoard);
 	}
 }
 
