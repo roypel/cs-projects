@@ -1,4 +1,7 @@
-/*Source file which contains the functions that we use in order to execute the different commands of the game*/
+/*Source file which contains the functions that we use in order to execute the different commands of the game.
+ * The module will be used to handle the different game commands, executing them or transferring them to the relevant modules. Includes the following functions:
+ * checkErroneous - The function is used to check each and every cell in the column, row and block of a specific cell, and check if they are erroneous or not, used when a cell is changed.
+ * findFilled - The function is used to find all the filled values in the game board and store them in an array, which is needed for the Gurobi function.*/
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,4 +1,12 @@
-/*Source file which contains functions that are used in order to read from files containing boards or creating new files containing boards*/
+/*Source file which contains functions that are used in order to read from files containing boards or creating new files containing boards.
+ * The module will be used as the only way to open files for reading or writing in the program. Includes the following functions:
+ * checkScan - A small helper function used to check if the input that the function fcsanf red was valid or not.
+ * checkSize - A function used to calculate the maximum possible size of characters used to represent a cell in the board, depending on the board size.
+ * fillBoard - A function that reads a file containing a valid game board (i.e values between 0-N, board might not have a valid solution)
+ *             and fills the relevant game structures so a puzzle may be edited or solved from the file given.
+ * saveToFile - A function used to save the state of the current board into a file for future use. The first two numbers represent the
+ *              block size (rows X columns) and afterwards the values of each cell will be stored separately, adding information for fixed cells with a '.'.
+ * sendToFille - A function used to try and open a file before we read information from it, and if the file was opened successfully, changes the game mode and sends the file to fillBoard.*/
 
 #include <stdio.h>
 #include <stdlib.h>
