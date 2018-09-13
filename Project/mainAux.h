@@ -1,3 +1,5 @@
+/*Header file which contains auxiliary functions that are shared between different modules*/
+
 #ifndef MAINAUX_H_
 #define MAINAUX_H_
 #include "gameStructs.h"

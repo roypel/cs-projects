@@ -1,3 +1,5 @@
+/*Header file which contains the functions that we use in order to use Gurobi for solving boards using ILP*/
+
 #ifndef GUROBIFUNC_H_
 #define GUROBIFUNC_H_
 

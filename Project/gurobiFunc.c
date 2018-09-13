@@ -1,6 +1,7 @@
+/*Source file which contains the functions that we use in order to use Gurobi for solving boards using ILP*/
+
 #include <stdlib.h>
 #include <stdio.h>
-
 #include "gameStructs.h"
 #include "gurobi_c.h"
 #include "mainAux.h"

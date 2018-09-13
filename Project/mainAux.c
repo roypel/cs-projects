@@ -1,4 +1,4 @@
-/*Source file which contains auxiliary functions that we use in different modules that don't directly relate to the game commands*/
+/*Source file which contains auxiliary functions that are shared between different modules*/
 
 #include <stdio.h>
 #include <stdlib.h>

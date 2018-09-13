@@ -1,3 +1,5 @@
+/*Source file which contains the functions used to read and interpret the user input, and call the relevant function from the game module*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

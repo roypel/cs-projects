@@ -1,4 +1,4 @@
-/*Header file which contains the functions that we use in order to execute the different commands of the game that don't involve the use of files*/
+/*Header file which contains the functions that we use in order to execute the different commands of the game*/
 
 #ifndef GAME_H_
 #define GAME_H_

@@ -1,4 +1,4 @@
-/*Source file which contains the functions that we use in order to execute the different commands of the game that don't involve the use of files*/
+/*Source file which contains the functions that we use in order to execute the different commands of the game*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -216,20 +216,19 @@ void generateList(int toKeep, gameState *metaBoard) {
 	free(moves);
 }
 
-void startPuzzle(gameState *metaBoard, char *fileName, gameMode mode){
+void startPuzzle(gameState *metaBoard, char *fileName, gameMode mode) {
 	if ((mode == Edit) && (!fileName)) {/*Edit mode and file name wasn't provided*/
-			freeBoard(metaBoard->gameBoard);
-			metaBoard->mode = Edit;
-			metaBoard->cols = metaBoard->gameBoard->cols = 3;
-			metaBoard->rows = metaBoard->gameBoard->rows = 3;
-			metaBoard->filledCells = 0;
-			initalizeBoard(metaBoard->gameBoard);
-			removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
-			metaBoard->moves->currentMove = metaBoard->moves->firstNode;
-			metaBoard->moves->currentMove->next = NULL;
-			printBoard(metaBoard);
-	}
-	else
+		freeBoard(metaBoard->gameBoard);
+		metaBoard->mode = Edit;
+		metaBoard->cols = metaBoard->gameBoard->cols = 3;
+		metaBoard->rows = metaBoard->gameBoard->rows = 3;
+		metaBoard->filledCells = 0;
+		initalizeBoard(metaBoard->gameBoard);
+		removeAllNext(metaBoard->moves->firstNode->next);/*Clear Undo/Redo list*/
+		metaBoard->moves->currentMove = metaBoard->moves->firstNode;
+		metaBoard->moves->currentMove->next = NULL;
+		printBoard(metaBoard);
+	} else
 		sendToFill(metaBoard, fileName, mode);
 }
 
@@ -349,16 +348,16 @@ void redo(gameState *metaBoard) {
 		printf("Error: no moves to redo\n");
 }
 
-void saveBoard(gameState *metaBoard, char *fileName){
+void saveBoard(gameState *metaBoard, char *fileName) {
 	if (metaBoard->mode == Edit) {
-			if (isErroneous(metaBoard)) {
-				printf("Error: board contains erroneous values\n");
-				return;
-			} else if (!validate(metaBoard)) {
-				printf("Error: board validation failed\n");
-				return;
-			}
+		if (isErroneous(metaBoard)) {
+			printf("Error: board contains erroneous values\n");
+			return;
+		} else if (!validate(metaBoard)) {
+			printf("Error: board validation failed\n");
+			return;
 		}
+	}
 	saveToFile(metaBoard, fileName);
 }
 
@@ -397,7 +396,7 @@ void numOfSol(board *gameBoard) {
 		printf("The puzzle has more than 1 solution, try to edit further\n");
 }
 
-void autofill(gameState *metaBoard){
+void autofill(gameState *metaBoard) {
 	metaBoard->filledCells += fillSingleValues(metaBoard); /*Update amount of cells filled*/
 	printBoard(metaBoard);
 	checkWin(metaBoard);

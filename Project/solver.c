@@ -1,3 +1,5 @@
+/*Source file which contains the functions that tries to solve or add values to the board without the use of ILP*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "gameStructs.h"

@@ -1,3 +1,5 @@
+/*Header file which contains the functions that tries to solve or add values to the board without the use of ILP*/
+
 #ifndef SOLVER_H_
 #define SOLVER_H_
 #include "gameStructs.h"

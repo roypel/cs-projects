@@ -1,4 +1,4 @@
-/*Source file which contains the functions that we use in order to operate the stack struct for the num_solutions command*/
+/*Source file which contains the functions that we use in order to operate the stack struct*/
 
 #include <stdlib.h>
 #include <stdio.h>

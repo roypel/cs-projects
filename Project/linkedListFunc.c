@@ -1,5 +1,5 @@
 /*Source file which contains the functions that we use in order to add\remove items from the struct that contains the moves that occured
-in the game,which is implemented as a doubly linked list*/
+ in the game, which is implemented as a doubly linked list*/
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,5 @@
+/*Header file which contains the functions used to read and interpret the user input, and call the relevant function from the game module*/
+
 #ifndef PARSER_H_
 #define PARSER_H_
 #include "gameStructs.h"

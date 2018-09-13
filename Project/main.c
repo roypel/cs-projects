@@ -1,3 +1,5 @@
+/*Source of the main file in the program that allocate the necessary memory to start a game*/
+
 #include <stdlib.h>
 #include <time.h>
 #include "parser.h"

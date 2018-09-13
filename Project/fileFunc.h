@@ -1,4 +1,4 @@
-/*Header file which contains functions that are used in order to open files containing boards or creating new files containing boards*/
+/*Header file which contains functions that are used in order to read from files containing boards or creating new files containing boards*/
 
 #ifndef FILEFUNC_H_
 #define FILEFUNC_H_
