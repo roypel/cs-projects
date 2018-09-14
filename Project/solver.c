@@ -3,7 +3,7 @@ nextEmptyCell - a function that finds the next cell that is empty in the board,u
 that cell index.
 checkSingleValue - a function used by the fillSingleValues function that checks if a value appears only once in a row,column and block
 of a cell provided to it as a parameter,and returns 0 or 1 accordingly
-fillSingleValues - a function ,used by the findNumSols function, that finds cells which only have one value that can be inserted to
+fillSingleValues - a function ,used by the autofill function, that finds cells which only have one value that can be inserted to
 them without causing it to become erroneous
 fineNumSols - a function called when using the num_solutions command that returns the number of solutions the board has*/
 
