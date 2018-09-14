@@ -6,7 +6,7 @@
  *             and fills the relevant game structures so a puzzle may be edited or solved from the file given.
  * saveToFile - A function used to save the state of the current board into a file for future use. The first two numbers represent the
  *              block size (rows X columns) and afterwards the values of each cell will be stored separately, adding information for fixed cells with a '.'.
- * sendToFille - A function used to try and open a file before we read information from it, and if the file was opened successfully, changes the game mode and sends the file to fillBoard.*/
+ * sendToFill - A function used to try and open a file before we read information from it, and if the file was opened successfully, changes the game mode and sends the file to fillBoard.*/
 
 #include <stdio.h>
 #include <stdlib.h>
