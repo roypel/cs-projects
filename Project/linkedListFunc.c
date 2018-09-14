@@ -1,8 +1,8 @@
 /*Source file which contains the functions that we use in order to add\remove items from the struct that contains the moves that occured
- in the game, which is implemented as a doubly linked list
- removeAllNext - a function which deletes from the list and frees the moves that occured after the move that was sent to it as a 
- parameter,and does the same to the move that was sent
- addNextMove - a function that is used to add a new node to the list with the data that was sent to it,and returns the node */
+ * in the game, which is implemented as a doubly linked list
+ * removeAllNext - a function which deletes from the list and frees the moves that occured after the move that was sent to it as a 
+ * parameter,and does the same to the move that was sent
+ * addNextMove - a function that is used to add a new node to the list with the data that was sent to it,and returns the node */
 
 #include <stdio.h>
 #include <stdlib.h>
