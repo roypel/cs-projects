@@ -1,11 +1,11 @@
 /*Source file which contains the functions that tries to solve or add values to the board without the use of ILP
-nextEmptyCell - a function that finds the next cell that is empty in the board,used by the findnumSols function,and returns 
-that cell index.
-checkSingleValue - a function used by the fillSingleValues function that checks if a value appears only once in a row,column and block
-of a cell provided to it as a parameter,and returns 0 or 1 accordingly
-fillSingleValues - a function ,used by the autofill function, that finds cells which only have one value that can be inserted to
-them without causing it to become erroneous
-fineNumSols - a function called when using the num_solutions command that returns the number of solutions the board has*/
+* nextEmptyCell - a function that finds the next cell that is empty in the board,used by the findnumSols function,and returns 
+* that cell index.
+* checkSingleValue - a function used by the fillSingleValues function that checks if a value appears only once in a row,column and block
+* of a cell provided to it as a parameter,and returns 0 or 1 accordingly
+* fillSingleValues - a function ,used by the autofill function, that finds cells which only have one value that can be inserted to
+* them without causing it to become erroneous
+* fineNumSols - a function called when using the num_solutions command that returns the number of solutions the board has*/
 
 #include <stdio.h>
 #include <stdlib.h>
