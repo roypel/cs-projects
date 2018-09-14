@@ -1,4 +1,11 @@
-/*Source file which contains auxiliary functions that are shared between different modules*/
+/*Source file which contains auxiliary functions that are shared between different modules
+* checkInitialize - A function that checks if the data we tried to allocate did allocate
+* freeBoard - A function used when exiting that frees the board
+* eraseBoard - A function that resets the board so it will be empty,nothing fixed and no cell is erroneous
+* initializeBoard - A function that at the start of the game allocates space for the board
+* printBoard - A function that prints the board
+* checkCell - A function that checks if there are erroneous values in the row col and block of the cell that we provide
+* isErroneous - A function that checks if the board contains an erroneous value in a cell*/
 
 #include <stdio.h>
 #include <stdlib.h>
