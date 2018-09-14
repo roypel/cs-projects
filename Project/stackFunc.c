@@ -1,6 +1,6 @@
 /*Source file which contains the functions that we use in order to operate the stack struct
-* pop - a function that removes the item that is on the top of the stack in the num_solutions command and returns the item
-* push - a function that adds a new item to the top of the stack in the num_solutions command*/
+* pop - A function that removes the item that is on the top of the stack in the num_solutions command and returns the item
+* push - A function that adds a new item to the top of the stack in the num_solutions command*/
 
 #include <stdlib.h>
 #include <stdio.h>
