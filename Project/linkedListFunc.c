@@ -2,7 +2,7 @@
  in the game, which is implemented as a doubly linked list
  removeAllNext - a function which deletes from the list and frees the moves that occured after the move that was sent to it as a 
  parameter,and does the same to the move that was sent
- addNextMove - a function that is used to add a new item to the list with the data that was sent to it */
+ addNextMove - a function that is used to add a new node to the list with the data that was sent to it,and returns the node */
 
 #include <stdio.h>
 #include <stdlib.h>
