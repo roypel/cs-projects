@@ -1,5 +1,10 @@
-/*Header file which contains the functions that we use in order to add\remove items from the struct that contains the moves that occured
- in the game, which is implemented as a doubly linked list*/
+/* Header file which contains the functions that we use in order to add\remove items from the struct that contains the moves that occurred in the game. Includes the following functions:
+ * removeAllNext - The function needs a pointer to a node of a move, preferably a one inside the undo/redo list in the game.
+ *                 The function frees all the memory allocated for the node and all the nodes after it in the list.
+ * addNextMove - The function needs a pointer to the node of the current move in the game, an int array that fits to a move format
+ *               (as stated in gameStructs.h, in the node section) and the number of moves that stored in the array.
+ *               The function adds the array to a node, add it as the end of the list after the current move, and return a pointer to
+ *               it so it can be saved as the new current move.*/
 
 #ifndef LINKEDLISTFUNC_H_
 #define LINKEDLISTFUNC_H_

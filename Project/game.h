@@ -6,7 +6,7 @@
  *            with correctly maintained fields for each cell, and a parameter set (0 or 1) which will indicate if the undo/redo list should be updated as well.
  *            The function will try to enter the value to the specified cell, update the game board cells and undo/redo list if needed.
  * validate - The function needs a valid gameState with a board already loaded into it.
- *            The function will check if the board has a valid solution or not, and will print a message accordingly.
+ *            The function will check if the board has a valid solution or not, and will return 1 if it has a solution or 0 if it doesn't.
  * generateBoard - The function needs two parameters, the first indicate how many cells we will try to fill into the board, and the second will indicate
  *                 how many cells will remain with values by the end of the function, and a valid gameState with an empty game board.
  *                 The function will try to randomly generate a board by randomly filling legal values in the amount of the first parameter,

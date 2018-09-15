@@ -1,4 +1,8 @@
-/*Header file which contains functions that are used in order to read from files containing boards or creating new files containing boards*/
+/* Header file which contains functions that are used in order to read from files containing boards or creating new files containing boards. Including the functions:
+ * saveToFile - The function needs a valid gameState with a loaded game board and a file path the may be relative or absolute.
+ *              The function tries to save the current state of the game board to the file name provided, or create a new one if it doesn't exists yet.
+ * sendToFill - The function needs a valid gameState, a file name of a sudoku board with valid values and a valid gameMode.
+ *              The function tries to fill the gameState game board with the values in the file and then prints the board, or print an error message if there was a problem.*/
 
 #ifndef FILEFUNC_H_
 #define FILEFUNC_H_
