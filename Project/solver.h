@@ -15,4 +15,5 @@ int fillSingleValues(gameState *metaBoard);
  * sets the value of the cell to that value, prints an appropriate message and adds all the changes to the undo/redo list. May result in an erroneous board!
  * INPUT: gameState *metaBoard - A pointer to a gameState with an allocated game board with valid values that the function will try to fill "obvious" values to.
  * OUTPUT: int that represents the amount of cells that only had a single value available to them before we added that value to them*/
+
 #endif /* SOLVER_H_ */

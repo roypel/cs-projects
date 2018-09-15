@@ -1,8 +1,8 @@
-/*Source file which contains the functions that we use in order to use Gurobi for solving boards using ILP
-* free_stuffs - A function that frees data allocated in the findSol function 
-* addConstraints - A function that adds the needed constraints for the model
-* addVars - A function that adds the variables needed for the model
-* findSol - A function that checks if we have a solution for the board provided and returns the solution to the board in the parameter sol*/
+/* Source file which contains the functions that we use in order to use Gurobi for solving boards using ILP. Includes the following functions:
+ * free_stuffs - A function that frees data allocated in the findSol function.
+ * addConstraints - A function that adds the needed constraints for the model.
+ * addVars - A function that adds the variables needed for the model.
+ * findSol - A function that checks if we have a solution for the board provided and returns the solution to the board in the parameter sol.*/
 
 #include <stdlib.h>
 #include <stdio.h>

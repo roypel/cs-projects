@@ -1,11 +1,11 @@
-/*Source file which contains the functions that tries to solve or add values to the board without the use of ILP
-* nextEmptyCell - A function that finds the next cell that is empty in the board,used by the findnumSols function,and returns 
-* that cell index.
-* checkSingleValue - A function used by the fillSingleValues function that checks if a value appears only once in a row,column and block
-* of a cell provided to it as a parameter,and returns 0 or 1 accordingly
-* fillSingleValues - A function ,used by the autofill function, that finds cells which only have one value that can be inserted to
-* them without causing it to become erroneous
-* fineNumSols - A function called when using the num_solutions command that returns the number of solutions the board has*/
+/* Source file which contains the functions that tries to solve or add values to the board without the use of ILP. Includes the following functions:
+ * nextEmptyCell - A function that finds the next cell that is empty in the board, used by the findNumSols function, and returns
+ *                 that cell index.
+ * checkSingleValue - A function used by the fillSingleValues function that checks if a value appears only once in a row, column and block
+ *                    of the cell provided to it as a parameter, and returns 0 or 1 accordingly.
+ * fillSingleValues - A function used by the autofill function, that finds cells which only have one value that can be inserted to
+ *                    them without causing the board to become erroneous (before the other values are inserted by the autofill function).
+ * fineNumSols - A function called when using the num_solutions command that returns the number of solutions the board has.*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,8 +33,8 @@ int nextEmptyCell(int index, board *checkBoard) {
 int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
 	/*Checks if a value appears in a row/column/block of a cell.
 	 INPUT: int x, y - The column and row of the cell that we want to check the value z on.
-	        int z - The value we want to check in the <x,y> cell.
-	        gameState *metaBoard - A valid gameState pointer with an allocated gameBoard with valid values.
+	 int z - The value we want to check in the <x,y> cell.
+	 gameState *metaBoard - A valid gameState pointer with an allocated gameBoard with valid values.
 	 OUTPUT: int indicating we could fill the cell with z (1) or we can't (0).*/
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/

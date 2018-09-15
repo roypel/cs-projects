@@ -1,4 +1,4 @@
-/*Source file which contains functions that are used in order to read from files containing boards or creating new files containing boards.
+/* Source file which contains functions that are used in order to read from files containing boards or creating new files containing boards.
  * The module will be used as the only way to open files for reading or writing in the program. Includes the following functions:
  * checkScan - A small helper function used to check if the input that the function fcsanf red was valid or not.
  * checkSize - A function used to calculate the maximum possible size of characters used to represent a cell in the board, depending on the board size.

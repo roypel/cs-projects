@@ -1,31 +1,31 @@
-/*Source file which contains the functions that we use in order to execute the different commands of the game.
+/* Source file which contains the functions that we use in order to execute the different commands of the game.
  * The module will be used to handle the different game commands, executing them or transferring them to the relevant modules. Includes the following functions:
  * checkErroneous - The function is used to check each and every cell in the column, row and block of a specific cell, and check if they are erroneous or not, used when a cell is changed.
  * findFilled - The function is used to find all the filled values in the game board and store them in an array, which is needed for the Gurobi function.
  * findVal - A function used by the hint and generate commands which returns the value that should be in the cell according to the solution
- * found by the gurobi function.
- * keepRandom - A function used by the generate command which chooses which cells we keep from the solution found by the gurobi command
- * and sets the values in the board accordingly
+ *           found by the Gurobi function.
+ * keepRandom - A function used by the generate command which randomly chooses which cells we keep from the solution found by the Gurobi command
+ *              and sets the values in the board accordingly.
  * randEmptyCell - A helper function used by the generate command which randomizes a cell for us to fill a value in for the first phase
- * of the said command(filling X cells)
- * checkRemainingValues - A helper function used by the tryFill function that checks if there is another value to enter to the currentcell
- * tryRandValue - A helper function that tries to enter randomly generated legal value to the cell
- * tryFill - A function used by the generate command which tries to fill X cells with legal values
- * checkWin - A function that checks if the board is filled without erroneous values
- * printChanges - A helper function that prints what changes occured to the board after an undo or redo command
- * generateList - A function used by the generateBoard function which adds the move that added the Y cells to the undo/redo list
- * startPuzzle - A function that creates a board from a filename provided or an empty 3x3 board if the command was "Edit"
- * setBoard - A function that adds a value to the cell if possible and checks if the value will be erroneous or not
- * validate - A function that checks if the board is valid
- * generateBoard - A function that generates a board from an empty board
- * undo - A function that moves back a move in the doubly linked list and changes the cell values accordingly
- * redo - A function that moves forward a move in the doubly linked list and changes the cell values accordingly
- * saveBoard - A function that saves the board to a file if it can
- * hintBoard - A function that gives a hint to the cell requested a hint to
- * numOfSol - A function that finds out how many solution the board has
- * autofill - A function that sets values to obvious cells
- * resetGame - A function that undos all the moves that occured in the game and resets the doubly linked list
- * exitGame - A function that frees all the things we allocated and closes the game*/
+ *                 of the said command (filling X cells).
+ * checkRemainingValues - A helper function used by the tryFill function that checks if there is another value to enter to the current cell.
+ * tryRandValue - A helper function that tries to enter randomly generated legal value to the cell.
+ * tryFill - A function used by the generate command which tries to fill X cells with legal values.
+ * checkWin - A function that checks if the board is completely filled without erroneous values.
+ * printChanges - A helper function that prints what changes occurred to the board after an undo or redo command.
+ * generateList - A function used by the generateBoard function which adds the move that added the Y cells to the undo/redo list.
+ * startPuzzle - A function that creates a board from a filename provided or an empty 3x3 board if the command was "edit" without additional parameters.
+ * setBoard - A function that changes the value of a cell if possible, and checks if the value and corresponding cells will be erroneous or not.
+ * validate - A function that checks if the board has a valid solution.
+ * generateBoard - A function that randomly generates a board from an empty board.
+ * undo - A function that moves back a move in the doubly linked list and changes the cell values accordingly.
+ * redo - A function that moves forward a move in the doubly linked list and changes the cell values accordingly.
+ * saveBoard - A function that saves the board to a file if it can.
+ * hintBoard - A function that gives a hint to the cell requested a hint to.
+ * numOfSol - A function that finds out how many solution the board has using exhaustive backtracking.
+ * autofill - A function that sets "obvious" values to cells that has only single possible value to enter, may result in an erroneous board.
+ * resetGame - A function that undoes all the moves that occurred in the game and resets the doubly linked list.
+ * exitGame - A function that frees all the things we allocated and closes the game.*/
 
 #include <stdio.h>
 #include <stdlib.h>

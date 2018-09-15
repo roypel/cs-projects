@@ -1,9 +1,9 @@
-/*Source file which contains the functions used to read and interpret the user input, and call the relevant function from the game module
-* checkIsInt - A function that checks if the parameter provided to it is indeed an integer
-* checkInput - A function that checks if the command typed by the user is valid
-* ignoreLine - A function that ignores a line if it is too long
-* cmd(Anything) - Functions that do the commands that the user typed
-* readInput - A function that handles the user input*/
+/* Source file which contains the functions used to read and interpret the user input, and call the relevant function from the game module. Includes the following functions:
+ * checkIsInt - A function that checks if the parameter provided to it is indeed an integer.
+ * checkInput - A function that checks if the command typed by the user has enough parameters (used in set, hint and generate).
+ * ignoreLine - A function that ignores a line if it is too long.
+ * cmd(Anything) - Functions that do the command that the user typed (if it is possible).
+ * readInput - A function that handles reading the user input and pass it to the appropriate function.*/
 
 #include <stdio.h>
 #include <string.h>
