@@ -1,4 +1,6 @@
-/*Header file which contains the functions used to read and interpret the user input, and call the relevant function from the game module*/
+/* Header file which contains the functions used to read and interpret the user input, and call the relevant function from the game module. Includes the following functions:
+ * readInput - The function needs an allocated gameState.
+ *             The function reads input from the user and executes them using different modules, while updating the gameState as needed.*/
 
 #ifndef PARSER_H_
 #define PARSER_H_

@@ -1,4 +1,9 @@
-/*Header file which contains the functions that tries to solve or add values to the board without the use of ILP*/
+/* Header file which contains the functions that tries to solve or add values to the board without the use of ILP. Includes the following functions:
+ * findNumSols - The function needs a valid and loaded game board.
+ *               The function finds all the different valid solutions possible for the game board, and return it as an integer.
+ * fillSingleValues - The function needs a valid gameState with a loaded game board.
+ *                    The function finds any cell that has only a single legal value that can be entered to it, and enters and values it found.
+ *                    May result in erroneous board, since values are checked against the board before any inserts are made.*/
 
 #ifndef SOLVER_H_
 #define SOLVER_H_

@@ -1,4 +1,8 @@
-/*Header file which contains the functions that we use in order to operate the stack struct*/
+/* Header file which contains the functions that we use in order to operate the stack struct. Includes the following functions:
+ * pop - The function needs a pointer to a stackPointer.
+ *       The function removes and returns the item that was in the top of the stack.
+ * push - The function needs an item that would be added to the stack, and a pointer to a stackPointer.
+ *        The function adds the new item to the top of the stack.*/
 
 #ifndef STACKFUNC_H_
 #define STACKFUNC_H_

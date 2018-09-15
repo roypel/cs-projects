@@ -33,8 +33,8 @@ int nextEmptyCell(int index, board *checkBoard) {
 int checkSingleValue(int x, int y, int z, gameState *metaBoard) {
 	/*Checks if a value appears in a row/column/block of a cell.
 	 INPUT: int x, y - The column and row of the cell that we want to check the value z on.
-	 int z - The value we want to check in the <x,y> cell.
-	 gameState *metaBoard - A valid gameState pointer with an allocated gameBoard with valid values.
+	        int z - The value we want to check in the <x,y> cell.
+	        gameState *metaBoard - A valid gameState pointer with an allocated gameBoard with valid values.
 	 OUTPUT: int indicating we could fill the cell with z (1) or we can't (0).*/
 	int i, j;
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {/*Check row*/
