@@ -1,6 +1,8 @@
 /* Header file which contains auxiliary functions that are shared between different modules. Includes the following functions:
  * checkInitalize - The function needs a pointer to an allocated array, and the command that issued the allocation.
  *                  The function checks if the allocation of the array was successful, and if not, prints an error and exits the program.
+ * checkIO - The function needs an integer returned from an I/O function, and the command that issued the I/O.
+ *              The function checks if the I/O operation was successful, and if not, prints an error and exits the program.
  * freeBoard - The function needs a pointer to an allocated game board.
  *             The function will free the game board in order to save memory.
  * eraseBoard - The function needs a pointer to an allocated game board.
@@ -24,6 +26,11 @@ void checkInitalize(void *pointer, char *cmd);
 /*The function checks if the pointer was initialized correctly (not NULL) and if it isn't initialized correctly, prints an error message and exits the program.
  * INPUT: void *pointer - A pointer the function will check if it was initialized properly.
  *        char *cmd - The command that was issued (calloc, malloc...) that may have failed, used to generate a correct error message.*/
+void checkIO(int value, char *cmd);
+/* The function checks if the input "value" is a valid input from I/O functions, or we got an error / reached EOF.
+ * If "value" indicates an error/EOF, the function prints an error message according to the cmd parameter and exits the program.
+ * INPUT: int value - An integer returned from an I/O function.
+ *        char *cmd - The command that was issued (fprintf, fscanf...) that may have failed, used to generate a correct error message.*/
 void freeBoard(board *freeBird);
 /*The function frees the memory allocated for the board in the input, starting from each row and then frees the board itself.
  *INPUT: board *freeBird - A pointer to an allocated board which can be freed to reduce the needed resources of the program.*/

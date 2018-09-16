@@ -1,5 +1,6 @@
 /* Source file which contains auxiliary functions that are shared between different modules. Includes the functions:
  * checkInitialize - A function that checks if the data we tried to allocate was allocated correctly.
+ * checkIO - A function used to check if the input of an I/O function was valid or not.
  * freeBoard - A function used when exiting a puzzle that frees the board from the memory.
  * eraseBoard - A function that resets the board so it will be empty, and no cell will be marked as fixed or erroneous.
  * initializeBoard - A function that at the start of a puzzle allocates the space needed for the board.
@@ -14,7 +15,14 @@
 
 void checkInitalize(void *pointer, char *cmd) {
 	if (pointer == NULL) {
-		printf("Error: %s has failed\n", cmd);
+		printf("Error: %s has failed (memory allocation error)\n", cmd);
+		exit(0);
+	}
+}
+
+void checkIO(int value, char *cmd) {
+	if (value < 0) {
+		printf("Error: %s has failed (I/O error)\n", cmd);
 		exit(0);
 	}
 }
