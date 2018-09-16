@@ -230,7 +230,7 @@ void readInput(gameState *metaBoard) {
 		for (i = 0; i < maxValues; i++) {/*Resets values array to know if new input is valid (for relevant functions)*/
 			values[i] = -2;/*If a cell in values contains -2, we know the user didn't enter a value to this cell (we convert the input string to a positive int)*/
 		}
-		fflush(stdin);
+		checkIO(fflush(stdin), "fflush");
 		printf("Enter your command:\n");
 		if (fgets(input, inputSize, stdin) != NULL) {
 			if (input[256] != 0) {/*Skip current line, too much characters in input*/

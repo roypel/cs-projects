@@ -266,8 +266,6 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boo
 	newMove[2] = metaBoard->gameBoard->board[x][y].value;
 	newMove[3] = z;
 	if (!metaBoard->gameBoard->board[x][y].fixed) {
-		if (set)
-			metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, newMove, 1);
 		if (z == 0) {/*User tries to erase a value on the board*/
 			if (metaBoard->gameBoard->board[x][y].value > 0) {/*Check if we erase a value on the board or cell is already empty*/
 				metaBoard->gameBoard->board[x][y].value = 0;
@@ -283,8 +281,10 @@ void setBoard(int x, int y, int z, gameState *metaBoard, int set) {/*The set boo
 			checkCell(x, y, z, 1, metaBoard->gameBoard);
 			checkErroneous(metaBoard, x, y);/*If we changed the value of a cell it might fixed an erroneous problem in different cells*/
 		}
-		if (set)
+		if (set){
+			metaBoard->moves->currentMove = addNextMove(metaBoard->moves->currentMove, newMove, 1);
 			printBoard(metaBoard);
+		}
 		if (metaBoard->mode == Solve)
 			checkWin(metaBoard);
 	} else {

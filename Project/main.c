@@ -24,7 +24,7 @@ int main() {
 	checkInitalize(metaBoard.moves->currentMove->change, "malloc");
 	metaBoard.moves->currentMove->prev = metaBoard.moves->currentMove->next = NULL;
 	metaBoard.moves->firstNode = metaBoard.moves->currentMove;/*Will indicate the beginning of the list, as a sentinel*/
-	metaBoard.markError = 1;
+	metaBoard.markError = 1;/*Setting the default value of mark errors to 1*/
 	readInput(&metaBoard);
 	return 0;
 }

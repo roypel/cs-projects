@@ -1,6 +1,5 @@
 /* Source file which contains functions that are used in order to read from files containing boards or creating new files containing boards.
  * The module will be used as the only way to open files for reading or writing in the program. Includes the following functions:
- * checkScan - A small helper function used to check if the input that the function fcsanf red was valid or not.
  * checkSize - A function used to calculate the maximum possible size of characters used to represent a cell in the board, depending on the board size.
  * fillBoard - A function that reads a file containing a valid game board (i.e. values between 0-N, board might not have a valid solution)
  *             and fills the relevant game structures so a puzzle may be edited or solved from the file given.
@@ -14,16 +13,6 @@
 #include "gameStructs.h"
 #include "linkedListFunc.h"
 #include "mainAux.h"
-
-void checkScan(int scan) {
-	/* The function checks if the input "scan" is a valid input from the function fscanf, or we got an error / reached EOF.
-	 * If "scan" indicates an error/EOF, the function prints an error message and exits the program.
-	 * INPUT: int scan - an integer returned from the function fscanf.*/
-	if (scan == EOF) {
-		printf("Error: fscanf has failed\n");
-		exit(0);
-	}
-}
 
 int checkSize(int cols, int rows) {
 	/*The function calculates the maximum possible size of a string holding information for a cell in the board.
@@ -49,10 +38,10 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	char *cell;
 	if (metaBoard->gameBoard->board)/*Free memory from previous game board, if it exists*/
 		freeBoard(metaBoard->gameBoard);
-	checkScan(fscanf(ifp, "%d", &input));/*Read block size*/
+	checkIO(fscanf(ifp, "%d", &input), "fscanf");/*Read block size*/
 	metaBoard->gameBoard->rows = metaBoard->rows = input;
 	filled += input;
-	checkScan(fscanf(ifp, "%d", &input));
+	checkIO(fscanf(ifp, "%d", &input), "fscanf");
 	metaBoard->gameBoard->cols = metaBoard->cols = input;
 	filled *= input;
 	filled *= filled; /*Number of possible filled cells is block size squared*/
@@ -64,7 +53,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	checkInitalize(cell, "calloc");
 	for (i = 0; i < metaBoard->rows * metaBoard->cols; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			checkScan(fscanf(ifp, "%s", cell)); /*Read next cell*/
+			checkIO(fscanf(ifp, "%s", cell), "fscanf"); /*Read next cell*/
 			size = 0;/*Will keep amount of characters in cell*/
 			if (*cell == '0') {/*Cell is empty, filled decrease and not fixed (default 0)*/
 				filled--;
@@ -89,7 +78,7 @@ void fillBoard(gameState *metaBoard, FILE *ifp) {
 	}
 	metaBoard->filledCells = filled;
 	free(cell);
-	fclose(ifp);
+	checkIO(fclose(ifp), "fclose");
 	printBoard(metaBoard);
 }
 
@@ -101,19 +90,19 @@ void saveToFile(gameState *metaBoard, char *fileName) {
 		printf("Error: File cannot be created or modified\n");
 		return;
 	}
-	fprintf(ifp, "%d ", metaBoard->gameBoard->rows);
-	fprintf(ifp, "%d\n", metaBoard->gameBoard->cols);
+	checkIO(fprintf(ifp, "%d ", metaBoard->gameBoard->rows), "fprintf");
+	checkIO(fprintf(ifp, "%d\n", metaBoard->gameBoard->cols), "fprintf");
 	for (i = 0; i < metaBoard->cols * metaBoard->rows; i++) {
 		for (j = 0; j < metaBoard->cols * metaBoard->rows; j++) {
-			fprintf(ifp, "%d", metaBoard->gameBoard->board[j][i].value);
+			checkIO(fprintf(ifp, "%d", metaBoard->gameBoard->board[j][i].value), "fprintf");
 			if ((metaBoard->gameBoard->board[j][i].value != 0) && ((metaBoard->mode == Edit) || (metaBoard->gameBoard->board[j][i].fixed)))/*Add '.' if we are in Edit mode or cell is fixed and it has a value (not 0)*/
-				fprintf(ifp, "%c", '.');
+				checkIO(fprintf(ifp, "%c", '.'), "fprintf");
 			if (j != metaBoard->cols * metaBoard->rows - 1)/*Don't insert space on last cell in line*/
-				fprintf(ifp, " ");
+				checkIO(fprintf(ifp, " "), "fprintf");
 		}
-		fprintf(ifp, "\n");
+		checkIO(fprintf(ifp, "\n"), "fprintf");
 	}
-	fclose(ifp);
+	checkIO(fclose(ifp), "fclose");
 	printf("Saved to: %s\n", fileName);
 }
 
