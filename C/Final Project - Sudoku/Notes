@@ -1,0 +1,120 @@
+--------------------------To do list
+
+DONE! Project sent for evaluation and grading.
+
+-------------------------Grandiose Library of Done list
+
+in the generate command,after the move is done and we want to add it to the undo/redo list,we did not put free in the end of the
+generateList command for the array that stored the changes in each cell(which the free does appear in the autofill command with the same
+objective).HANSOLO has added free in the end of the function,so we need to check if that free has fixed the leakage.
+
+keep and fill in game.c, solver in solver.c -- names have been changed.
+
+Revise "string" in function fillBoard in fileFunc, maybe we should use calloc instead.(why did we put 4 spaces in string and not 3?) - DONE! Calloc and only one variable.
+
+Documented: fileFunc.c+.h, linkedListFunc.c+.h, stackFunc.c+.h, game.c+.h, parser.c+.h, mainAux.c+.h.solver.c+.h, gameStructs.h.
+
+If generate added nothing (Y=0) don't add to undo/redo list (if Y=0 we don't do anything).
+
+Fix error messages for input (set set 2 2 should print "value not in range" not "invalid input").
+
+When we do edit with no filename argument(creates 3x3 empty board),make sure we delete the redo-undo list like we do normally - should work now
+
+Add generate to undo/redo list.(i think you did this lmao)
+
+test the gurobi file(check if the constraints are correct)
+
+Update the value of filledCells properlly in Generate
+
+Learn Gurobi
+
+IN AUTOFILL-IF IT DIDNT ADD ANY NEW VALUES,MAKE SURE WE DONT DELETE THE MOVES THAT WERE AFTER IT(REDO SHOULD NOT BE DELETED,SO DONT DO DELETE_ALL_NEXT) - looks good.
+
+Validate for save and for validate - ILP
+
+Generate - ILP
+
+hint - ILP
+
+Check what's wrong with numSol, after one time, number of solutions is 0? or diffrent values after first time, not sure why - updated x and y at end of function and erased cell before we quit the function.
+
+check erroneous cells when opening a file, we don't save the notation of error but we need to check if board has erroneous values?
+
+when we load a board find out why empty cells are erroneous 
+
+Update the value of filledCells properlly in autofill and redo/undo+check win in autofill+check if we have these issues in other commands
+
+
+-------------------------Tests we have done
+
+Solve - without file, with file, with non existing file
+
+Edit - Same as Edit
+
+print_board - working good
+
+set - also looks good, need more testing
+
+undo\redo - Check and check!
+
+save - worked from edit, solve
+
+autofill - looks really good, I mean REALLY REALLY GOOD!
+
+CheckErroneous - looks fine now
+
+num_solutions - works on 2X2, 3X2, 2X3 as wikipedia states
+
+Exit, Reset - Check with ValGrind, looks cool
+
+--------------------------Tests simple tester supposed to check
+
+(solo tested) Any command except solve and edit in Init mode (start of game or puzzle solved) - shouldn't run.
+
+"solve" + "edit" - without another input, without an existing file, and with a good file.
+
+(solo tested)"mark errors" - with incorrect value, changing in edit, change in solve, open a diffrent game and check value is still changed.
+
+(solo tested)"set" - without enough values, with too many values (should work) with incorrect values - out of range, digits or negatives, placing same value or 0 on cell and check if filledCells changes.chars instead of digits.
+
+(solo tested)"validate" - on unsolveable board, on solveable board, on erroneous board.
+
+(solo tested)"generate" - in solve mode, in edit mode without empty board, in edit with empty board, 20 values.
+
+(see todolist for a bug)"undo" + "redo" - on beginning of a game (list should be empty), more than the commands issued,when changing modes, and check how many commands acutally registered, after reset.
+
+"save" - in solve and edit mode without a file name, with a file name, with valid and invalid board.
+
+"hint" - without enough values, with too many values, with values out of range, digits or negatives.
+
+"num_solutions" - on invalid board, on valid board with 1 solution, NEED TO FIND BOARD WITH FEW VALUES.
+
+(solo tested)"autofill" - with invalid board, with valid board until completion of puzzle.
+
+"reset" - on file loading, multipile times in a row, after some commands have been made.
+
+--------------------------Remarks
+
+Only in Solve mode: autofill, mark_errors, hint. Only in Edit mode: generate.
+
+What is a good way to check erroneous? We don't like checking everything, very bad complexity
+
+Send array of triplets that contains col,row,val of a cell that is filled so we add a constraint that this value equals 1 in the correct col and row (ILP)
+
+Stack ----- (NumOfSol) run while didn't pop bottome with val == -1, untill then push every possible move with good values, pop when we get stuck somewhere/no next empty cell (solutions++)
+
+-------------------------Questions
+
+Do we need to put fixed values on zeroes when we save in edit mode and does it matter?
+
+What to do with a board completely filled on opening
+
+-------------------- The Archive of Forbidden Questions
+
+Check if we autofill even if board is unsolveable but doesn't contain same number in block, cell and row
+
+do we re/undo autofill and if so what do we print
+
+Ask what is the exact meaning of erroneous, is the board is valid, or only no same number in block, column, row, question comes since num of solutions ignores 0 solution on board
+
+Is it possible to have a cell both fixed and erroneous and how to print it (possible when entering same value in a row/.../... of a fixed cell) --- Cells can't be both, only fixed or erroneous.
