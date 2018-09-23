@@ -1,0 +1,7 @@
+isPalindrome - The function does NOT fulfill its contract, since it will always return false, even for "abba" which is a palindrome;
+
+sum - The function does fulfill its contract as expected;
+
+average - The function does NOT fulfill its contract, since an array of only 0's will have sum = 0, and dividing by 0 returns NaN and NOT 0 as expected, also an array pointing at Null will return NaN;
+
+roots - The function does fulfill its contract as expected;

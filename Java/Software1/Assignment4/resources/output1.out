@@ -1,0 +1,36 @@
+Read 35 words from resources/hw4/blackbird.txt
+--- Settings stage ---
+Enter your puzzle:
+_i___
+Puzzle doesn't have a single solution, try again!
+Enter your puzzle:
+l____
+Puzzle doesn't have a single solution, try again!
+Enter your puzzle:
+l_g__
+--- Game stage ---
+l_g__
+Enter your guess:
+j
+Wrong Guess, 5 guesses left
+l_g__
+Enter your guess:
+x
+Wrong Guess, 4 guesses left
+l_g__
+Enter your guess:
+h
+Correct Guess, 3 guesses left
+l_gh_
+Enter your guess:
+o
+Wrong Guess, 2 guesses left
+l_gh_
+Enter your guess:
+t
+Correct Guess, 1 guesses left
+l_ght
+Enter your guess:
+e
+Wrong Guess, 0 guesses left
+Game over!

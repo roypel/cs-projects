@@ -1,0 +1,6 @@
+Avialable tickets:
+Name:      DAILY 	 Validity:   1 days 	 Price: 2.00 NIS 	 Description: Ticket valid for 24 hours
+Name:     WEEKLY 	 Validity:   7 days 	 Price: 13.30 NIS 	 Description: Ticket valid for 7 days
+Name:    MONTHLY 	 Validity:  30 days 	 Price: 54.00 NIS 	 Description: Ticket valid for 30 days
+Name:  QUARTERLY 	 Validity:  90 days 	 Price: 144.00 NIS 	 Description: Ticket valid for 3 month
+Name:     YEARLY 	 Validity: 365 days 	 Price: 474.50 NIS 	 Description: Ticket valid for 1 year
