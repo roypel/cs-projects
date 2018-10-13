@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ClientSide", ".", "{ADD40B2A-8519-4A92-824E-EC8D6BF7F4A9}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/ClientSide"
+		Debug.AspNetCompiler.PhysicalPath = "..\ClientSide\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ClientSide\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/ClientSide"
+		Release.AspNetCompiler.PhysicalPath = "..\ClientSide\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\ClientSide\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1300"
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ServerSide", "..\ServerSide\", "{55DFB9BD-B322-4DCE-BDC3-4B0BA7B2B5A8}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/ServerSide"
+		Debug.AspNetCompiler.PhysicalPath = "..\ServerSide\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ServerSide\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/ServerSide"
+		Release.AspNetCompiler.PhysicalPath = "..\ServerSide\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\ServerSide\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1302"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADD40B2A-8519-4A92-824E-EC8D6BF7F4A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADD40B2A-8519-4A92-824E-EC8D6BF7F4A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55DFB9BD-B322-4DCE-BDC3-4B0BA7B2B5A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55DFB9BD-B322-4DCE-BDC3-4B0BA7B2B5A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

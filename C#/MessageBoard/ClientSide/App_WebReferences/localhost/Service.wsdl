@@ -1,0 +1,1067 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="SearchExist">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchExistResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SearchExistResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchSigned">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchSignedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SearchSignedResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u" type="tns:Users" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Users">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UserNames" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Passwords" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstNames" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastNames" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Emails" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Ranks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Statuss" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddUserResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SearchUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchUserResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUsers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUsersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUsersResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCheckedMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCheckedMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCheckedMessagesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllMessagesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnCheckedMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnCheckedMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUnCheckedMessagesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDeletedMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDeletedMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDeletedMessagesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDraftMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDraftMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDraftMessagesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMsgStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="w" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="m" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMsgStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMsgStatusResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRank">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRankResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRankResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMsg">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="M" type="tns:Msg" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Msg">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Writers" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Messages" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dates" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EnDates" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Hours" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Boards" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Statuss" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddMsgResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="EditMessageStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="w" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="m" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EditMessageStatusResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="CheckMsgExist">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="w" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="m" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="b" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckMsgExistResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckMsgExistResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EditUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u" type="tns:Users" />
+            <s:element minOccurs="0" maxOccurs="1" name="uname" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EditUserResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ChangeUserStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="s" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeUserStatusResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetUserMess">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="w" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserMessResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserMessResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckPass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckPassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckPassResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEma">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEmaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEmaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PassRecov">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="e" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PassRecovResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PassRecovResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="m" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckMailResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteMsg">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="w" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="m" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteMsgResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SearchExistSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchExist" />
+  </wsdl:message>
+  <wsdl:message name="SearchExistSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchExistResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchSignedSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchSigned" />
+  </wsdl:message>
+  <wsdl:message name="SearchSignedSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchSignedResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddUserSoapIn">
+    <wsdl:part name="parameters" element="tns:AddUser" />
+  </wsdl:message>
+  <wsdl:message name="AddUserSoapOut">
+    <wsdl:part name="parameters" element="tns:AddUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchUserSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchUser" />
+  </wsdl:message>
+  <wsdl:message name="SearchUserSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUsersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUsers" />
+  </wsdl:message>
+  <wsdl:message name="GetUsersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCheckedMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCheckedMessages" />
+  </wsdl:message>
+  <wsdl:message name="GetCheckedMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCheckedMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllMessages" />
+  </wsdl:message>
+  <wsdl:message name="GetAllMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUnCheckedMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUnCheckedMessages" />
+  </wsdl:message>
+  <wsdl:message name="GetUnCheckedMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUnCheckedMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDeletedMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDeletedMessages" />
+  </wsdl:message>
+  <wsdl:message name="GetDeletedMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDeletedMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDraftMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDraftMessages" />
+  </wsdl:message>
+  <wsdl:message name="GetDraftMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDraftMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMsgStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMsgStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetMsgStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMsgStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRankSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRank" />
+  </wsdl:message>
+  <wsdl:message name="GetRankSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRankResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddMsgSoapIn">
+    <wsdl:part name="parameters" element="tns:AddMsg" />
+  </wsdl:message>
+  <wsdl:message name="AddMsgSoapOut">
+    <wsdl:part name="parameters" element="tns:AddMsgResponse" />
+  </wsdl:message>
+  <wsdl:message name="EditMessageStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:EditMessageStatus" />
+  </wsdl:message>
+  <wsdl:message name="EditMessageStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:EditMessageStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckMsgExistSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckMsgExist" />
+  </wsdl:message>
+  <wsdl:message name="CheckMsgExistSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckMsgExistResponse" />
+  </wsdl:message>
+  <wsdl:message name="EditUserSoapIn">
+    <wsdl:part name="parameters" element="tns:EditUser" />
+  </wsdl:message>
+  <wsdl:message name="EditUserSoapOut">
+    <wsdl:part name="parameters" element="tns:EditUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangeUserStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangeUserStatus" />
+  </wsdl:message>
+  <wsdl:message name="ChangeUserStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangeUserStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserMessSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserMess" />
+  </wsdl:message>
+  <wsdl:message name="GetUserMessSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserMessResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckPassSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckPass" />
+  </wsdl:message>
+  <wsdl:message name="CheckPassSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckPassResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEmaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEma" />
+  </wsdl:message>
+  <wsdl:message name="GetEmaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEmaResponse" />
+  </wsdl:message>
+  <wsdl:message name="PassRecovSoapIn">
+    <wsdl:part name="parameters" element="tns:PassRecov" />
+  </wsdl:message>
+  <wsdl:message name="PassRecovSoapOut">
+    <wsdl:part name="parameters" element="tns:PassRecovResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckMailSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckMail" />
+  </wsdl:message>
+  <wsdl:message name="CheckMailSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckMailResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteMsgSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteMsg" />
+  </wsdl:message>
+  <wsdl:message name="DeleteMsgSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteMsgResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="SearchExist">
+      <wsdl:input message="tns:SearchExistSoapIn" />
+      <wsdl:output message="tns:SearchExistSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchSigned">
+      <wsdl:input message="tns:SearchSignedSoapIn" />
+      <wsdl:output message="tns:SearchSignedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUser">
+      <wsdl:input message="tns:AddUserSoapIn" />
+      <wsdl:output message="tns:AddUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchUser">
+      <wsdl:input message="tns:SearchUserSoapIn" />
+      <wsdl:output message="tns:SearchUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <wsdl:input message="tns:GetUsersSoapIn" />
+      <wsdl:output message="tns:GetUsersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCheckedMessages">
+      <wsdl:input message="tns:GetCheckedMessagesSoapIn" />
+      <wsdl:output message="tns:GetCheckedMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <wsdl:input message="tns:GetAllMessagesSoapIn" />
+      <wsdl:output message="tns:GetAllMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnCheckedMessages">
+      <wsdl:input message="tns:GetUnCheckedMessagesSoapIn" />
+      <wsdl:output message="tns:GetUnCheckedMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDeletedMessages">
+      <wsdl:input message="tns:GetDeletedMessagesSoapIn" />
+      <wsdl:output message="tns:GetDeletedMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDraftMessages">
+      <wsdl:input message="tns:GetDraftMessagesSoapIn" />
+      <wsdl:output message="tns:GetDraftMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMsgStatus">
+      <wsdl:input message="tns:GetMsgStatusSoapIn" />
+      <wsdl:output message="tns:GetMsgStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRank">
+      <wsdl:input message="tns:GetRankSoapIn" />
+      <wsdl:output message="tns:GetRankSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMsg">
+      <wsdl:input message="tns:AddMsgSoapIn" />
+      <wsdl:output message="tns:AddMsgSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EditMessageStatus">
+      <wsdl:input message="tns:EditMessageStatusSoapIn" />
+      <wsdl:output message="tns:EditMessageStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckMsgExist">
+      <wsdl:input message="tns:CheckMsgExistSoapIn" />
+      <wsdl:output message="tns:CheckMsgExistSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EditUser">
+      <wsdl:input message="tns:EditUserSoapIn" />
+      <wsdl:output message="tns:EditUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserStatus">
+      <wsdl:input message="tns:ChangeUserStatusSoapIn" />
+      <wsdl:output message="tns:ChangeUserStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserMess">
+      <wsdl:input message="tns:GetUserMessSoapIn" />
+      <wsdl:output message="tns:GetUserMessSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckPass">
+      <wsdl:input message="tns:CheckPassSoapIn" />
+      <wsdl:output message="tns:CheckPassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEma">
+      <wsdl:input message="tns:GetEmaSoapIn" />
+      <wsdl:output message="tns:GetEmaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PassRecov">
+      <wsdl:input message="tns:PassRecovSoapIn" />
+      <wsdl:output message="tns:PassRecovSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckMail">
+      <wsdl:input message="tns:CheckMailSoapIn" />
+      <wsdl:output message="tns:CheckMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMsg">
+      <wsdl:input message="tns:DeleteMsgSoapIn" />
+      <wsdl:output message="tns:DeleteMsgSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SearchExist">
+      <soap:operation soapAction="http://tempuri.org/SearchExist" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchSigned">
+      <soap:operation soapAction="http://tempuri.org/SearchSigned" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUser">
+      <soap:operation soapAction="http://tempuri.org/AddUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchUser">
+      <soap:operation soapAction="http://tempuri.org/SearchUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <soap:operation soapAction="http://tempuri.org/GetUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCheckedMessages">
+      <soap:operation soapAction="http://tempuri.org/GetCheckedMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <soap:operation soapAction="http://tempuri.org/GetAllMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnCheckedMessages">
+      <soap:operation soapAction="http://tempuri.org/GetUnCheckedMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeletedMessages">
+      <soap:operation soapAction="http://tempuri.org/GetDeletedMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDraftMessages">
+      <soap:operation soapAction="http://tempuri.org/GetDraftMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMsgStatus">
+      <soap:operation soapAction="http://tempuri.org/GetMsgStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRank">
+      <soap:operation soapAction="http://tempuri.org/GetRank" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMsg">
+      <soap:operation soapAction="http://tempuri.org/AddMsg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EditMessageStatus">
+      <soap:operation soapAction="http://tempuri.org/EditMessageStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckMsgExist">
+      <soap:operation soapAction="http://tempuri.org/CheckMsgExist" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EditUser">
+      <soap:operation soapAction="http://tempuri.org/EditUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserStatus">
+      <soap:operation soapAction="http://tempuri.org/ChangeUserStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserMess">
+      <soap:operation soapAction="http://tempuri.org/GetUserMess" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckPass">
+      <soap:operation soapAction="http://tempuri.org/CheckPass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEma">
+      <soap:operation soapAction="http://tempuri.org/GetEma" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PassRecov">
+      <soap:operation soapAction="http://tempuri.org/PassRecov" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckMail">
+      <soap:operation soapAction="http://tempuri.org/CheckMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMsg">
+      <soap:operation soapAction="http://tempuri.org/DeleteMsg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SearchExist">
+      <soap12:operation soapAction="http://tempuri.org/SearchExist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchSigned">
+      <soap12:operation soapAction="http://tempuri.org/SearchSigned" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUser">
+      <soap12:operation soapAction="http://tempuri.org/AddUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchUser">
+      <soap12:operation soapAction="http://tempuri.org/SearchUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <soap12:operation soapAction="http://tempuri.org/GetUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCheckedMessages">
+      <soap12:operation soapAction="http://tempuri.org/GetCheckedMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <soap12:operation soapAction="http://tempuri.org/GetAllMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnCheckedMessages">
+      <soap12:operation soapAction="http://tempuri.org/GetUnCheckedMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeletedMessages">
+      <soap12:operation soapAction="http://tempuri.org/GetDeletedMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDraftMessages">
+      <soap12:operation soapAction="http://tempuri.org/GetDraftMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMsgStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetMsgStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRank">
+      <soap12:operation soapAction="http://tempuri.org/GetRank" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMsg">
+      <soap12:operation soapAction="http://tempuri.org/AddMsg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EditMessageStatus">
+      <soap12:operation soapAction="http://tempuri.org/EditMessageStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckMsgExist">
+      <soap12:operation soapAction="http://tempuri.org/CheckMsgExist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EditUser">
+      <soap12:operation soapAction="http://tempuri.org/EditUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserStatus">
+      <soap12:operation soapAction="http://tempuri.org/ChangeUserStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserMess">
+      <soap12:operation soapAction="http://tempuri.org/GetUserMess" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckPass">
+      <soap12:operation soapAction="http://tempuri.org/CheckPass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEma">
+      <soap12:operation soapAction="http://tempuri.org/GetEma" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PassRecov">
+      <soap12:operation soapAction="http://tempuri.org/PassRecov" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckMail">
+      <soap12:operation soapAction="http://tempuri.org/CheckMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMsg">
+      <soap12:operation soapAction="http://tempuri.org/DeleteMsg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://localhost:1487/ServerSide/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://localhost:1487/ServerSide/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

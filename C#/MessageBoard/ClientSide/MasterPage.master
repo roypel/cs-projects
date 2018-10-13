@@ -1,0 +1,112 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Untitled Page</title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body dir="rtl" style="font-family: Tahoma; background-color: #84C1FF;">
+    <form id="form1" runat="server">
+    <div>
+    <center>
+    <table style="background-color: #FFFFFF">
+        <tr>
+            <td>
+                <asp:Image ID="Img1" runat="server" ImageUrl="Images/Sig.jpg" Height="75"/>
+            </td>
+            <td colspan="4">
+                <asp:ImageButton ID="IB1" runat="server" ImageUrl="Images/Title.jpg" 
+                    Height="75" onclick="IB1_Click" ToolTip="למעבר לדף הבית של בית הספר"/>
+            </td>
+        </tr>
+        <tr style="background-color: #DDD9D9">
+            <td>
+            
+            </td>
+            <td>
+                <asp:LinkButton ID="SignIn" runat="server" Text="התחבר" onclick="SignIn_Click" 
+                    ForeColor="#B50202" CausesValidation="False" ></asp:LinkButton>
+                <asp:LinkButton ID="SignOut" runat="server" Text="התנתק" Visible="false" 
+                    onclick="SignOut_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+            </td>
+            <td>
+                <asp:LinkButton ID="SignUp" runat="server" Text="הירשם" onclick="SignUp_Click" 
+                    ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+            </td>
+            <td>
+                <asp:LinkButton ID="TBoard" runat="server" Text="ללוח מורים" 
+                    onclick="TBoard_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+            </td>
+            <td>
+                <asp:LinkButton ID="SBoard" runat="server" Text="ללוח תלמידים" 
+                    onclick="SBoard_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color: #DDD9D9">
+                <asp:Panel ID="Pnl1" runat="server" onload="Pnl1_Load" Visible="False">
+                    <table>
+                        <tr>
+                            <td>
+                                <asp:LinkButton ID="EditDetails" runat="server" Text="עריכת פרטים" 
+                                    onclick="EditDetails_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <asp:LinkButton ID="ShowMess" runat="server" Text="לצפייה בהודעות" 
+                                    onclick="ShowMess_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+                            </td>
+                        </tr>
+                    </table>
+                 </asp:Panel>
+                <asp:Panel ID="Pnl2" runat="server" onload="Pnl2_Load" Visible="False">
+                    <table>
+                        <tr>
+                            <td>
+                                <asp:LinkButton ID="AdmBoa" runat="server" Text="לצפייה בהודעות" 
+                                    onclick="AdmBoa_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <asp:LinkButton ID="AdmSea" runat="server" Text="לצפייה במשתמשים" 
+                                    onclick="AdmSea_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <asp:LinkButton ID="AdmEdi" runat="server" Text="עריכת פרטים" 
+                                    onclick="AdmEdi_Click" ForeColor="#B50202" CausesValidation="False"></asp:LinkButton>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <asp:LinkButton ID="AdmCod" runat="server" ForeColor="#B50202" 
+                                    CausesValidation="False" Text="שינוי קוד מנהל" onclick="AdmCod_Click"></asp:LinkButton>
+                            </td>
+                        </tr>
+                    </table>
+                </asp:Panel>
+            </td>
+            <td colspan="4">
+                <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </td>
+        </tr>
+        <tr align="center">
+            <td colspan="5">
+                <asp:Label ID="lbl_cred" runat="server" 
+                    Text="אתר זה נבנה ע''י בוגר מגמת הנדסת תוכנה. כל הזכויות שמורות." 
+                    Font-Size="Small" ForeColor="Blue"></asp:Label>
+            </td>
+        </tr>
+    </table>
+    </center>
+    </div>
+    </form>
+</body>
+</html>
