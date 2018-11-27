@@ -1,0 +1,50 @@
+gcc -g -O3 -Wall -Werror -Wextra -o Shell os1819a_hw2.c myshell.c 
+
+
+TODO: check -1 in all functions (dup, execvp...) and verify close correctley everywhere
+
+Do fork and execvp to commands in the array.
+Process arglist returns always 1 for continuous use.
+
+Background:
+If we see '&' as last argument in the array, run process in background -> don't wait.
+Can assume '&' appears once as last argument, and background process don't read from stdin.
+
+Pipes:
+If we see '|', run two childs, conntecting their stdin and stdout - using dup2.
+Use same array for execvp calls, referencing items in arglist.
+
+* process_arglist() returns only when last foreground exits.
+
+Assumptions:
+At most one pipe, not first or last argument, spaced correctley.
+No background pipes, maybe pipes while a background process runs.
+Support only execution, no fancy functions like cd.
+No quotation marks or apostrophes.
+The parser behaves correctley.
+
+Errors:
+An error in the parent is handled with error message and return 0, childs unbothered.
+An error in the child before execvp is handled with error message and termination of child with exit(1).
+Invalid command/program is an error in the child, shell shouldn't terminate.
+* Error messages to stderr/
+? Error messages can be worded freely?
+We may exit without freeing memory.
+
+General Requirements:
+No zombies.
+SIGINT:
+	After prepare(), shell shouldn't terminate upon SIGINT.
+	Foreground processes should terminate upon SIGINT.
+	Background processes shouldn't terminate upon SIGINT.
+	Make sure the rules are followed in any point of execution, fork duplicates signal handlers.
+Skeleton calls prepare() upon start, it should return 0 on success, and used for initialization.
+Skeleton calls finalize() before exit, it should return 0 on success, and used for freeing resources except arglist.
+
+Ideas: Put sigaction in initalize and make sure foreground child changes SIGINT back to default
+Flow:
+Search for pipe and background indication, mark a bit as needed.
+Mark first command for execvp, if found pipe save also the second.
+If background, run it without waiting and return.
+If foreground, wait until it finishes, only then return 1. Make sure after forking we change the signal handler.
+If pipe was found, make sure both executions succeed, and connect a pipe between them. Wait until they both finish.
